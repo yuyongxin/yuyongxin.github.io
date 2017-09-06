@@ -1,0 +1,30 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: "microsoft YaHei";
+    vertical-align: middle;
+}
+li{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+    color: #666;
+    -webkit-tap-highlight-color: transparent;
+
+}
+img{
+    vertical-align: middle;
+}
+input{
+    outline: 0;
+    border: 0;
+}
+.clearfix::before,.clearfix::after{
+    content: '';
+    display: block;
+    clear: both;
+}

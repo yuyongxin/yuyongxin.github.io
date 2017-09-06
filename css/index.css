@@ -1,0 +1,69 @@
+#nav {
+  width: 100%;
+  height: 80px;
+  background-color: #99f;
+}
+#nav > div {
+  float: left;
+}
+#nav > div > img {
+  width: 80px;
+  height: 80px;
+  margin-left: 80px;
+  border-radius: 50%;
+}
+#nav > .names {
+  float: left;
+  margin-top: 15px;
+  color: #fff;
+  font-style: '宋体';
+}
+#nav > .names > span:first-child {
+  font-size: 20px;
+  color: #ff2;
+  display: block;
+  text-shadow: 5px 5px 5px #666;
+}
+#nav > .names > span:last-child {
+  color: blue;
+  font-size: 20px;
+  text-shadow: 5px 5px 5px #666;
+}
+#nav > ul {
+  display: flex;
+  justify-content: space-around;
+}
+#nav > ul > li {
+  float: left;
+  line-height: 80px;
+  text-shadow: 5px 5px 5px #666;
+}
+#nav > ul > li > a {
+  color: #fff;
+}
+#nav > ul > li > a:hover {
+  color: red;
+}
+#contents > h3 {
+  padding-left: 40px;
+  margin: 20px 0;
+}
+#contents > aside {
+  width: 22%;
+  background-color: #bbe;
+}
+#contents > aside > ul {
+  box-shadow: 5px -5px 5px #666666;
+}
+#contents > aside > ul > li {
+  border-bottom: 1px solid #666;
+  padding: 20px 0;
+}
+#contents > aside > ul > li:hover {
+  background-color: #fff;
+}
+#contents > aside > ul > li > a {
+  padding-left: 40px;
+  text-shadow: 5px 5px 5px #999;
+  color: #000;
+}
