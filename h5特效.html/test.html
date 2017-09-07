@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box{
+            width: 100%;
+            height: 600px;
+            background-color:#ccc;
+            position: relative;
+        }
+        .box .btn{
+            width: 100px;
+            height: 50px;
+            background-color: orange;
+            text-align: center;
+            line-height: 50px;
+            position: absolute;
+            top: 500px;
+            left: 50%;
+            cursor: pointer;
+        }
+        .box .top{
+            height:10px;
+            width: 1000px;
+            background-color: red;
+            /*position: absolute;*/
+            /*top: 0;*/
+            margin: 0 auto;
+            /*display: none;*/
+            position: relative;
+        }
+        .box .top img.left1{
+            width: 100px;
+            height: 10px;
+            position: absolute;
+             /*transform:  scale(2) translate(150px,200px) rotate(990deg);*/
+            
+            transition: all 2s;
+        }
+        .box .top img.right1{
+            width: 100px;
+            height:10px;
+            position: absolute;
+            left: 0;
+            top: 0;
+             transition: all 2s;
+            
+        }
+    </style>
+    <script src="jquery-1.12.4.min.js"></script>
+</head>
+<body>
+    <div class="box">
+        <div class="top">
+            <img class="left1" src="imges/jzs.png" alt="">
+            <img class='right1' src="imges/jzx.png" alt="">
+        </div>
+        <div class="btn">
+            鼠标点击
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(function(){
+        $('.btn').click(function(){
+           
+           yu();
+            $('img.left1').style.transform   
+               
+           
+            
+            
+        })
+    })
+
+    function yu(){
+         var tag=true;
+                    console.log('哈哈');
+            $('img.left1').css('transform','scale(2) translate(170px,200px) rotate(990deg)');
+            $('img.right1').css('transform','scale(2) translate(180px,200px) rotate(990deg)');
+            if($('img.left1').css('top')!='200px'){
+            tag=false;
+            }
+            else{
+                tag=true;
+            }
+            if(tag==true){
+                $('img.left1').css('transform','translate(-500px)');
+            }
+                
+            
+            }
+
+   
+</script>

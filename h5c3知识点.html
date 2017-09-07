@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div::selection,p::selection,li::selection,pre::selection{
+            background-color: red;
+        }
+        div::first-letter,p::first-letter,ul::first-letter,h2::first-letter,h4::first-letter{
+            color: orange;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="one">
+        <h2>第一天笔记</h2>
+        <pre>
+            <h4>htnl5的一些新特性</h4>
+            1.文档声明，变少了（<!DOCTYPE html>）
+            2.style和script不用写type属性了,以前的h4我们不写type也没错，但是呢不符合规范，规范是要求要写的，不报错的原因只是因为：浏览器容错性强，自己帮我们解析了正确的type属性
+            h5开始才把style和script不用写type加入到规范里了，默认style的type就是text/css
+            script的默认type就是text/javascript
+            3.h5中不需要每个标签都闭合
+            4.大小写不敏感，html5的标签中可以大写也可以小写。但是呢统一标签都用小写
+
+            <h4>html5新增区域标签</h4>
+            header标签：头部标签
+            nav标签：导航区域
+            main标签：主题区域
+                {
+                    <section>
+                        区域标签
+                        <aside>
+                            侧边栏
+                        </aside>
+                        <article>
+                            内容
+                        </article>
+                    </section>
+                }
+
+            <h4>自定义属性的写法及获取</h4>
+            <div data-type-my='fat' date-weight='200kg' data-age='14'></div>
+             不是标签自带的属性，这些属性都叫自定义属性
+        h5中规范：自定义属性的写法为：data-xxx   xxx就是属性名
+        h5提供的找自定义属性的方法：dataset可以获取这些所有的自定义属性，并且是对象类型
+        取值：.dataset["age"] 或 .dataset.age
+        如果想用dataset来取自定义属性，那么必须要求这些自定义属性前面有data-
+
+        所有用data-格式写的属性在dataset里取的时候，不需要加data-
+        因为它会自动把data-去掉,并且如果后面还有-，它会去掉-，并且把-后面的那个单词首字母大写
+
+        <h4>新增标签的兼容</h4>
+        解决兼容的问题：
+        1.自己写js代码创建一个dom元素
+            1.使用document.createElement创建元素
+            2.添加到body
+            3.写样式：记得要转成块元素：display:block
+
+<!--[if lte IE 8]>
+
+<script>
+
+    console.log('我被执行了');
+    // js创建的元素，默认是行内元素
+    // 创建的标签名字可以随便写，但是建议统一写h5提供的新标签的名字
+    // 因为这样的话，就可以让IE8以后的浏览器以及IE8以前的浏览器都用同一个样式  
+    var headerDom = document.createElement('header'); 
+    headerDom.innerHTML = "我是js创建的";
+    document.body.appendChild(headerDom);
+
+</script>
+    
+<![endif]-->
+        2.用第三方框架解决兼容问题
+<!--因为这个第三方框架也只是IE8以后才需要，所以也来一个条件编译命令，这样的话如果用户是新式浏览器，那么就不会导入，就能够节省流量，让网站打开的更快  -->
+    <!--[if lte IE 8]>
+        <script src="js/html5shiv.js"></script>
+    <![endif]-->
+        <h4>多媒体播放</h4>
+            <p>
+       audio 播放音频
+                video 播放视频
+                属性：
+                controls: 显示控制条
+                autoplay: 自动播放
+                loop:循环播放
+                 h5标签缺点：
+            右键可以直接另存为
+            屏蔽广告技术上实现比较简单
+             如果video标签里面写source标签，代表它会从上往下来寻找播放
+        先找第一个source看能不能播放，能播放就播放它，不能播放就找下一个来试试能不能播放
+      -->
+
+    如果在video里写source会从上往下尝试播放，如果都不能播放就会显示你在最后写的文字，那么能播放就不显示了  
+     <!--//<video controls autoplay>
+       // <source src="video/rabbit.ogg"></source>
+        //<source src="video/movie01.mp4"></source>
+        小妹下海写代码很辛苦，麻烦下载最新浏览器，体验小妹给你带来的炫酷体验！
+       // <a href="#">点我下载</a>
+    //</video> -->
+            </p>
+        </pre>
+    </div>
+    
+    <div class="two">
+        <h2>第二天笔记</h2>
+        <p>
+            <h4>关系选择器</h4>
+            .box+li{    
+                color red;
+            }
+            代表找到.two下一个兄弟li标签，只有下一个兄弟元素确实是li标签才命中
+<hr>
+            .two~li{
+
+            }
+            找所有兄弟li标签，但是不包括自己和前面的兄弟
+            
+        </p>
+        <hr>
+            <h4>属性选择器</h4>
+            <ol>
+                <li>
+                    li[class]{
+                        backgroud-color:orange;
+                    }
+                    找到所有的li标签含有类
+                </li>
+                <li>
+                    li[class='three']{} 属性等于某个值
+                </li>
+                <li>
+                    li[class^='t']{} 属性以什么开头
+                </li>
+                <li>
+                    li[class$='e'] 属性以什么结尾的元素
+                </li>
+                <li>
+                    li[class*='o']  所有类名中包含o的li标签
+                </li>
+               
+            </ol>
+            <hr>
+            <h4>伪类选择器</h4>
+            <ol>
+                <li>
+                    选择器：first-child&nbsp;代表找到第一个元素，并且要在父元素中是第一个元素
+
+                </li>
+                <li>
+                    选择器：last-child&nbsp; 代表找到最后一个元素，并且要在父元素中是最后一个元素
+
+                </li>
+                <li>
+                    选择器：nth-child(数字)&nbsp;代表找到父元素的第几个元素
+
+                </li>
+                <li>
+                    选择器:nth-child(n)代表找到所有，因为n从0开始一直到最大的那个数
+                </li>
+                <li></li>
+            </ol>
+            <hr>
+            <h4>xxx-of-type</h4>
+            本节知识点
+            <br>
+            <pre>
+            first-of-type
+            last-of-type
+            nth-of-type
+            以上用法和first-child last-child...用法完全一样
+            区别在于：xxx-child必须满足在父元素中是第几个，而xxx-of-type只要满足是同类型的第几个
+            </pre>
+        <hr>
+        <h4>伪元素选择器之第一个字符，第一行，选中行</h4>
+        <pre>
+           所有的伪元素选择器，在w3c标准规范写法是写两个：：，因为它要用来区分伪类选择器，但是呢，只写一个也可以
+
+           元素::first-letter{
+               color:blue;
+           }
+           命中第一个字符
+
+           p::first-line{
+
+           }
+           命中第一行
+
+           p::selection{
+
+           }
+           命中选中的行
+           <h4>before after伪元素选择器</h4>
+           作用：
+           可以在不写html的标签的情况下，给某个dom元素再添加两个子元素
+           before 默认在内容的前面。after默认在内容的后面
+           使用before和after必须要写content属性
+           哪怕他不需要文字，也需要一个content:"";
+           before和after默认是行内元素
+
+           <h4>transition属性</h4>
+           transition的作用：
+           可以让一个元素从一个css属性值，到另外一个属性值得变化有个过渡效果
+           transition:all 1s step(n) 5s;
+           参数1：参与过渡的属性，all代表所有属性都参与，也可以传具体指定的属性
+           参数2：过渡的动画时间
+           参数3：动画效果，一般不用
+           参数4：过渡要延迟几秒执行
+
+           <h4>text-shadow:添加文字阴影</h4>
+           text-shadow:-10px -10px 30px green,-20px -20px 30px yellow;
+           参数1：x轴方向阴影位置，为正代表往右边偏移，负代表往左边偏移
+           参数2：y轴方向阴影位置 为正代表往下偏移
+           参数3：阴影模糊度
+           参数4：阴影颜色
+           如果需要多个阴影，那么就在后面写，连上
+           <h4>box-shadow 盒子阴影</h4>
+           box-shadow:10px 20px 20px 10px white;
+           参数1：x轴上的阴影偏移
+           参数2：y轴方向阴影偏移
+           参数3：模糊值
+           参数4：阴影的宽度
+           参数5：阴影的颜色
+           <h4>transform属性</h4>
+           要给他赋值对应的函数
+           旋转：transform:rotate(360deg(角度));正为顺时针旋转
+           缩放：transform:scale();可以传两个参数（参数1宽，参数2高），如果一个参数代表宽高都缩放
+           平移：transform:translate();传一个参数水平平移，传两个分别是水平和垂直
+           扭曲：transform:skew();传角度，变成平行四边形
+        </pre>
+    </div>
+    <div class="three">
+        <h2>第三天</h2>
+        <p>
+            <h4>设置旋转固定点</h4>
+            <pre>
+                transform-origin
+                    center;中心点；
+                    top right 右上固定
+
+                <h4>backgroud新属性</h4>
+                <pre>
+                    1.在是否平铺的位置上可以写round，代表让图片缩放的跟盒子一样大
+                    2.图片对齐方式后面可以加一个/，然后接一些值 cover等比例缩放，只要一边到达就停止；
+                    contain 宽高都在盒子内；也可以接具体的数值，第一个数为指定图片的宽度，第二个为高度；
+                    3，可以放多张背景图片，用逗号隔开
+                    4，可以设置背景颜色，但背景颜色一定要放在最后
+                <h4>图片边框</h4>
+                1.必须先设置border
+                2.border-image：两个参数 参数一：图片 参数二：切割线 上，右，下，左；
+
+                <h4>线性渐变</h4>
+                backgroud:  linear-gradient(); 
+                参数1：方向 可以是角度deg  可以是 to top , to left 
+                参数2：颜色列表： 至少需要两个颜色 颜色之间用逗号隔开，颜色可以传入百分比，上一个颜色的结束位置，时下一个颜色的开始位置。
+                <h4>径向渐变</h4>
+                background:  radial-gradient(); 参数一：圆心的位置  宽 高 at center  也可以只传一个值，代表宽高都一样
+                                                参数二：颜色列表 同上
+
+                <h4>动画的基本使用</h4>
+
+                        创建一个动画：@keyframes 动画名
+                                            {
+                                                from{}
+                                                to{
+                                                    动画执行的函数
+                                                }
+
+                                            }
+                        应用一个动画
+                                animation:参数一： 动画名 参数二：动画时间 参数三：动画效果 linear，step()...参数四：动画次数 infinate代表无限
+                </pre>
+            </pre>
+        </p>
+    </div>
+    <div class="four">
+        <h2>第四天</h2>
+        <p>
+            <pre>
+                <h4>animation 动画的基本使用</h4>
+                用animation就没必要写transition了，因为它自带了动画效果
+                animation-name:动画名字
+                animation-duration:动画的持续时间
+                animation-delay:动画的延迟时间
+                animation-time-function:动画效果
+                animation-iteration-count:动画次数可以传infinite,代表无限执行
+                animation-direction:reverse; 反转效果，先瞬间变成动画结束的样子，再以动画慢慢复原
+                animation-fill-mode:forwards; 动画完成后要不要以动画的结束样子显示
+                animation-play-state:默认情况下为running   paused；比如移动到上面是暂停，显示动画走到的位置停下。
+                复合写法 顺序可以乱写，但先写的时间一定是动画持续时间
+            </pre>
+            <h4>阶段动画</h4>
+            <pre>
+                  @keyframes driver {
+
+            /*动画总时长的30%，做它里面的事  */
+            30% {
+                transform: translate(1000px);
+            }
+
+            /*然后总体动画时长是40%的时候，做它里面这些事  */
+            40% {
+                /*先在原来已经到的位置再旋转180度（调转车头）  */
+                transform: translate(1000px) rotateY(180deg);
+            }
+
+            80% {
+
+                transform: translate(1000px) rotateY(180deg) translateX(1000px);
+            }
+
+            /*最后100%让你不动了  */
+            100% {
+                transform: translate(0px);
+            }
+        }
+            </pre>
+            <h4>动画库的使用</h4>
+            <pre>
+                引入css文件
+                给你要的动画效果的元素加一个类叫animated
+                需要什么动画，就找到这个动画的名字，把名字作为它的另外一个类
+            </pre>
+            <pre>
+                <h4>3D旋转</h4>
+                Z轴可以理解为屏幕前后
+                视点： perspective（xxxxpx;）
+                    视觉的距离 如果要有3D的透视效果，就需要给transform 加perspective
+                    值越大，效果越不明显，值越小效果越明显
+                    2.给一个视点距离，就相当于给了一个镜头拍一个物体的距离
+                        如果给了视点，例如300px;那么相当于在屏幕300px的位置看
+                    3.如果给每个元素加视点，相当于每个元素都有个镜头拍摄他的形态，
+                     如果给父元素加视点 那样的话，两边的元素，虽然也旋转了90度，但看起来是斜着的
+                     4.如果视点加在父元素上，直接用perspective：距离
+
+                旋转固定点：transform-origin: left center   left top.....
+                <h4>伸缩布局的基本使用</h4>
+                display:flex;
+                如果给父盒子加伸缩布局，其实伸缩布局是作用在它的子元素上
+                设置主轴上的排列方式
+                flex-start;默认是从左开始的
+                flex-end 从右边开始排列的
+                space-around:元素和元素之间有间距，并且间距相等，开头和结束也有间距，
+                space-between:元素和元素之间有间距，并且间距相等，但是开头和结束没有间距
+                            justify-content:space-around;
+                align-items:flex-end  center;
+
+                flex-direction: column;
+                设置那个是主轴
+                row:默认值，代表水平方向那根是主轴
+                column:代表垂直方向为主轴
+
+        <h2>第五天</h2>
+        align-self:单独设置某个元素在副轴上的位置 flex-end center flex-start
+            flex: 值 ；设置的是主轴上的占比
+            主轴如果是水平方向，设置的是宽度
+            主轴如果是垂直方向,设置的是高度
+            有一些固定的宽度，剩下的用flex,那么就代表剩下的宽度或高度按占比分
+            flex-wrap:开启允许换行
+            默认情况下，在主轴上排列是不换行的，如果不够放，则会缩小主轴上的大小
+            如果开启换行：wrap  那么就会按照设置的宽高来显示，但是不够放就换行，这个属相也是写在父元素上的
+            如果给了flex做布局，那么只需要设置主轴上的大小，副轴上的大小会自动以父容器的大小作为元素的大小
+            比如说水平方向为主轴，那么只要给宽度，高度的话就会等于父容器高度，比如说垂直方向为主轴，那么就只要给高度，那么宽度就是父容器宽度
+            <h2>第六天</h2>
+            <h4> 定位的使用</h4>
+            
+    document.querySelector('input').onclick = function () {
+
+        通过此方法可以去服务器请求自己的位置
+         定位有两个条件：1.要么有GPS模块，连接上卫星定位（最精确）
+         2.联网，通过你的网络ip去查询服务器上的地址（不太精确）
+         当获取到位置成功后就会调用的函数，这个函数你要参数传进去
+         获取到的位置信息会当作参数传给这个回调函数
+        window.navigator.geolocation.getCurrentPosition(function (loc) {
+
+            console.log('您所在的位置纬度是：' + loc.coords.latitude + '经度是：', +loc.coords.longitude);
+        })
+    }
+
+            <h4>定位搭配百度地图</h4>
+            <a href="../H5C3/第六天/定位搭配百度地图.html">定位搭配百度地图</a>
+            <h4>上下线事件</h4>
+                <p>
+         window.ononline=function(){
+                        console.log('上线了');
+                    }
+                    window.onoffline=function(){
+                        console.log('网络不通请检查你的网络');
+                    }
+                </p>
+                <h4>本地存储</h4>
+                本文件知识点：
+        localStorage 用来存储数据，特点：只要自己不删永远都在
+            setItem('key',值);  这是存储
+            getItem('key'); 这是取值
+            removeItem('key');这是删除某个值
+
+
+        sessionStorage 也是存储数据，但是会自动删除，用法跟上面的完全一样
+            例子：
+            window.localStorage.setItem('name',value);
+
+            <h4>元素的拖拽</h4>
+             有些元素默认不能拖，如果希望它有拖动效果
+    就给它写个属性叫 draggable = 'true'
+
+    ondragstart 当元素开始拖拽触发
+    ondrag   当元素正在拖拽触发
+    ondragend 当元素停止拖拽触发
+
+    ondrop 当某个容器检测到有元素移入并且松手后触发
+        但是要让这个事件触发，必须先实现这个容器的ondragover事件，并且这个事件需要一个event参数，再调用event.preventDefault()方法
+
+
+         本文件知识点：
+            1.如何拿到file元素的上传文件？
+                    file元素.files 就能拿到所有上传的
+                    如果是单选，直接file元素.files[0]
+
+            2.file元素拿到的文件，还只是文件的信息，我们要把它读取出来，就需要用到文件读取对象
+
+                new FileReader();
+
+
+            3.如何读取？
+                文件读取对象.readAsDataURL(文件信息)
+
+
+            4.注意点：
+                调用readAsDataURL方法后不一定立即读取完，所以如果我们要拿读取到的结果，一定要等它读取完毕
+
+                怎么等？
+                    调用文件读取器的onload事件，这个事件会绑定一个方法，当读取完毕，就会调用这个方法，所以我们在这个方法里就可以拿读取后的文件结果了
+
+
+            
+             file元素的onchange事件
+            当选中的文件发生改变会来触发
+
+
+            <h4>全屏效果</h4>
+
+            这个方法还是一个实验室中的方法，所以必须加浏览器的前缀标识
+             boxDom.requestFullscreen();
+
+             兼容处理
+              if (boxDom.webkitRequestFullscreen) {
+
+            boxDom.webkitRequestFullScreen();
+        }
+        else if (boxDom.mozRequestFullScreen) {
+
+            boxDom.mozRequestFullScreen();
+
+        } else if (boxDom.msRequestFullscreen) {
+
+            boxDom.msRequestFullscreen();
+        }
+
+        <h4>swipper框架的使用</h4>
+        <a href="../H5C3/第五天/360产品展示/index.html">swipper框架的使用</a>
+            </pre>
+
+            
+
+        </p>
+    </div>
+</body>
+</html>

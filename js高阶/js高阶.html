@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div::selection,p::selection,li::selection,pre::selection{
+            background-color: red;
+        }
+        div::first-letter,p::first-letter,ul::first-letter,h2::first-letter,h4::first-letter{
+            color: orange;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <pre>
+            <h4>基础复习</h4>
+            javasctipt包含：ECMAScript, DOM ,BOM
+            1.javascipt的基本类型有 number ,string,和 boolean.
+            2.复合类型有 Array ,Date ,Math ,RegExp,
+            3.javaScript 还有两个空类型 null 和 undefined
+            4.undefined  声明了变量 为赋值   null 释放内存
+            5.break 跳出 continue 跳出这次，继续下次
+            6. ==只比值 ===类型跟值都比
+
+            7.对象不能跟字符串直接比 js在进行比较时 先调用valueOf 如果还无法比较
+            会再次调用 toString();
+                console.log({}=='[object Object]'); 等同于'[object Object]'=='[object Object]'
+                console.log(![].valueOf()); //false
+
+            8 in 运算符作用
+                1.遍历对象  数组
+                2 判断对象中是否有某个值
+                3 判断数组是有某个下标
+                   <div>
+                         var person={
+            name:'小林林',
+            skill:'ere',
+            friend:'dad'
+        }
+        for(var key in person){
+           // console.log(key);   //name skill friend
+           // console.log(person.key);  //undefined  说明是person
+            console.log(person[key]);  //keyide
+        }
+        console.log('skill' in person); //in 运算符判断对象中是否有某个值
+        console.log('-------------------------');
+
+            var foodArr=['xi','li','sed']; // in 运算符数组中是否有某个下标
+            console.log(1 in foodArr);
+
+            console.log('xi' in foodArr);  //false 不能直接判断
+
+            for(var key in foodArr){
+                console.log(foodArr[key]);
+            }
+                   </div>
+                
+                9.引用类型赋值的特点是  赋值的是地址 赋值之后多个变量 会指向同一个对象 修改某一个变量的值 其他指向 这个对象的变量也会受影响
+
+                10.  // script  支持设置的属性 
+                // async  异步加载  不阻塞后面的解析《《script async src=""></script>
+
+                11"异常捕获"  在可能出错的代码的外部 使用 语法包裹起来  让代码 哪怕有错 也是能够运行的
+                语法：
+                try{
+                    可能出错的代码
+                }
+                catch(data){
+                    如果错了会执行这里的代码
+                }
+                finally{
+                无论如何都必须执行的操作放在这里
+                }
+            11.throw抛出异常信息
+
+
+            12. 构造函数的this 如果使用new 调用的话 this指向 构造函数的内部创建的对象
+            构造函数 如果return了
+                return基本数据类型没有影响
+                return 复杂数据类型 覆盖默认的返回值
+
+            不使用new关键字调用 就相当于普通函数的调用
+
+            13.原型  是通过构造函数能够访问的一个属性  fuc.prototype
+            原型中的属性  fuc.prototype.constructor  指向的是 构造函数本身
+
+            把想要共享的部分 丢到构造函数的原型中 通过这个构造函数 创建出来的对象 能够访问到原型中的属性 
+            
+            14. 可以为实例化的对象 添加跟原型同名的属性 并不会影响原型中的属性
+            通过实例化对象访问属性时 ，先找自己 身上的，没有在原型中找
+
+            原型可以直接赋值一个新的对象  如果直接复制一个新的对象 没有了constructor 这个属性了 原本原型三角关系 被破坏了 建议再写上
+
+           15。继承的方法
+                混入式（循环赋值）
+                原型 对象赋值给原型
+                 二者 结合
+                 Object.create 方法var newFruit = Object.create(goodfruit);
+
+           16.对象有原型 原型也是对象 对象有原型  这种连式结构 把多个原型 串联起来 形成的结构 称之为 原型链
+
+           原型链的顶端  Object.prototype的原型
+            
+         16. 使用Function来创建函数
+             如果只传入一个字符串 那么作为函数体
+            如果传入多个字符串 最后一个 作为函数体 之前的作为形参
+
+        
+             var eatDumpling=new Function('name','console.log(name+"哈赤")');
+             eatDumpling('三鲜饺子'); 
+
+        17.   arguments.callee();    //始终指向自己  实现递归
+
+        18 //静态成员  通过构造函数来访问的属性和方法
+             // 实例成员  通过实例化出来的对象 访问的属性 跟方法
+
+        19.eval();  eval这个函数
+                    可以把 字符串格式的js代码 转化为 可以执行的js代码
+                     //转化JSON格式的字符串
+                        var JSONString='{"name":"泰罗奥特曼","enemy":"小关"}';
+                        // eval(JSONString);
+                        var obj=eval('('+JSONString+')');  
+                        console.log(obj);   //js中没有块级作用域 如果写成{...},js会自动忽略{}，为了让js不忽略这个大括号 在两边加上小括号
+        20.   if (totalList[i].classList.contains(className) == true)
+                .classList js中的类获取   contains() 包含
+
+        21.not选择器    语法 :not(普通选择器)
+        对 括号中的 选择器 取反
+
+        22. 同名 函数的声明 会把之前的声明 覆盖
+         变量跟函数同名  
+        // 如果变量没有给值 输出这个重名的名字 是输出函数
+        // 如果变量有值 那么输出这个重名的名字，是输出变量的值；
+
+        //变量提升是分区域的
+    /*
+        提升到了 变量所在的script标签 的顶端之后 不会跨域 script标签
+
+    */
+
+    // 条件式 声明
+    /*
+        变量能够提升 但需要注意的是 如果条件式声明 函数只会 提升 声明的函数  函数的代码不会提升
+
+        如果 是条件式 语句 中是函数声明 可以把它看做var func=function(){} 只会提升 var func 赋值语句不会提升
+    */
+
+    23.  闭包  
+            函数中返回函数（对象）
+            function outer(){
+                function inner(){}
+                return inner;
+            }
+            函数能够创建作用域 函数执行完毕后 这个创建的作用域不在了 会被回收
+            会被释放
+
+            闭包的作用  延长变量的生命周期  对外提供有限的访问权限
+            缺点  会导致内存无法回收  实际开发慎用
+    24。自调用函数
+        (function(){
+
+        })()
+
+    25 缓存
+         缓存  暂时保存某些东西 需要使用时可以拿出来用
+
+            特点 大小有限制 暂时保存 
+    26 arr.push(key)  返回值为数组的长度
+        arr.shift(); 删除第一个数组  返回值是第一个子元素
+    27. 自执行函数 需要被正常的解析 必须跟之前的代码 有一个明显的分割
+            否则就会出现无法正常解析的问题
+            (function(){...}())
+            ;(function(){...})()
+            
+            //使用自执行函数 实现密闭空间
+            封闭 ，这种模式 称之为沙箱
+             */
+            // ;(function(){
+            //     var cache={};
+               
+            //     window.cache=window.$=cache;
+            // })()
+            // console.log(cache);
+            //有一些框架 不是使用return 而是直接对外暴露 这个对象的访问权限
+            //严格告诉你 要用我的这个框架 必须使用哪个对象
+            //直接访问window 相当于内部世界 直接影响外部世界
+
+            //形参等同于 在函数的最顶部声明了一个变量
+        </pre>
+    </div>
+    <script>
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	 <style>
+        div::selection,p::selection,li::selection,pre::selection{
+            background-color: yellowgreen;
+        }
+        div::first-letter,p::first-letter,ul::first-letter,h2::first-letter,h4::first-letter{
+            color: orange;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+	<div>
+		<p>
+			<pre>
+				<h4>函数</h4>
+				1.如果函数中有return那么return后面的代码是不会执行的
+				2.只能使用return返回一个值 ，要返回多个可用数组
+				3.return后面没有值，返回undefined;
+				4.num=20;不用var声明变量，在函数里，他就成了一个全局变量。
+
+
+				 //1.作用域链- 作用域是从里往外的。
+    a.如果在一个作用域中访问/修改一个变量，这个作用域中有这个变量的声明（不管变量的声明在变量的使用前还是使用后），都不会上一个作用域中查找这个变量了.
+    b.如果在一个作用域中访问一个变量，这个作用域中没有这个变量的声明，就会往上一级作用域查找有没有这个变量，如果找到了就直接使用这个变量的值； 假如上一级作用域也没有这个变量的声明，在往上找，直到找到全局为止，如果全局有，就使用全局变量的值； 假如全局也没有，就报错。
+    c.假如是修改变量：假如这个作用域中没有这个变量的声明，就去上一级作用域中查找这个变量，如果找到了，就修改这个变量的值 ; 如果上一级也没有找到这个变量的声明，就继续往上一个作用域查找，直到全局作用域位置，假如在全局作用域中找到了这个变量的声明，就把全局作用域中的这个变量的值给修改了；  假如全局也没有，那么他就成为一个全局变量。
+
+
+
+
+    function test1(){
+
+
+      function test2(){
+
+        num1 = 100; //对变量的值做修改
+        console.log(num1);
+
+      }
+      test2();
+
+
+    }
+
+    test1();
+    console.log("？？？"+num1);
+	在js中只有函数能分割作用域
+
+	预解析
+	1.在任意作用域的代码执行之前，都有一个预解析，会把这个作用域中的函数声明提前到当前这个作用的最顶端，赋值语句保留在原地。
+	2.会把这个作用域的函数的声明提前到最顶端，赋值语句保留在原地。
+
+	变量与函数重名问题
+	1.如果变量没有给值，输出这个重名的名字，是输出函数。
+	2.如果变量有值，那么输出这个重名的名字，是输出变量的值。
+
+	1.arguments参数，只在函数里面
+	2.arguments是一个位数组，里面存放的是函数的参数，形参和arguments是对应的，
+	3.如果没有形参，实参传过来的值还会保存在arguments里面。
+		function test(){
+		console.log(arguments);
+		console.log(arguments[1]);
+		}
+		test(100,200);
+	
+
+	函数的两种声明方式
+	1。function 函数名（【形参】）{
+
+	}
+	可以在声明的前面调用
+
+	2.var 函数名=function（【形参】）{
+
+	}
+	只能在声明之后调用
+
+
+	函数也是一个数据类型 Function
+
+	函数的类型检测
+	a.typeof 函数名
+	b.函数名instanceof Function
+	c.Object.prototype.toString.call(函数名)
+
+	回调函数
+		一个函数作为另外一个函数的参数，就叫做回调函数
+
+
+	自调用函数
+		匿名函数自己调用自己--自调用函数
+			（function（）{
+				console.log('asasa');
+			}（））；
+	
+
+	内置对象 Math Date日期对象
+		创建日期对象 
+		var date1=new Date();
+		
+		把日期转换为毫秒形式
+			var futuretime=Date.parse('2017-8-20 21:40:40');
+
+			var futureTime2=new Date('2017-8-20 21:40:40').getTime();
+		获取当前系统时间转化为毫秒数
+			var nowtime=Date.now();
+			var nowtime2=new Date().getTime();
+	<h4>对象</h4>
+		保存数据--很多属性和方法的集合
+		创建对象的方式
+			1.var 对象名=new Object();
+				1.this 谁调用这个方法，这个方法中的this就是谁
+
+
+
+			2.利用自定义构造函数来创建对象
+				把以上的创建学生对象的代码封装成一个函数。
+				    function createStudent(name,age,gender,score){
+				      var s2 = new Object();
+				      s2.name = name;
+				      s2.age = age;
+				      s2.gender = gender;
+				      s2.score = score;
+				      s2.sayHi = function () {
+				        console.log("我的名字是"+this.name+",我的年龄是"+this.age);
+
+
+						      }
+						      return s2;
+						    }
+
+						    //调用函数，得到一个学生对象
+						    var o1 =new  createStudent("张三",18,true,100);
+						    o1.sayHi();
+
+						    //调用函数，得到一个学生对象
+						    var o2 = createStudent("李四",20,false,99);
+						    o2.sayHi();
+					构造函数的基本使用
+						function Student(name,age){
+
+						}
+						var s1=new Student(wang,15);
+							new关键字
+								1帮我们创建了一个对象
+								2.将this指向当前的对象
+								3.给对象的属性赋值
+								4.把创建的对象给返回了
+
+				1.如果构造函数写了基本数据类型的返回值，是没用的会被忽略。
+				2.如果写了复杂数据类型的返回值，会把new关键字创建出来的对象给覆盖掉。
+			3.使用内置的构造函数，并且初始化属性或者方法值。
+				var obj2=new Object({
+				name:'张三',
+				age:18,
+				sayHi:function(){
+					console.log('gggg');
+				}
+
+				})
+
+			4.使用对象字面量的方式来创建对象。
+
+				var obj={
+					name:'张三',
+					age:16,
+					say:function(){
+						console.log('我的名字是'+this.name);
+					}
+				};
+
+
+		对象属性的操作
+				a.使用点语法
+				b.可以使用对象名['属性名'] 中括号是属性名对应的字符串。
+
+
+		用for in来遍历对象中的每一个属性
+			for(var 变量 in 对象名){
+
+			}
+				例：
+				for(var key in obj){
+				if(obj[key] instanceof Function){
+				obj[key]();
+				}
+				else{
+					console.log(obj[key]);
+				}
+				}
+
+
+		json  js对象表示法
+			记录数据的格式，属性名是有双引号的。
+
+			var p1={
+			'num1':10,
+			'num2':20,
+			'name':"张三"
+			};
+
+		使用forin可以遍历json数据
+			for(var key in p1（对象名）){
+				console.log(p1[key]);
+			}
+	<h4>数组的方法</h4>
+		concat();拼接
+		join();数组子元素之间用什么连接
+		var str=arr.join('-');
+		push();	
+			var arr=[10,20,30];
+			var ld=arr.push(40,50,60);
+			ld得到的是拼接后数组的长度
+			arr此时为[10,20,30,40,50,60]
+
+		pop();删除最后一个数组元素
+			var arr=[10,20,30];
+			var num=arr.pop();
+			console.log(num);得到的是最后一个删掉子元素
+			console.log(arr);得到[10,20];
+
+		unshift(); 在前面添加数组
+			var arr=[10,20,30];
+			var num=arr.unshift(70,80,90);
+			console.log(num); 拼接后数组的长度
+			console.log(arr); [70,80,90,10,20,30];
+
+
+		shift() 删除第一个数组元素
+			var arr=[10,20,30];
+			var num=arr.shift();
+			console.log(num); 删掉的第一个子元素10
+			console.log(arr);删掉后的数组 [20,30]
+
+		reverse() 翻转数组
+			var arr=[10,20,30,40,50,60,70];
+			var arr1=arr.reverse();
+			console.log(arr1); 翻转数组
+			console.log(arr);  原来的数组也被翻转了
+
+		slice() 剪切数组
+			var arr=[10,20,30,40,50,60,70];
+			var arr1=arr.slice(3); 得到[40,50,60,70];
+			console.log.log(arr1);
+
+			console.log(arr); 不改变原来数组
+
+		toString() 将数组转化为字符串
+			var arr=[10,20,30,40];
+			var str=arr.toString();
+			console.log(str); 10,20,30,40  字符串
+			console.log(arr); 不改变原来数组
+		
+		valueOf() 返回数组对象的原始值
+			var arr=[10,20,30,40];
+			var arr1=arr.valueOf();
+			console.log(arr1); [10,20,30,40];
+			console.log(arr);	[10,20,30,40];
+		
+		sort(); 排序 需要函数
+			function test1(a,b)
+			{
+				return a-b;		从小到大排序
+			}
+			function test2(a,b)
+			{
+				return b-a;    从大到小排序
+			}
+			var arr=[123,34,121,35,56,23,12];
+			var arr1=arr.sort(test2); 
+			console.log(arr1);
+<h4>dom</h4>
+		文档对象模型
+		1."通过ID获取元素" var s=document.getElementById('id');
+		1.1 通过标签名获取元素  vars1=document.getElementsByTagName('div'); 返回的是一个伪数组，因此不能使用数组方法；
+		2.s.innerHTML='.....';
+
+		//3.注意 **********//
+  		//var ul1 = id("one");
+  		//var li1 = ul1.getElementById("sb"); //没有这种写法
+  		//console.log(li1); //报错。
+
+  		id是唯一的，不需要嵌套去调用
+
+
+  		事件  文档或浏览器中发生的特定的交互瞬间
+  			三要素
+  				事件源  事件名称 事件处理程序
+  			
+
+	注意：根据类名获取的元素也是伪数组
+		var ss=document.getElementsByClassName('one');  返回的伪数组
+
+	注意：ips[i].style.backgroundColor=''; 背景颜色改为系统默认的；
+			
+	隔行变色2
+		 for(var i=0;i<--.length;i++){
+         var colors;  //将colors设为全局变量，否则onmouseover无法获取
+        lis[i].onmouseover=function(){
+         colors=this.style.backgroundColor;
+            console.log(colors);
+            this.style.backgroundColor='red';
+        }
+        lis[i].onmouseout=function(){
+          
+            this.style.backgroundColor=colors;
+        }
+    }
+
+    为元素添加类名
+    	box1.className='two';
+    	box1.className="one two";
+	可以用className获取或设置元素的类名；
+
+	注意，如果建的文件夹名字带括号，那么获取不到src属性（地址解析不了）
+
+		css中带有下划线的样式，js设置样式的时候不能使用下划线
+		下划线后面的首字母大写
+
+
+			特殊的 行内式注册事件
+				《input type="button" value="行内式注册事件2" onclick="sb1()"/》
+				function sb1(){
+
+				}
+			特殊的内嵌式注册方式
+				《input type="button" value="内嵌式注册事件2" id="btn2"/》
+					var btn2=id('btn2');
+					function sb2(){
+
+					}
+						btn2.onclick=sb2;  不带括号；
+
+
+	innerText和TextContent区别
+
+			innerText不是标准的w3c标准  用于获取元素中的文本
+				可以设置元素中的文本，内容中包含标签时，那么不会把标签解析出来。ff42之前不支持
+			textContent 是标准，ie8之前不支持  不解析标签
+
+
+	innerHTML
+			1可以获取标签中的内容（文本或者子标签）
+			2可以设置标签中的内容，如果原来有内容会覆盖原来的内容
+			如果内容中有标签，是可以把标签给解析出来的;
+	onblur  失去焦点事件
+	
+		
+	 border-collapse: collapse;  边框和并
+            border-spacing: 0;去掉边框之间间隙
+
+
+     《label for="name">昵称：《/label》
+
+     document.getElementsByName(); 只用于name属性的选择
+
+     
+			</pre>
+		</p>
+	</div>
+</body>
+</html>

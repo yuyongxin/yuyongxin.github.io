@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	 <style>
+        div::selection,p::selection,li::selection,pre::selection{
+            background-color: yellowgreen;
+        }
+        div::first-letter,p::first-letter,ul::first-letter,h2::first-letter,h4::first-letter{
+            color: orange;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+	<div>
+		<p>
+		<pre>
+			<h4>php部分</h4>
+			设置PHP页面编码格式
+			header('content-type:text/html;charset=utf-8');
+			定义变量：$name;
+			php中拼接字符串用.
+			定义数组：索引数组$fooarr=arr('qq','ww');
+					  关系型数组：$person=array('name'=>'吴京','film'=>'战狼');
+
+			直接打印数组的所有内容echo $foodarr;
+			直接输出复杂数据类型  print_r($foodarr);
+
+			获取数组的长度
+				count($foodarr);
+			
+
+			foreach循环方法
+				$key  循环的键
+				$vakue 循环的值
+				foreach($person as $key=>$value){}
+
+
+			php中引入其他的php页面
+			<?php
+
+				include '...php';
+				.....
+			?>
+			php的生成html结构的拼接方法
+				1.
+				<!--  echo '<ul>';
+    for($i=0;$i<count($arr);$i++){
+      .生成对应的html结构
+      echo '<li>';
+      echo '<a href="'.$arr[$i]['href'].'">点我看'.$arr[$i]['name'].'</a>';
+      echo '<img src="'.$arr[$i]['path'].'" alt="">';
+      echo '<span>'.$arr[$i]['name'].'</span>';
+      echo '</li>';
+    }
+    echo '</ul>'; -->
+    			2.
+    			<!--   for ($i=0; $i <count($heroArr) ; $i++) { 
+                echo ' <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                          <img src="'.$heroArr[$i]['champion_icon'].'" alt="...">
+                          <div class="caption">
+                            <h3>'.$heroArr[$i]['champion_name'].'</h3>
+                            <p><a href="#" class="btn btn-primary" role="button">购买</a> <a href="#" class="btn btn-default" role="button">详情</a></p>
+                          </div>
+                        </div>
+                      </div>';
+              } -->
+
+              php中的超全局变量
+              	$_GET; $_POST;
+				php页面可以写多个要<?php?>标签，并且可以拼在html中。
+	<h4>数据的交互</h4>
+              form表单发送数据
+              	action 指定提交的url
+              	method 提交的方式 默认为get
+
+              表单元素 需要提交的数据
+              	使用name属性进行标记
+				
+				form表单中get方式提交数据总结：
+				数据拼在URL中，安全性不好，多条数据URL数据太长，可能会有限制
+			
+				post
+					提交的数据不在URL中，安全性好，没有长度限制，服务器可以选择是否接受这么多数据，
+					2.如果上传文件必须使用post 
+			form表单上传文件
+				1form表单属性需要设置 2method='post' 3.enctype='multipart/form-data' 
+				4.nctype 默认值是 application/x-www-form-urlencoded
+                提交文件 multipart/form-data
+
+                php中用$_FILES接收提交的文件（临时文件）
+              这是 打印出来的 $_FILES的值
+				    Array ( 
+				      [icon] => Array ( 
+				          [name] => 1405937554667.png  上传的文件名
+				          [type] => image/png 类型
+				          [tmp_name] => C:\Users\51772\AppData\Local\Temp\php52F7.tmp 路径 临时
+				          [error] => 0 错误编码
+				          [size] => 13949  大小
+				          ) 
+				        )
+                移动上传的文件
+                	move_uploaded_file(file,newloc);
+                	参数1 移动的文件
+                	参数2 移动到哪里去
+				 move_uploaded_file($_FILES['icon']['tmp_name'],'./files/'.$_FILES['icon']['name']);
+
+				php中延时sleep(秒)；
+
+
+              <h4>ajax</h4>
+				1.ajax请求数据
+					1.创建异步对象 var xhr=new XMLHttpRequest();
+					2.请求行 Xhr.open('get/post' 'url');
+					3.注册回调函数 请求响应回来之后触发
+					xhr.onload=function(){
+						xhr.responseText响应回来的数据
+					}
+					4.请求头  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+								get请求可以省略，post不发送数据也可以省略，但post发送必须要。
+					5.请求主题 发送 send	();
+				php中
+				1.判断元素是否在数组中存在 in_array($name,$namearr)  返回的是true或false
+				2.$key=array_rand($arrlist,1); 返回数组一个随机的下标
+					$arrlist[$key] 得到一个随机的数组元素
+
+			xhr.open('get','..php','false') false(同步方式) 默认为true(异步)
+
+			严谨版ajax请求数据
+				var xhr=new XMLHttpRequest();
+				xhr.open('post/get','url');
+				xhr.onreadystatechange=function(){
+					if(xhr.readyState==4&xhr.status==200){
+
+					}
+				}
+				xhr.send(..);
+
+
+			xml 存储数据
+			<!-- <?xml version="1.0" encoding="UTF-8"?>
+				<root> 必须有个根目录</root>
+			 -->
+			 php中读取xml数据应该设置 header('content-type:text/xml;charset=utf-8');告诉浏览器返回的是xml
+			 2读取数据：
+			 $xmlString=file_get_contents('data/person.xml');
+
+			 html页面解析返回的数据
+			
+		        var age = xhr.responseXML.querySelector('age').innerHTML;
+		        var skill = xhr.responseXML.querySelector('skill').innerHTML;
+			
+
+
+     		</pre>
+		</p>
+	</div>
+</body>
+</html>
