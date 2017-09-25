@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>深入探究ajax以及$http服务的跨域原理</title>
+    <style>
+        body {
+            background-color: #ffa;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .content {
+            width: 80%;
+            margin: 0 auto;
+
+            border: 1px solid #ccc;
+            box-shadow: -5px -5px 5px #ccc;
+            background-color: #ffc;
+        }
+
+        h5 {
+            color: red;
+        }
+
+        pre {
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>深入探究ajax以及$http服务的跨域原理</h2>
+    <div class="content">
+        <h3>ajax请求数据的原理</h3>
+        <p>
+            <pre>
+                    ajax是一种异步请求的技术，实现页面局部刷新，按需更新视图
+
+                    原生ajax请求 分为 get post  又可分为是否需要发送数据
+                        1.get请求不发送数据
+                    <code>
+                             function ajaxGet(){
+                                 // 1.创建异步对象
+                                    var xhr=new XMLHttpRequest();
+                                    // 2.设置请求方式和资源路径
+                                    xhr.open("get","./php/status.php");
+                                    // 3.注册事件
+                                    xhr.onreadystatechange=function(){
+                                        if(xhr.readyState==4&&xhr.status==200){
+                                            console.log(xhr.responseText);
+                                        }
+                                    };
+                                    xhr.send();
+                                }
+                    </code>
+                        2.post请求不发送数据
+                    <code>
+                         function ajaxPost(){
+                            var xhr=new XMLHttpRequest();
+                            xhr.open("post","./php/stus.php");
+                            xhr.onreadystatechange=function(){
+                                if(xhr.readyState==4&xhr.status==200){
+                                    console.log(xhr.responseText);
+                                }
+                            }
+                            xhr.send();
+                        }
+                    </code>
+                        不发送数据的情况下 可以不设置请求头，原理后面说
+
+                        3.get请求要发送数据
+                    <code>
+                        function ajaxGetWithData(){
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("get","./php/get.php?name=jack&age=18");
+                            xhr.onload =  function (){
+                                if(xhr.status == 200){
+                                    console.log(xhr.responseText);
+                                }
+                            };
+                            xhr.send();
+                        }
+                    </code>
+                        get请求数据拼接在地址后面
+
+                        4.post请求发送数据
+                        <code>
+                            function ajaxPostWithData(){
+                                var xhr = new XMLHttpRequest();
+                                xhr.open("post","./php/post.php");
+                                    //设置请求头
+                                xhr.setRequestHeader("content-type","application/x-www-form-urlencoded");
+
+                                xhr.onload =function(){
+                                    if(xhr.status == 200){
+                                        console.log(xhr.responseText);
+                                    }
+                                };
+                                xhr.send("uName=admin&pwd=123456");
+                            }
+                        </code>
+                </pre>
+            <h5>
+                <pre>
+                     总结： 浏览器向服务器发送数据的时候，发送的数据式分格式的:
+                        1. 当我们以get方式向服务器发送数据的时候,发送的数据的格式: Query String
+                        2.当我们以post方式向服务器发送数据的时候,发送的数据的格式默认是:Request Payload
+                            如果我们以post方式向服务器发送数据,发送的数据的格式是Request Payload, 服务器绝大多数
+                            的情况不会解析接收。
+                       3. Post :服务器会接受 form data格式的数据。 我们就需要将Request Payload格式的数据转换为
+                            form data格式的数据。
+                        4.就可以通过请求头的方式：xhr.setRequestHeader("content-type","application/x-www-form-urlencoded");
+                            注意：
+                                post接口如果没有做特殊说明，发送的数据一定要转换为form data.
+                                Request Payload 一般用在传文件的时候
+                        5.xhr异步对象向服务器请求数据的时候 他有四种状态
+                            准备发送  正在发送  正在接受 接受完成        
+
+
+                        
+                </pre>
+
+
+            </h5>
+        </p>
+
+        <h3>$http服务</h3>
+        <p>
+            <pre>
+                $http服务 是angular 封装的ajax请求工具 是一个函数
+                使用$http 服务
+                    $http({
+
+                    });
+                   通过对象的键值对来指定请求的参数
+                        url: 指定请求的资源的路径
+                        method: 指定请求的方式 get/post  默认是get
+                        params:{}  当请求的方式是get 的时候，发送的数据要以键值对的形式存储
+                                在这个对象中
+                        data:"" 字符串 当请求的方式是post的时候 发送的数据要存储在这个属性中
+                        headers:{} 设置请求头  当请求方式是post的时候，发送的数据格式angulkar
+                        底层 并没有帮我们转换 ，所以，需要我们手动的加请求头转换。 
+                    通过链式编程的方式 点一个then方法出来 传入两个回调函数：第一个回调函数，在
+                        请求成功的时候执行 有一个参数response代表服务器返回的数据。
+                        response.data可以拿到服务器返回的真正的数据
+                        第二个回调函数 在请求失败的时候执行。
+                    
+                    <code>
+                         $scope.httpGetWithData=function(){
+                            $http({
+                                url:"./php/get.php",
+                                method:"get",
+                                params:{
+                                    name:"jack",
+                                    age:18
+                                }
+                            }).then(function(response){
+                                console.log(response.data);
+                            },function(){
+                                console.log("error!");
+                            })
+                        }
+
+                        $scope.httpPostWithData=function(){
+                            $http({
+                                url:"./php/post.php",
+                                method:"post",
+                                data:"uName=admin&&pwd=123456",
+                                headers:{
+                                    "Content_Type":"application/x-www-form-urlencoded"
+                                }
+                            }).then(function(response){
+                                console.log(response.data);
+                            }).catch(function(){
+                                console.log("error!");
+                            })
+                        }
+                    </code>
+            </pre>
+        </p>
+        <h3>什么是跨域</h3>
+        <p>
+            <pre>
+            在A域以ajax请求另外域的资源，是不被允许的。ajax只能请求本域的资源，无法发起跨域
+            请求。
+
+            解决方案：
+                反向代理 ：有本地服务器去请求数据
+                服务器设置响应头 ：header('content-type:aplication/json; charset=utf-8'); 不安全
+                jsonp
+
+                默认情况下 ajax他是不允许发起跨域请求的
+                    如果不使用前面两种方式 ajax无论如何都是解决不了的
+                那么jsonp的原理又是什么呢？
+
+                先了解一个script标签的特殊性 作用
+                    1.作用一：引入外部的js文件 script标签的src 属性将外部的js文件引入，并执行其中的代码
+                    2.作用二：script标签的src属性 可以请求任意类型的文件，浏览器都会将请求回来的数据作为js代码执行
+                    如果 可以执行就ok  不可以执行 就报错
+                    3.script标签的src属性 天然支持跨域
+
+                jsonp 的跨域原理，就是利用script标签的src属性来完成的
+                    1.先在浏览器端准备一个函数 demo 这个函数有一个参数 data
+                    你可以认为data 就是服务器返回的真正的数据， 在函数中处理服务器返回的数据就是参数data
+
+                    2.利用src属性 请求跨域资源 在请求的时候，要把我们事先准备的函数的名字发给服务器
+                     <xmp><script src="./php/atus.php?callback=demo"></script></xmp>
+                    3.在服务器端：
+                        先接受浏览器传递过来的函数的名称
+                        正常处理请求
+                        返回数据的时候：要返回的格式：函数名（真正的数据）  
+                    4.当浏览器接受到服务器返回的数据的时候，事先准备的函数就执行了
+                        <code>
+                            <xmp>
+                            <script>
+                                function demo(data) {
+                                    console.log(data);
+                                }
+                            </script>
+                            <script src="https://api.asilu.com/weather/?city=深圳&callback=demo"></script>
+                            </xmp>
+                        </code>
+
+                    5.jsonp的特点
+                    <h5>
+                        1.必须要服务其支持才可以
+                        2.必须要浏览器和服务器相互打好配合才可以
+                        3.jsonp 只支持get
+                     </h5>
+
+            按照这个原理 就可以封装一个jsonp
+                <code>
+                    <xmp>
+                         <script>
+                            var id = 1;
+                            function jsonp(opts) {
+                                //1. 拼接url
+                                var url = opts.url + "?";
+                                for (var key in opts.params) {
+                                    url += (key + "=" + opts.params[key] + "&");
+                                }
+                                //https://api.asilu.com/weather/?city=深圳&
+                                //我们需要将这个匿名函数保存起来.
+                                //https://api.asilu.com/weather/?city=深圳&callback=
+                                //2.  保存匿名函数
+                                //https://api.asilu.com/weather/?city=深圳&day=3&sb=4&callback=hmCallback
+                                //hmCallback(数据);
+                                //id 是为了能够多次请求，其回调函数名字不能相同
+                                var callbackName = "hmCallback" + (id++);
+                                //"hmCallback1"
+                                //window[hmCallback1] = opts.callback;
+
+                                window[callbackName] = opts.callback;
+                                url += "callback=" + callbackName;
+                                console.log(url);
+
+
+                                //3. 创建script标签.
+                                var script = document.createElement("script");
+                                script.src = url;
+                                document.body.appendChild(script);
+                            }
+
+
+                            function getW() {
+                                //调用封装好的jsonp函数发起跨域请求.
+                                jsonp({
+                                    url: "https://api.asilu.com/weather/",
+                                    params: {
+                                        city: "深圳",
+                                        day: 3,
+                                        sb: 4
+                                    },
+                                    callback: function (data) {
+                                        console.log(111);
+                                    }
+                                });
+                                jsonp({
+                                    url: "https://api.asilu.com/weather/",
+                                    params: {
+                                        city: "深圳",
+                                        day: 3,
+                                        sb: 4
+                                    },
+                                    callback: function (data) {
+                                        console.log(222);
+                                    }
+                                });
+                            }
+                        </script>
+                        <body>
+                            <button onclick="getW()">请求天气</button>
+                        </body>
+                    </xmp>
+                </code>
+                <h3>$http跨域</h3> 
+                    $http服务天然支持跨域。
+                    1.只需要将method设置为jsonp就可以了
+                    2.在发起跨域之前，需要设置一个跨域白名单。
+                    <code>
+                        <xmp>
+                             var app=angular.module("hmapp",[]);
+                            //设置跨域白名单
+                            app.config(["$sceDelegateProvider",function($sceDelegateProvider){
+                                $sceDelegateProvider.resourceUrlWhitelist(["https://api.asilu.com/weather/"]);
+                            }])
+
+                            app.controller("democtrl",["$scope","$http",function($scope,$http){
+                                $http({
+                                    url:"https://api.asilu.com/weather/",
+                                    paramas:{
+                                        citty:"深圳"
+                                    },
+                                    method:"jsonp"
+
+                                }).then(function(response){
+                                    console.log(response.data);
+                                })
+                            }])
+                        </xmp>
+                    </code>
+        </pre>
+        </p>
+    </div>
+</body>
+<script>
+
+</script>
+
+</html>

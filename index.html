@@ -1,51 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/index.css">
-    <!--<link rel="stylesheet/less" href="less/index.less">-->
+    <!--<link rel="stylesheet" href="css/index.css">-->
+    <link rel="stylesheet/less" href="less/index.less">
     <script src="./lib/less/less.js"></script>
     <title>狂人日记网</title>
 </head>
+
 <body>
-   <header id='nav'>
-       <div>
-           <img src="img/logo.png" alt="">
-       </div>
-       <div class="names">           
+    <header id='nav'>
+        <div>
+            <img src="img/logo.png" alt="">
+        </div>
+        <div class="names">
             <span>于永新</span>
             <span>Frank</span>
-       </div>
-      
-       <ul>
-           <li><a href="./h5c3知识点.html">h5c3</a></li>
-           <li><a href="./ajax知识点/ajax总结.html">ajax</a></li>
-           <li><a href="./javascript知识点/js基础知识.html">javascript</a></li>
-           <li><a href="#">移动web</a></li>
-           <li><a href="#">功能模块</a></li>
-           <li><a href="#">前端框架插件</a></li>
-       </ul>
-   </header>
-   <section id="contents">
+        </div>
+
+        <ul>
+            <li><a href="">h5c3</a></li>
+            <li><a href="">ajax</a></li>
+            <li><a href="">javascript</a></li>
+            <li><a href="#">移动web</a></li>
+            <li><a href="#">功能模块</a></li>
+            <li><a href="http://cdn.code.baidu.com/">前端框架插件</a></li>
+        </ul>
+    </header>
+    <section id="contents">
         <h3>工作笔记</h3>
         <aside>
-           
+
             <ul>
-                <li><a href="./h5特效.html/test.html">h5c3新增特性</a></li>
+                <li><a href="./h5c3知识点.html">h5c3新增特性</a></li>
+                <li><a href="./javascript知识点/js基础知识.html">javascript</a></li>
                 <li><a href="./js高阶/js高阶.html">javascript进阶</a></li>
-                <li><a href="#">ajax异步通信</a></li>
+                <li><a href="./ajax知识点/ajax总结.html">ajax异步通信</a></li>
                 <li><a href="#">移动端相关知识</a></li>
-                <li><a href="#">前端相关框架总结</a></li>
+                <li><a href="javascript:void(0)">前端相关框架总结</a>
+                    <div>
+                        <ul>
+                            <li><a href="./html_content/preview/02angular.html">angularJS总结</a></li>
+                            <li><a href="#">vue框架</a></li>
+                            <li><a href="#">jQuery框架</a></li>
+                            <li><a href="#">bootstrap框架</a></li>
+
+                        </ul>
+                    </div>
+                </li>
                 <li><a href="#">前端功能模块总结</a></li>
                 <li><a href="./随记手册.html">随手散记</a></li>
             </ul>
         </aside>
         <article>
-
+            <div class="lunbo">
+                <iframe src="切割轮播图/index.html"></iframe>
+            </div>
+            <div class="right-content">
+                <a href="./html_content/深入探究ajax以及angular的$http跨域原理.html">
+                    <div>
+                        <h2>深入探究ajax的jsonp以及angular的$http跨域原理</h2>
+                    </div>
+                    <div>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;jsonp 的跨域原理，就是利用script标签的src属性来完成的 1.先在浏览器端准备一个函数 demo 这个函数有一个参数 data 你可以认为data
+                            就是服务器返回的真正的数据， 在函数中处理服务器返回的数据就是参数data</p>
+                    </div>
+                </a>
+                <a href="./html_content/preview/如何使用ajax上传文件.html">
+                    <div>
+                        <h2>使用ajax实现文件上传</h2>
+                    </div>
+                    <div>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;使用ajax上传文件，需要将form表单中的数据序列化成一个FormData对象</p>
+                    </div>
+                </a>
+            </div>
         </article>
-   </section>
+    </section>
 </body>
+
 </html>

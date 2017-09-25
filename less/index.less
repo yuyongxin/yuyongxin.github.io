@@ -56,28 +56,101 @@
             margin: 20px 0;
         }
     >aside{
+        float: left;
         // margin-top: 40px;
         width: 22%;
         background-color: #bbe;
        
         >ul{
+            width:100%;
             box-shadow: 5px -5px 5px #666;
             >li{
                 border-bottom: 1px solid #666;
-                padding: 20px 0;
+                padding-left: 20px 0;
+                height:60px;
+                width: 100%;
+                line-height:60px;
+                position: relative;
                 &:hover{
                     background-color: #fff;
+                    >div{
+                        display: block;
+                    }
                 }
                 // box-shadow: -5px -5px 5px #666;
-                >a{
+                >a{ 
+                    display:block;
+                    width:100%;
+                    height:100%;
                     padding-left: 40px;
                      text-shadow: 5px 5px 5px #999;
                     color: #000;
                     
                     
                 }
+                >div{
+                    width: 100%;
+                    display: none;
+                    position: absolute;
+                    right: -100%;
+                    top:0px;
+                   
+                    >ul{
+                        width: 100%;
+                        >li{
+                            width: 100%;
+                            height: 50px;
+                             background-color: #dde;
+                            // width: 200%;
+                            border-bottom: 1px solid #ccc;
+                            >a{
+                                display: block;
+                                width: 100%;
+                                height: 100%;
+                                text-align: center;
+                                &:hover{
+                                    background-color: #dd3;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
+    }
+    >article{
+        width: 78%;
+        float: right;
+        >.lunbo{
+            width: 70%;
+            height: 400px;
+            float:left;
+            >iframe{
+                width: 100%;
+                height: 140%;
+                float:left;
+            }
+        }
+        >.right-content{
+            width: 30%;
+            float: right;
+            // border: 1px solid #333;
+            height: 2000px;
+            >a{
+                margin-bottom: 10px;
+                display: block;
+                padding: 15px;
+                height: 200px;
+                overflow: hidden;
+                background-color: #dda;
+                h2{
+                    color: #111;
+                }
+                p{
+
+                }
+            }
+        }
     }
 }

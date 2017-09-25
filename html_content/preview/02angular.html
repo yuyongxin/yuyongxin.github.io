@@ -1,0 +1,1024 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>i5ting_ztree_toc:02angular</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<h1 id="angular-">angular 进阶二</h1>
+<h2 id="angualarjs-">angualarJS的版本</h2>
+<ul>
+<li>1.x 缺点项目特别大的时候，会影响性能</li>
+<li>2.x 将底层代码完全重写</li>
+<li>4.x 最新的版本<h2 id="mvc-">MVC设计思想</h2>
+</li>
+<li>特点： 分工明确 ，各司其职</li>
+<li>angularJS 将代码按照功能分为三个部分<ul>
+<li>M Model  数据模型 存储网页需要展示的数据</li>
+<li>V view   视图 和用户直接进行交互的 展示信息给用户看 接受用户的输入，html代码</li>
+<li>C Controller 控制器 控制业务逻辑<ul>
+<li>通俗：控制器负责制造数据（就是从后台将数据请求回来），将请求的数据存储到数据模型中，视图再显示数据模型中的数据。<h2 id="-angularjs-">开发angularJS的步骤</h2>
+<ul>
+<li>使用ng-app指令来指定angularJS的管理的范围</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>指令都是ng自定义的html属性，把这个指令写给谁 谁及其子标签都被ng管理，并给这个指令赋值，应用程序的入口</li>
+</ul>
+</li>
+<li><p>angular是一个暴露出来的全局对象  有一个方法module</p>
+<ul>
+<li>功能：创建模块的</li>
+<li>参数： 参数1 创建模块的名字，这个名字要和ng-app的值保持一致，否则创建出来的模块无法管理ng-app  参数2 ：是一个数组，写上要依赖的别的模块的名字</li>
+<li>返回值： 就是创建出来的模块对象</li>
+</ul>
+</li>
+<li><p>创建控制器</p>
+<ul>
+<li>模块对象有一个方法controller<ul>
+<li>功能：创建控制器</li>
+<li>参数1：控制器名称</li>
+<li>参数2:数组  前面的元素写上要注入的服务的名称，最后一个元素是一个回调</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>关联与控制器相关的视图<ul>
+<li>使用ng-controller指令 指定与控制器关联的视图<ul>
+<li><div ng-controller="demoCtrl"></div></li>
+<li>这个div视图和名称叫做demoCtrl的控制器关联起来</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>数据模型 model</p>
+<ul>
+<li>$scope 就是我们的数据模型，用来存储要展示的数据的</li>
+<li>控制器制造请求数据  存储到modal  视图显示Model中的数据</li>
+<li>在视图中直接写$scope的属性就能拿值。</li>
+</ul>
+</li>
+<li><p>ng-repeat 指令</p>
+<ul>
+<li>重复生成指定的标签</li>
+<li>ng-repeat=&quot;item in 数组&quot; 数组有多少个元素，就生成多少个标签</li>
+<li>只要数据发生了变化，那么dom 就会自动的刷新，不需要我们去更新dom</li>
+</ul>
+</li>
+<li>ng-show <ul>
+<li>功能：决定元素是否显示</li>
+<li>取值：boolean值  true:显示  false: 不显示</li>
+<li>取值可以给一个bool值 也可以给一个变量，还可以给一个表达式，无论显示还是不显示，他都存在于DOM树上</li>
+</ul>
+</li>
+<li>ng-hide<ul>
+<li>功能：决定元素隐藏还是不隐藏</li>
+<li>取值：bool 变量  表达式</li>
+</ul>
+</li>
+<li>ng-if<ul>
+<li>功能：决定元素是否创建在DOM上</li>
+<li>取值：bool 变量 表达式</li>
+</ul>
+</li>
+<li>指令的本质是属性，而HTML规范 属性的值都要用双引号 引起来</li>
+<li>ng-src<ul>
+<li>功能：增强图片的路径</li>
+</ul>
+</li>
+<li>ng-href<ul>
+<li>原理同上</li>
+</ul>
+</li>
+<li>ng-class指令<ul>
+<li>功能：决定某一个类样式 是否作用在指定的标签上</li>
+<li>取值：是一个对象 键： 类样式的名称  值：bool  变量  表达式</li>
+</ul>
+</li>
+<li>ng-include指令<ul>
+<li>将外部文件的内容包含到指定的标签下</li>
+<li>路径本身还要用单引号引起来</li>
+<li>包含文件的原理<ul>
+<li>是以ajax的方式请求页面内容并加到dom中</li>
+<li>所以要使用   服务器的形式打开页面</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ng-disabled 指令<ul>
+<li>原生的disable属性是存在歧义的</li>
+<li>true 禁用  false 不禁用</li>
+</ul>
+</li>
+<li><p>ng-checked  ng-selected  ng-readonly </p>
+</li>
+<li><p>ng-switch</p>
+<ul>
+<li><p>功能：对某一个变量的值进行匹配，匹配成功的元素就会被创建</p>
+<pre><code>
+  &lt;div ng-controller=&quot;demoCtrl&quot;&gt;
+  &lt;ul ng-switch=&quot;lesson&quot;&gt;
+      &lt;li ng-switch-when=&quot;html&quot;&gt;html&lt;/li&gt;
+      &lt;li ng-switch-when=&quot;js&quot;&gt;js&lt;/li&gt;
+      &lt;li ng-switch-when=&quot;javascript&quot;&gt;javascript&lt;/li&gt;
+      &lt;li ng-switch-when=&quot;java&quot;&gt;java&lt;/li&gt;
+      &lt;li ng-switch-default&gt;没有&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;/div&gt;
+</code></pre><h2 id="-">双大括号的使用</h2>
+</li>
+</ul>
+</li>
+<li>在视图中使用$scope数据模型中的数据<ul>
+<li>当使用数据的地方是html原生的地方的时候，就必须要加{{}}</li>
+<li>当使用数据的地方是angular指令的地方， 直接使用变量</li>
+<li>ng-src除外 在其中使用$scope数据的时候需要加{{}}<h2 id="-">数据的单向绑定</h2>
+</li>
+</ul>
+</li>
+<li>1.将控制器中制造好的数据存储到$scope数据模型中，在视图中显示$scope中的数据 这个过程就叫做数据的单向绑定</li>
+<li>2.数据绑定符号{{}}<ul>
+<li>{{}}符号其实是ng-bind的简写形式</li>
+<li>ng-bind指令：在视图中绑定显示的数据</li>
+</ul>
+</li>
+<li>闪烁原因<ul>
+<li>浏览器在解析的时候，变量的值还没有确定，就会把{{xxx}}作为innerText显示</li>
+<li>解决方案：<ul>
+<li>1.使用ng-bing指令</li>
+<li>2.使用ng-cloak指令<ul>
+<li>会将ng-cloak标签先隐藏，当值确定了以后再显示出来</li>
+</ul>
+</li>
+<li>3.将script标签放在最上面 <h2 id="-">数据的双向绑定</h2>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ng-model指令<ul>
+<li>它只能写在表单元素身上，可以在其中声明一个变量</li>
+<li>使用ng-model声明的变量的特殊的地方<ul>
+<li>表单元素的值发生了变化，那么这个变量的值也会跟着一起变化</li>
+<li>使用ng-model声明的变量，相当于声明在$scope中的</li>
+<li>所以，在控制器中使用$scope.xxx也可以拿到这个变量</li>
+<li>如果这个变量的值发生了变化，那么这个表单元素的值也会跟着一起发生变化</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ng-init指令<ul>
+<li>功能：初始化变量</li>
+<li>一般情况下 变量的值都是后台请求过来的，ng-init只适合初始化一些简单的数据ng-init=&quot;name=&#39;jack&#39;&quot;</li>
+<li>一般的数据初始化工作 我们还是放在控制器中<h2 id="angularjs-">angularJS的事件处理</h2>
+</li>
+</ul>
+</li>
+<li>原生js绑定事件 --全局污染</li>
+<li>ng是以指令的方式来绑定事件的</li>
+<li>把原生js的on 替换为ng- 就行 这就是指令的名称<ul>
+<li>ng-click  ng-mouseover  ng-mouseout</li>
+<li>指令的值写一个函数调用   ng-click=demo();</li>
+<li>这个方法定义在控制器$scope中<h2 id="-">自定义指令</h2>
+</li>
+</ul>
+</li>
+<li>模块对象提供了一个方法 directive<ul>
+<li>app.directive<ul>
+<li>功能自定义指令</li>
+<li>参数1 属性名称</li>
+<li>参数2 回调函数 这个回调函数要求返回一个对象 自定义的指令要通过这个对象的键值对来指定</li>
+<li>restrict:指定自定义指令的类型<ul>
+<li>E Element 标签</li>
+<li>A Attr    属性</li>
+<li>C Class   类</li>
+<li>M Mark    注释</li>
+<li>template  模板 会将其放到自定义的指令的里面作为子元素</li>
+<li>replace  boolean值 是否替换为自定义的指令标签</li>
+<li>templateUrl  外部文件作为模板</li>
+<li>link 是一个函数 ，有3个参数 <ul>
+<li>1.scope</li>
+<li>2.element 代表被设定了指令的元素。直接被ng封为了一个jqlite对象（轻量级jquery）</li>
+<li>attrs 可以拿到被设定了指令的元素的所有的属性名和属性值</li>
+<li>注意 自定义指令名称不能按照 驼峰命名法名 例如 定义了liTi--&gt;在视图中使用要拆分为 li-ti<h3 id="jqlite">jqlite</h3>
+<ul>
+<li>angular全局对象有一个方法叫做element 可以将一个原生的dom对象转换为一个&#39;jq&#39;对象 如果页面上我们引入了jq库，那么返回的对象就是一个完整的jq对象</li>
+<li>如果页面上没有引入jq库 ，那么返回的就是一个jqlite对象</li>
+<li>jqlite 对象是jquery对象的一个子集 一个轻量级的版本 jqlite 只提供jquery最常用的方法</li>
+<li>在引入jq 的时候， 要放在ng的前面引入<h3 id="ng-repeat">ng-repeat</h3>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>遍历对象<ul>
+<li>ng-repeat=&quot;item in person&quot;   这样的话，item就代表对象的每一个属性的值</li>
+<li>ng-repeat=&quot;(key,value) in person&quot; key 每一个键 ，value 每一个值</li>
+</ul>
+</li>
+<li>使用ng-repeat来遍历数组的时候<ul>
+<li>如果数组中的元素有重复，那么会遍历失败</li>
+<li>ng底层会给数组的每一个元素自动起一个标示 并且这个标示不允许重复 默认会将数组元素的值最为每一个元素的标识</li>
+<li>我们可以自定义每一个元素的标示 $index 是 ng预先定义好的变量代表每一个元素的下标  ng-repeat=&quot;item in arr track by $index&quot;<h3 id="angularjs-">AngularJs 的作用域</h3>
+</li>
+</ul>
+</li>
+<li>页面上可以有多组MVC<ul>
+<li>相互独立的控制器/视图 他们的$scope 也是独立的，并且$scope中的数据只能在与控制器相关的视图中才可以访问</li>
+<li>视图之间是可以相互嵌套的  这个时候，子视图可以访问俯视图中的数据<h3 id="-">过滤器</h3>
+</li>
+</ul>
+</li>
+<li><p>过滤器指对数据进行过滤，通常讲的过滤器是用在视图中的，对原本显示在视图中的数据进行过滤然后再显示</p>
+<ul>
+<li><p>过滤器的使用 </p>
+<ul>
+<li>{{原本要显示的数据|过滤器名称：参数：参数}}</li>
+<li>currency 货币过滤器 功能对货币进行过滤<ul>
+<li>{{price|currency}} 默认在前面显示一个$符号</li>
+<li>{{price|currency:&quot;￥&quot;}} 自定义货币符号</li>
+<li>{{price|currency:&quot;￥&quot;:2} 自定义保留小数的位数</li>
+</ul>
+</li>
+<li>date过滤器  对日期进行过滤<ul>
+<li>{{time|date}} 默认格式是美国格式</li>
+<li>{{time|date:&quot;yy-MM-dd HH:mm:ss&quot;}} <ul>
+<li>自定义的时间格式</li>
+<li>H: 24小时制的时间格式</li>
+<li>h: 12小时制的时间格式</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>uppercase  小写转大写</li>
+<li><p>lowercase  大写转小写</p>
+</li>
+<li><p>limitTo 过滤器</p>
+<ul>
+<li>截取数组/字符串中指定位数的元素</li>
+<li>{{arr|limitTo:n}}<ul>
+<li>n是一个正数的话，就显示前面n个</li>
+<li>n是 一个负数的话 就显示后面n个</li>
+</ul>
+</li>
+<li>{{arr|limitTo:n:m}}<ul>
+<li>当n是正数的时候 从m个元素往后显示n个</li>
+<li>负数 从m 个元素往前显示n个</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>number过滤器</p>
+<ul>
+<li>可以对数字进行指定位数的保留</li>
+<li>{{num|number:2}} </li>
+</ul>
+</li>
+<li>json 过滤器<ul>
+<li>将一个对象转化为json字符串显示</li>
+<li>{{person|json}}<ul>
+<li>当我们显示一个对象的时候 如果没有调用json过滤器，ng会自动帮助我们调用这个过滤器</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>orderBy 过滤器<ul>
+<li>对数组中的元素进行排序</li>
+<li>{{stus|orderBy:&#39;age&#39;}}<ul>
+<li>对数组中的对象以age的属性排序 默认是升序</li>
+</ul>
+</li>
+<li>{{stus|orderBy:&quot;age&quot;:true}}<ul>
+<li>自定义降序 true 降序 false 升序</li>
+</ul>
+</li>
+<li>如果是一个基本数据类型的数组<ul>
+<li>{{arr|orderBy}} 默认升序</li>
+<li>{{arr| orderBy:null:true}} 指定降序</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>filter过滤器 是包含不是相等</p>
+<ul>
+<li>从数组中筛选符合条件的元素<ul>
+<li>{{stus|filter:{age:16,gender:&#39;男&#39;} 这里要有一个空格}}  </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>自定义过滤器</p>
+<ul>
+<li>模块对象提供了一个filter方法 </li>
+<li>允许我们自定义过滤器</li>
+<li>参数1 自定义过滤器的名称</li>
+<li>参数2 是一个回调函数<ul>
+<li>这个回调函数要求返回一个函数<ul>
+<li>返回的这个函数在过滤器被调用的时候会被自动执行，这个返回的函数至少有一个参数data <ul>
+<li>代表原本要显示的数据</li>
+<li>函数内部对原本要显示的数据按照我们自己的业务逻辑进行处理</li>
+<li>将处理后的数据返回，将返回的数据显示<h3 id="-">依赖注入</h3>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>angularJS内部提供了很多服务 <ul>
+<li>服务jiushi就是一个功能相对独立的模块</li>
+<li>每一个服务提供一类功能</li>
+<li>但是默认情况下下 在控制器中我们是不能直接用这些服务的<ul>
+<li>例如 控制器必须使用$scope这个服务来完成功能 否则就完成不了</li>
+<li>我们就说，控制器依赖于$scope 服务</li>
+<li>就将$scope 注入到控制器中</li>
+</ul>
+</li>
+<li>行内式注入<ul>
+<li>创建控制器的时候，第二个参数是一个数组</li>
+<li>数组前面的元素写上要注入到控制器的名称 最后一个参数是一个回调函数<ul>
+<li>这个参数写上形参 服务通过形参按照顺序注入</li>
+</ul>
+</li>
+<li>注意<ul>
+<li>前面的元素的服务的名称必须保证已经存在</li>
+<li>形参的名字可以随意 但是建议和服务的名字保持一致</li>
+<li>注入是按照顺序注入的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>推断式注入<ul>
+<li>第二个参数不需要写数组 不需要指定什么服务要注入</li>
+<li>只需要将注入的服务写成形参</li>
+<li>要求形参的名字必须要和服务的名字保持一致</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>ng内置的服务 一般是一个对象或者一个函数</p>
+<ul>
+<li>$log服务<ul>
+<li>是一个对象</li>
+<li>输出个性化的控制信息</li>
+</ul>
+</li>
+<li>$timeout服务<ul>
+<li>函数</li>
+<li>在指定的时间之后做指定的事情</li>
+<li>参数1 回调</li>
+<li>参数2 时间</li>
+<li>停止 $timeout.cancel(id);</li>
+</ul>
+</li>
+<li>$interval 服务<ul>
+<li>函数</li>
+<li>每隔指定的时间就做一次指定的时间</li>
+<li>参数1 回调</li>
+<li>参数2 时间间隔</li>
+</ul>
+</li>
+<li>$filter 服务<ul>
+<li>$filter服务是一个用在控制器中的过滤器</li>
+<li>这是一个函数</li>
+<li>参数写上过滤器的名称</li>
+<li>返回一个函数 这个函数就具备guolvq过滤器名称的功能</li>
+</ul>
+</li>
+<li><p>自定义服务</p>
+<ul>
+<li>模块对象提供了一个方法 叫做factory</li>
+<li>功能 允许我们自定义一个服务</li>
+<li>参数1 自定义服务的名称</li>
+<li>参数2 是一个数组，数组前面写上自定义服务需要依赖的别的服务的名称<ul>
+<li>最后一个元素 是一个回调函数</li>
+<li>通过形参将需要依赖的服务注入</li>
+<li>如果不需要以赖别的服务 数组中直接写一个回调就行</li>
+<li>当自定义服务被注入的时候，这个回调函数就会被执行，要求这个回调函数返回一个对象或者函数。这个服务就是回调函数返回的对象或者函数</li>
+</ul>
+</li>
+<li><p>模块对象提供了一个方法：service </p>
+<ul>
+<li>功能：允许我们自定义一个服务。</li>
+<li>参数1：自定义服务的名称</li>
+<li><p>参数2： 是一个数组，数组的前面写上自定义服务需要依赖的别的服务的名称</p>
+<ul>
+<li>最后一个元素是一个回调函数</li>
+<li>通过形参将需要 依赖的服务注入</li>
+<li><p>如果不需要依赖别的服务 数组直接写一个回调函数就行，</p>
+</li>
+<li><p>使用service 方法自定义服务的时候，不需要手动的return任何数据</p>
+</li>
+<li>直接使用 this 关键字网当前对象 上家成员就可以，service方法会自动将对象返回</li>
+<li><p>service 方法只能返回对象 factory方法可以返回对象也可以返回函数</p>
+<p>```html</p>
+<pre><code>  &lt;body&gt;
+      &lt;div ng-controller=&quot;democtrl&quot;&gt;
+          {{date}}
+          &lt;br&gt;
+          {{date1}}
+      &lt;/div&gt;
+  &lt;/body&gt;
+  &lt;script&gt;
+      var app=angular.module(&quot;hmapp&quot;,[]);
+      app.factory(&quot;cDate&quot;,[&quot;$filter&quot;,function($filter){
+          return{
+              now:function(){
+                      //返回一个var date=filter(&quot;date&quot;) 具有date过滤器功能的函数 
+                  return $filter(&quot;date&quot;)(new Date(),&quot;yyyy-MM-dd HH:mm:ss&quot;);
+</code></pre></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>                                },
+                                format:function(format){  //自己传入参数改成自己想要的格式
+                                    return $filter(&quot;date&quot;)(new Date(),format)
+                                }
+                            }
+                        }]);
+
+                        app.service(&quot;test&quot;,function($filter){
+                            this.now=function(){
+                                return $filter(&quot;date&quot;)(new Date(),&quot;yyyy-MM-dd HH:mm:ss&quot;)
+                            },
+                            this.format=function(format){
+                                return $filter(&quot;date&quot;)(new Date(),format)
+                            }
+                        })
+                        app.controller(&quot;democtrl&quot;,[&quot;$scope&quot;,&quot;cDate&quot;,&quot;test&quot;,function($scope,cDate,test){
+                        console.log( cDate.now());
+                        $scope.date=cDate.now();
+                        console.log(test);
+                        $scope.date1=test.now();
+                        }]);
+</code></pre><p></script></p>
+<pre><code>            ```
+</code></pre><h3 id="ng-">ng执行步骤</h3>
+<ul>
+<li><ul>
+<li>浏览器解析dom树 不认识的指令标签略过</li>
+<li>当解析到angualr.js的时候 执行ng脚本</li>
+<li>ng会监测到一个事件 DOMContentLoaded事件（和jq的ready） ng就开始工作了</li>
+<li>查找模块依赖项  我们在创建模块的时候，将我们依赖的模块加载进来</li>
+<li>寻找ng-app 确定哪一段代码是ng 需要管理的。</li>
+<li>初始化必要的组件 创建内部需要用到的一些对象 变量   $rootScope 根作用于</li>
+<li>配置和运行  允许我们写代码来干涉这一步 我们可以写代码在这一步执行 修改ng的默认配置，影响ng的执行效果</li>
+<li>ng 开始解析dom树 ng-app 指定的dom树</li>
+<li>遍历dom树 搜集ng指令</li>
+<li>执行命令对应的回调和link函数</li>
+<li>最终生成一个视图</li>
+<li>使用一个死循环 监视视图的事件触发<h3 id="-">配置块</h3>
+</li>
+</ul>
+</li>
+<li><p>在配置运行阶段 ng允许我们对ng内置的一些服务做一些修改 来达到影响ng执行效果的一个方式</p>
+<ul>
+<li>可以对angularjs内置的一些服务 进行修改</li>
+<li>比如 $log服务 ，可以让其中的debug方法失效</li>
+<li><p>2.如何针对服务进行配置</p>
+<ul>
+<li>模块对象提供了一个方法：config</li>
+<li>功能： 就是对内置的服务进行修改 对内置的服务进行配置</li>
+<li><p>参数：是一个数组</p>
+<ul>
+<li>数组前面写上你要配置的服务对应的Provider <ul>
+<li>$log   $logProvider</li>
+<li>$http  $httpProvider</li>
+<li>每一个服务都有一个对应的provider</li>
+<li>最后一个元素是一个回调函数</li>
+<li>通过形参将这个provider注入</li>
+<li>这个provider是个什么东西<ul>
+<li>provider中提供了一些方法对服务进行修改 如果你要修改服务的话，就调用provider中的方法就行。</li>
+<li>对服务能进行到哪一种程度的修改，完全取决于provider提供了那些修改的方法</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>配置$filter服务 新增一个过滤器 </p>
+<pre><code class="lang-html">
+      &lt;div ng-controller=&quot;demoCtrl&quot;&gt;
+          {{msg|firstBig}}
+      &lt;/div&gt;
+
+      &lt;script&gt;
+          var app = angular.module(&quot;hmApp&quot;,[]);
+
+          app.config([&quot;$logProvider&quot;,&quot;$filterProvider&quot;,function($logProvider,$filterProvider){
+              //决定$log服务中的debug方法是否生效.
+              $logProvider.debugEnabled(false);
+              //新注册1个过滤器. 新增1个过滤器.
+              $filterProvider.register(&quot;firstBig&quot;,function(){
+                  return function(data){
+                      return data[0].toUpperCase()+data.slice(1);
+                  }
+              });
+
+          }]);
+
+          // app.config([&quot;$filterProvider&quot;,function($filterProvider){
+
+          // }]);
+
+          app.controller(&quot;demoCtrl&quot;,[&quot;$scope&quot;,&quot;$log&quot;,function($scope,$log){
+              $log.debug(&quot;这是debug信息&quot;);
+              $log.error(&quot;error!&quot;);
+              $scope.msg = &quot;hello&quot;;
+          }]);
+      &lt;/script&gt;
+</code></pre>
+</li>
+<li><p>配置跨域白名单</p>
+<pre><code class="lang-js">       var app=angular.module(&quot;hmapp&quot;,[]);
+          app.config([&quot;$sceDelegateProvider&quot;,function($sceDelegateProvider){
+              $sceDelegateProvider.resourceUrlWhitelist([&quot;http://www.baidu.com&quot;]);
+          }]);
+          app.controller(&quot;democtrl&quot;,[&quot;$scope&quot;,function($scope){
+
+          }]);
+</code></pre>
+<h3 id="-">运行块</h3>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ng内置的服务，如果我们想要使用$http<ul>
+<li>创建控制器 关联视图注入 才可以使用 服务的使用必须依赖于控制器</li>
+<li>运行块 ：让服务脱离控制器</li>
+<li>2.模块对象提供了一个方法 叫做run 能够直接使用服务，而不依赖于控制器<ul>
+<li>参数：数组<ul>
+<li>前面写上要使用服务的名称，后面一个回调通过形参注入</li>
+</ul>
+</li>
+<li>run 方法的作用<ul>
+<li>直接在run方法中使用服务，不需要去创建视图/控制器 注入..</li>
+</ul>
+</li>
+<li>$scope服务不能脱离控制器/视图单独使用</li>
+<li>$rootScope:根作用域<ul>
+<li>存储到这个作用域的数据，在任意的视图中都可以访问。</li>
+</ul>
+</li>
+<li>作用域链：<ul>
+<li>先找自己的scope  再找俯视图的 $rootScope</li>
+<li>如果你希望有一个数据是全局的。所有的视图/控制器中都能访问，就存储在￥rootScope中<h3 id="-">锚链接</h3>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>超链接 可以跳转到页面的其他地方  href=#元素的id<ul>
+<li>当我们点击锚链接的时候 ，浏览器地址栏的url发生了变化</li>
+<li>在原本的url后面加上了锚点值 index.html#top</li>
+<li>当地址栏的url发生锚点变化的时候 浏览器不会像服务器发起请求 跳转行为是浏览器自己跳转的<h3 id="spa">SPA</h3>
+</li>
+</ul>
+</li>
+<li>单页面应用<ul>
+<li>一个网站 只有一个页面，所有的功能都是通过ajax来实现刷新切换的，或者一个页面中集成了大多数的功能，不同的功能模块通过ajax来实现刷新切换</li>
+<li>把ajax的无刷新机制发挥到极值，因此能造就与桌面程序媲美的流畅用户体验</li>
+<li>SPA最大的特点：用户体验极好。</li>
+<li>SPA最大的缺点：seo不好做。</li>
+</ul>
+</li>
+<li>通过window.location.hash 可以拿到当前地址栏上的锚点值</li>
+<li>window 对象有一个事件onhashchange  这个事件在url地址栏的锚点值发生变化的时候触发。</li>
+</ul>
+<h3 id="-">路由</h3>
+<ul>
+<li><p>单页面应用的原理</p>
+<ul>
+<li>通过hashchange事件监听到锚点的变化</li>
+<li>进而可以实现不同锚点显示不同的视图，单页面应用就是基于这一原理实现的。</li>
+<li>angularJS中的路由：就是基于这一原理实现的</li>
+<li>在angular1.2这个版本之前 路由的功能直接存放在ng核心代码中，在1.2之后。他将路由单独作为一个插件，所以要先下载这个路由插件</li>
+<li>使用路由的步骤<ul>
+<li>将这个路由插件引入</li>
+<li>创建模块的时候要依赖于ngRoute模块 因为和路由相关的所有功能，全写在这个模块中，你必须要依赖于他，否则无法使用。</li>
+<li>配置路由 设定规则 当url的锚点发生变化的时候，要怎么做。默认情况下，angularJS路由中的锚点连接的值必须以#！开头。</li>
+<li>在使用when方法匹配的时候，前面的#！不必写</li>
+<li>templateUrl 表示匹配成功的时候 请求指定的资源</li>
+<li>将请求回来的资源放在ng-view下面。</li>
+</ul>
+</li>
+<li><p>使用$routeProvider进行路由规则配置 </p>
+<ul>
+<li><p>when方法：设定当路由匹配成功以后，要做的事情</p>
+<pre><code>  when(&quot;路由&quot;,{
+
+  })
+</code></pre></li>
+<li>当匹配成功后，要做的事通过第二个参数对象来指定。</li>
+<li>第二个参数 对象： templateUrl:&quot;&quot; 资源路径<ul>
+<li>redirectTo 跳转路由<ul>
+<li>redirectTo:&quot;/home&quot;   当路由匹配成功以后，修改路由为&quot;/home&quot;</li>
+</ul>
+</li>
+<li>template:&quot;&quot;  直接写一段要执行的模板</li>
+<li>controller:&quot;&quot; 值是控制器的名称<ul>
+<li>会将请求回来的视图与这个控制器进行关联 ，这样的话，就可以在控制器中制造数据 存储到$scope中 视图中就可以访问。</li>
+<li>这个控制器的代码，是在视图加载到ng-view里面的时候才被执行，加载一次，执行一次。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>otherwise方法 当所有的路由规则 都不匹配的时候，做的事情</li>
+<li>&quot;/&quot; 代表空路由</li>
+</ul>
+</li>
+<li><p>路由参数</p>
+<ul>
+<li>路由的后面可以跟Query String类型的参数<pre><code class="lang-html">  &lt;a href=&quot;#/my?name=jack&amp;age=18&quot;&gt;我的音乐&lt;/a&gt;
+</code></pre>
+</li>
+<li>如果路由后面跟了QUeryString类型的参数，是不影响路由的匹配的</li>
+<li>需要注意的是： 当路由成功匹配以后，ng的路由机制回去请求my.html的资源回来放到ng-view中，并不会主动的将参数发给服务器，</li>
+<li><p>这个参数在与请求回来的视图相关联的控制器中可以拿到</p>
+<pre><code>
+  &lt;body ng-app=&quot;hmapp&quot;&gt;
+      &lt;header&gt;
+          &lt;nav&gt;
+              &lt;a href=&quot;#/home&quot;&gt;首页&lt;/a&gt;
+              &lt;a href=&quot;#/my?name=jack&amp;age=18&quot;&gt;我的音乐&lt;/a&gt;
+              &lt;a href=&quot;#/find&quot;&gt;发现音乐&lt;/a&gt;
+          &lt;/nav&gt;
+      &lt;/header&gt;
+      &lt;section ng-view&gt;&lt;/section&gt;
+  &lt;/body&gt;
+  &lt;script&gt;
+      var app=angular.module(&quot;hmapp&quot;,[&quot;ngRoute&quot;]);
+      app.config([&quot;$locationProvider&quot;,function($locationProvider){
+          $locationProvider.hashPrefix(&quot;&quot;);
+      }]);
+      app.config([&quot;$routeProvider&quot;,function($routeProvider){
+          $routeProvider.when(&quot;/&quot;,{
+              redirectTo:&quot;/home&quot;
+          }).when(&quot;/home&quot;,{
+              templateUrl:&quot;./music/home.html&quot;
+          }).when(&quot;/my&quot;,{
+              templateUrl:&quot;./music/my.html&quot;,
+              controller:&quot;myCtrl&quot;
+          }).when(&quot;/find&quot;,{
+              templateUrl:&quot;./music/find.html&quot;
+          }).otherwise({
+              templateUrl:&quot;./music/404.html&quot;
+          })
+      }]);
+      app.controller(&quot;myCtrl&quot;,[&quot;$scope&quot;,&quot;$routeParams&quot;,function($scope,$routeParams){
+          console.log($routeParams); //可以拿到{name:&quot;jack&quot;,age:&quot;18&quot;}
+      }])
+  &lt;/script&gt;
+</code></pre><h3 id="-http-ajax-">注意$http 以及ajax请求路径不能有中文 最好</h3>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="-">路由参数的另外一种形式</h3>
+<ul>
+<li><p>路由参数的另外一种形式</p>
+<ul>
+<li>首先，参数名是写在when方法的路由规则中</li>
+<li>when(&quot;/路由/:参数1/:参数2&quot;)    路由前面的“/” 不能少  否则匹配不到 </li>
+<li><p>锚点值 想要匹配的这个路由</p>
+<ul>
+<li>href=&quot;#/路由/参数值&quot;</li>
+<li><p>在匹配的时候，前面的要一样，后面不需要有数据 是什么无所谓</p>
+<pre><code>
+  &lt;body ng-app=&quot;hmapp&quot;&gt;
+      &lt;div class=&quot;music&quot;&gt;
+          &lt;nav&gt;
+              &lt;a href=&quot;#list/1&quot;&gt;流行&lt;/a&gt;
+              &lt;a href=&quot;#list/2&quot;&gt;古典&lt;/a&gt;
+              &lt;a href=&quot;#list/3&quot;&gt;日韩&lt;/a&gt;
+              &lt;a href=&quot;#list/4&quot;&gt;摇滚&lt;/a&gt;
+          &lt;/nav&gt;
+      &lt;/div&gt;
+      &lt;ol ng-view&gt;
+
+      &lt;/ol&gt;
+  &lt;/body&gt;
+  &lt;script&gt;
+      var app=angular.module(&quot;hmapp&quot;,[&quot;ngRoute&quot;]);
+      app.config([&quot;$locationProvider&quot;,function($locationProvider){
+          $locationProvider.hashPrefix(&quot;&quot;);
+      }]);
+      app.config([&quot;$routeProvider&quot;,function($routeProvider){
+          $routeProvider.when(&quot;/list/:type?&quot;,{
+              templateUrl:&quot;./views/list.html&quot;,
+              controller:&quot;listctrl&quot;
+          }).when(&quot;/&quot;,{
+              redirectTo:&quot;/list/1&quot;
+          })
+      }]);
+      app.controller(&quot;listctrl&quot;,[&quot;$scope&quot;,&quot;$routeParams&quot;,&quot;$http&quot;,function($scope,$routeParams,$http){
+          console.log($routeParams);
+          $http({
+              url:&quot;./php/list.php&quot;,
+              params:{
+                  type:$routeParams.type||&quot;1&quot;
+              }
+          }).then(function(response){
+              console.log(response.data);
+              $scope.songs=response.data;
+          })
+      }])
+</code></pre><h3 id="npm-">npm的使用</h3>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>LTS ：long term support  这个版本会长期维护<ul>
+<li>npm -v 查看npm的版本</li>
+<li>使用 npm下载插件<ul>
+<li>1.初始化项目 npm init 会生成一个package.json的文件，保存项目信息。</li>
+<li>2.下载插件  npm install 插件名称 ，这个时候，就会在项目目录中生成一个node_modules文件夹，将下载的插件以目录的形式存储其中 默认会下最新版本</li>
+<li>3 删除插件  npm uninstall 插件名 </li>
+<li>4 下载指定版本的插件 npm install 插件名@版本号</li>
+<li>5 下载的插件时候，可以给1个参数 --save   会在package.json文件中记录下载插件的信息</li>
+<li>6 可以根据package.json 初始化仓库 下载所有的插件<h3 id="bower-">Bower的使用</h3>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>像npm一样，也是一个插件平台，通过Bower可以下载常用的第三方的库 包 插件<ul>
+<li>bower 依赖于git</li>
+<li>使用 npm来安装bower</li>
+<li>npm install bower -g</li>
+<li>bower的使用<ul>
+<li>项目的初始化 bower init 生成一个 bower.json 的文件</li>
+<li>下载插件 bower install 插件名 会在项目的根目录生成一个bower_components目录</li>
+<li>删除 bower uninstall 插件名</li>
+<li>下载指定版本的插件  bower install 插件名#版本号</li>
+<li>--save 的参数 保存插件信息</li>
+<li>bower的特点<ul>
+<li>可以自定义存储第三方库的文件夹的名字</li>
+<li>具有依赖关系的包会跟着一起下载下来</li>
+<li>删除一个被依赖的包的时候 会提示确认</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="brower-sync">brower-sync</h3>
+<ul>
+<li>小型的web服务器，当源文件的内容发生改变以后，浏览器会自动刷新</li>
+<li>安装： npm install brower-sync -g</li>
+<li>启动web服务器，并监视指定的文件  <ul>
+<li>brower-sync start --server --files &quot;监视文件的路径&quot;<h3 id="angular-">angular的模块化</h3>
+</li>
+</ul>
+</li>
+<li>angular是以模块化的方式来构建 应用的，<ul>
+<li>主模块：模块的名字和ng-app的值一致，这样的模块就叫做主模块，写在主模块中的代码直接就会生效</li>
+<li>从模块： 模块的名字和ng-app的值不一致，这样的模块就叫做从模块 写在从模块中的代码，就算你讲其js文件引入，也不会其作用</li>
+<li>只有当我们的主模块依赖从模块以后，写在从模块中的代码才会起作用<h3 id="gulp-">gulp的使用</h3>
+</li>
+</ul>
+</li>
+<li><p>gulp基于流的自动化构建工具</p>
+<ul>
+<li><p>项目的构建</p>
+<ul>
+<li>代码压缩</li>
+<li>代码的混淆</li>
+<li>文件的合并</li>
+<li>图片的压缩</li>
+<li>目的 ：减少代码的体积，提高网站的访问效率</li>
+<li><p>gulp 的安装 npm install gulp -g</p>
+<ul>
+<li>g 全局安装 会将软件装在系统目录中，这个软件就可以直接在cmd中使用</li>
+<li>不带参数-g 会将插件装在当前的目录中 node_modules</li>
+<li>gulp -v 查看gulp 版本</li>
+<li>gulp 全局安装后 还需要在项目中本地安装</li>
+</ul>
+</li>
+<li><p>如何使用gulp做项目构建</p>
+<ul>
+<li><p>在项目根目录中 新建一个 gulpfile.js 文件，在这个项目中写上项目构建的代码</p>
+<ul>
+<li>将gulp这个模块引进来，引入进来使用 这个gulp对象就可以来做项目构建工作</li>
+<li>var gulp=require(&quot;gulp&quot;);</li>
+<li>gulp 是以任务的形式来完成每一个工作的，我们想要gulp完成一件事情，那么就需要给gulp创建一个任务的,gulp对象的task方法是来创建一个任务的<ul>
+<li>参数1 任务的名字</li>
+<li>参数2 回调函数 这个任务要做的事情
+gulp.task(&quot;test&quot;,function(){
+  .....
+})</li>
+</ul>
+</li>
+<li>如何执行任务？<ul>
+<li>使用cmd 进入到项目根目录</li>
+<li>使用命令： gulp 任务名称</li>
+</ul>
+</li>
+<li>使用gulp压缩css代码<ul>
+<li>gulp是以管道流的形式来处理文件的</li>
+<li>gulp 本身没有这个压缩 css的关卡</li>
+<li>各种关卡 是以插件的形式存在的</li>
+<li>通过链式编程来讲哥哥关卡连接起来</li>
+<li>gulp-cssmin 这是一个管道压缩css的插件</li>
+<li>1.进入到项目文件夹根目录安装npm install gulp-cssmin</li>
+<li>2.需要在文件上部将gulp-cssmin导入<ul>
+<li>var cssmin=require(&quot;gulp-cssmin&quot;);<pre><code>gulp.task(&quot;yscss&quot;,function(){
+  gulp.src(&quot;./src/css/a.css&quot;)
+  .pipe(cssmin())
+  .pipe(gulp.dest(&quot;./dist&quot;)) ;设置存储文件的路径
+})
+</code></pre></li>
+</ul>
+</li>
+<li>3 执行任务 gulp yscss</li>
+</ul>
+</li>
+<li><p>文件监视</p>
+<ul>
+<li>gulp可以监视文件，如果文件的内容发生了变化。就可以自动执行指定的任务。</li>
+<li>gulp.task(&quot;watchcss&quot;,function(){
+  gulp.watch(&quot;./src../a.css&quot;,[&quot;yscss&quot;]);
+});</li>
+</ul>
+</li>
+<li><p>压缩js</p>
+<ul>
+<li>1.安装npm install gulp-uglify到项目文件中</li>
+<li>2.将gulp-uglify导入  var uglify=require(&quot;gulp-uglify&quot;);<ul>
+<li>会压缩和混淆代码</li>
+<li>要同时处理多个文件 src方法的参数可以是一个数组，指定多个需要处理的文件的路径</li>
+<li>待处理的文件的路径可以使用通配符<ul>
+<li>&quot;./src/*.js&quot; 代表src目录下的直接的所有的js文件，不包括子目录中的js文件</li>
+<li>&quot;./src/<em>*/</em>.js&quot; 代表src任意子目录下的所有的js文件</li>
+<li>排除文件：[&quot;./src/<em>*/</em>.js&quot;,&quot;!./src/js/free,min.js&quot;]<pre><code>gulp.task(&quot;ysjs&quot;,function(){
+  gulp.src([&quot;./src/**/*.js&quot;,&quot;!./src/assets/js/prefixfree.min.js&quot;])
+  .pipe(uglify())
+  .pipe(gulp.dest(&quot;./dist&quot;));
+})
+</code></pre></li>
+</ul>
+</li>
+<li>3 执行任务 gulp ysjs</li>
+</ul>
+</li>
+<li>文件合并<ul>
+<li>1.安装 npm install gulp-concat</li>
+<li>2.将gulp-concat导入  var hebing=require(&quot;gulp-concat&quot;);<pre><code>  gulp.task(&quot;hebing&quot;,function(){
+      gulp.src([&quot;./src/**/*.js&quot;,&quot;!./src/assets/js/prefixfree.min.js&quot;])
+      .pipe(concat(&quot;all.js&quot;)) //合并后的名字
+      .pipe(uglify())
+      .pipe(gulp.dest(&quot;./dist&quot;));
+  })
+</code></pre></li>
+<li>3.执行任务 gulp hebing</li>
+</ul>
+</li>
+<li><p>gulp 压缩html文件</p>
+<ul>
+<li>1.安装npm install gulp-htmlmin</li>
+<li>2.将gulp-htmlmin导入  var htmlmin=reqquire(&quot;gulp-htmlmin&quot;);<pre><code>  gulp.task(&quot;yshtml&quot;,function(){
+      gulp.src(&quot;./src/**/*.html&quot;)
+      .pipe(htmlmin({
+          removeComments:true,// 清除html注释
+          collapseWhitespace:true  //压缩html
+      }))
+      .pipe(gulp.dest(&quot;./dist&quot;));
+  })
+</code></pre></li>
+<li>3.cmd执行 gulp yshtml</li>
+</ul>
+</li>
+<li><p>gulp 压缩图片</p>
+<ul>
+<li>1.安装 npm install gulp-imagemin</li>
+<li>2.导入 var imagemin=require(&quot;gulp-imagemin&quot;);<pre><code>  gulp.task(&quot;ystp&quot;,function(){
+      gulp.src(&quot;./src/..img/*.*&quot;)
+      .pipe(imagemin())
+      .pipe(gulp.dest(&quot;./dist&quot;));
+  })
+</code></pre></li>
+<li>3.cmd执行 gulp ystp<h3 id="iframe-">iframe标签</h3>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>伪单页应用 一个html页面，可以嵌套在另一个html页面里<pre><code>      &lt;iframe src=&quot;./aa.html&quot;&gt;&lt;/iframe&gt;
+</code></pre></li>
+</ul>
+
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+});
+//-->
+</SCRIPT>
