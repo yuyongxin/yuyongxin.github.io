@@ -1,0 +1,1202 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>i5ting_ztree_toc:ajax知识点总结</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<h1 id="ajax-">ajax工作总结</h1>
+<h3 id="ajax-">ajax原理</h3>
+<ul>
+<li>用在不刷新页面获取数据，用法是：创建异步对象 请求行 请求头 回调函数 请求主题</li>
+<li>请求响应回来之后 会触发 回调函数 ，而我们渲染页面的操作就是写在回调函数中的<h3 id="-ajax">原生ajax</h3>
+</li>
+<li><p>get请求</p>
+<pre><code>  1.创建异步对象 
+  var xhr=new XMLHttpRequest();
+  2.设置请求行（get请求数据写在url后面）
+  xhr.open(&#39;get&#39;,&#39;getData.php?name=rose&amp;skill=swim&#39;);
+  3.设置请求头（get请求可以省略，post不发送数据也可以省略）
+  xhr.setRequestHeader()
+  3.1 注册回调函数
+  xhr.onload=function(){
+      console.log(xhr.responseText);
+      ...修改dom元素
+      ...
+  }
+  4.请求主体发送（get请求为空，或者写null,post请求数据写在这里，如果没有数据，直接为空或者写null）
+  xhr.send(null);
+</code></pre></li>
+<li><p>用户名验证</p>
+<ul>
+<li><p>前端</p>
+<pre><code>      &lt;body&gt;
+      &lt;h2&gt;用户注册&lt;/h2&gt;
+      &lt;h3&gt;状态&lt;/h3&gt;
+      &lt;!--  name属性不是必须的 form表单才是必须的  --&gt;
+      &lt;!-- &lt;input type=&quot;text&quot; name=&#39;userName&#39; placeholder=&quot;请输入用户名&quot;&gt; --&gt;
+      &lt;input type=&quot;text&quot; placeholder=&quot;请输入用户名&quot;&gt;
+      &lt;/body&gt;
+
+      &lt;script&gt;
+      // 什么时候发送请求?
+      document.querySelector(&#39;input&#39;).onblur = function () {
+          // 0.修改页面的提示信息
+          document.querySelector(&#39;h3&#39;).innerHTML = &#39;验证中&#39;;
+          //1.创建对象
+          var xhr = new XMLHttpRequest();
+          //2.设置请求行(get请求数据写在url后面)
+          xhr.open(&#39;get&#39;, &#39;checkName.php?name=&#39;+this.value);
+          //3.设置请求头(get请求可以省略,post不发送数据也可以省略)
+          //3.5注册回调函数
+          xhr.onload = function(){
+          console.log(xhr.responseText);
+          document.querySelector(&#39;h2&#39;).innerHTML = xhr.responseText;
+          // 修改提示信息
+          document.querySelector(&#39;h3&#39;).innerHTML = &#39;验证完毕&#39;;
+          }
+          //4.请求主体发送(get请求为空，或者写null，post请求数据写在这里，如果没有数据，直接为空或者写null)
+          xhr.send(null);
+      }
+      &lt;/script&gt;
+</code></pre></li>
+<li><p>后端</p>
+<pre><code>  &lt;?php 
+  //  接收提交的数据 $_GET
+  $name = $_GET[&#39;name&#39;];
+
+  //   假数据模拟 =&gt;数组
+  $nameArr = array(&#39;jack&#39;,&#39;rose&#39;,&#39;icemountain&#39;,&#39;Robot&#39;);
+  //   判断是否在数组中存在
+  // 参数1 查询的内容
+  // 参数2 去哪个数组查询
+  $result = in_array($name,$nameArr);
+
+  //   返回不同的内容给用户即可
+  if($result == true){
+      echo &#39;很遗憾,已被注册,再选一个吧.o(╯□╰)o&#39;;
+  }else{
+      echo &#39;恭喜你,还没人用呢!!快点注册哦 O(∩_∩)O哈哈~&#39;;
+  } 
+  //     恭喜你可以用
+  //     很遗憾用不了
+  sleep(2);
+  ?&gt;
+</code></pre></li>
+</ul>
+</li>
+<li><p>post请求</p>
+<pre><code>  1.创建异步对象
+  var xhr=new XMLHttpRequest();
+  //2.设置请求行
+  xhr.open(&#39;post&#39;,&quot;postData.php&quot;);
+  3.设置请求头
+  xhr.setRequestHeader(&quot;Content-type&quot;,&quot;application/x-www-form-urlencoded&quot;);
+  // 4.注册回调函数
+  4.xhr.onload=function(){
+      .....   
+  }
+  5.xhr.send(&#39;name = 西兰花&amp;friend = 鸡蛋&#39;);
+</code></pre></li>
+<li><p>设置请求行时，xhr.open(&#39;get&#39;,&#39;xx.php&#39;,false); 参数3 是否使用异步，默认是true,false表示同步，同步：请求响应回来之前，什么事都干不了</p>
+</li>
+<li><p>注册回调函数时的另一种写法</p>
+<pre><code>      xhr.onreadystatechange=function(){
+          // 只有状态码是4时，才去获取数据，
+          if(xhr.readyState==4&amp;xhr.status==200){
+
+          }
+       }
+</code></pre></li>
+</ul>
+<h3 id="-xml-">请求xml文件</h3>
+<ul>
+<li>xml的缺点<ul>
+<li>传输的数据量大，</li>
+<li>解析略微有些复杂</li>
+</ul>
+</li>
+<li>xml文件格式</li>
+</ul>
+<pre><code>    &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+    &lt;root&gt;
+    &lt;name&gt;周林林&lt;/name&gt;
+    &lt;age&gt;18&lt;/age&gt;
+    &lt;skill&gt;唱歌&lt;/skill&gt;
+    &lt;/root&gt;
+</code></pre><ul>
+<li>后端php </li>
+</ul>
+<pre><code>        &lt;?php 
+    // 告诉浏览器 返回的是 xml 编码格式是 utf-8
+    header(&#39;content-type:text/xml;charset=utf-8&#39;);
+    // 接收发送过来的数据
+
+    // 读取 xml
+    // =&gt;哪个分类中 文件分类中找
+    // 参数1 文件的路径名
+    $xmlString = file_get_contents(&#39;data/person.xml&#39;);
+
+    // 返回读取的 xml
+    echo $xmlString;
+    ?&gt;
+</code></pre><ul>
+<li>前端ajax请求</li>
+</ul>
+<pre><code>    //注册回调函数
+    xhr.onreadystatechange=function(){
+        if(xhr.readyState == 4 &amp;&amp; xhr.status == 200){
+            返回的是xml 通过responseText 只能获取到xml文件字符串
+            使用responseXML返回的是文档对象
+                    &lt;root&gt;
+                    &lt;name&gt;周林林&lt;/name&gt;
+                    &lt;age&gt;18&lt;/age&gt;
+                    &lt;skill&gt;唱歌&lt;/skill&gt;
+                    &lt;/root&gt;
+            通过responseXML这个文档对象来解析
+                    var name = xhr.responseXML.querySelector(&#39;name&#39;).innerHTML;
+                    var age = xhr.responseXML.querySelector(&#39;age&#39;).innerHTML;
+                    var skill = xhr.responseXML.querySelector(&#39;skill&#39;).innerHTML;
+        }
+    }
+</code></pre><ul>
+<li><p>例子</p>
+<pre><code>              xhr.onreadystatechange = function () {
+          //4.1判断状态&amp;请求是否成功并使用数据
+          if (xhr.readyState == 4 &amp;&amp; xhr.status == 200) {
+              // console.log(xhr.responseXML);
+              // 解析 XML数据
+              var allHero = xhr.responseXML.querySelectorAll(&#39;hero&#39;);
+              // console.log(allHero);
+
+              // 循环 挨个 取出来
+              // 创建ul
+              var ulDom = document.createElement(&#39;ul&#39;);
+              // 添加到body中
+              document.body.appendChild(ulDom);
+              for (var i = 0; i &lt; allHero.length; i++) {
+              // 当前循环的那个英雄
+              var currentHero = allHero[i];
+              // 路径
+              var icon = currentHero.querySelector(&#39;icon&#39;).innerHTML;
+              // 名字
+              var name = currentHero.querySelector(&#39;name&#39;).innerHTML;
+              console.log(icon + &#39;||&#39; + name);
+              // 创建li
+              var liDom = document.createElement(&#39;li&#39;);
+              liDom.innerHTML = &#39;&lt;img src=&quot;&#39; + icon + &#39;&quot;&gt;--&lt;span&gt;&#39; + name + &#39;&lt;/span&gt;&#39;;
+              // 添加到ul中
+              ulDom.appendChild(liDom);
+              }
+
+          }
+          }
+</code></pre></li>
+</ul>
+<h3 id="-json-">请求JSON数据</h3>
+<ul>
+<li>JSON 是一种数据的格式<ul>
+<li>JSON跟编程语言没有关系</li>
+<li>JSON的载体是字符串</li>
+<li>基本上所有的编程语言都支持JSON</li>
+<li>语法简洁， 基本上所有的编程语言 都提供了对应的方法来解析JSON</li>
+<li>JSON格式的字符串 会变成数组 对象</li>
+</ul>
+</li>
+<li><p>JSON的写法---用来表示对象</p>
+<ul>
+<li>对象使用{}</li>
+<li>属性名 必须使用 &quot;&quot; 包裹</li>
+<li><p>属性值 必须使用 &quot;&quot; 包裹  如果属性值是数值，可以不使用双引号</p>
+<pre><code>  var JSONobject=&#39;{&quot;name&quot;:&quot;zhangsan&quot;,&quot;skill&quot;:&quot;失忆&quot;}&#39;
+</code></pre></li>
+</ul>
+</li>
+<li><p>JSON数据转化为对应的 对象（数组）</p>
+</li>
+</ul>
+<pre><code>         var obj=JSON.parse(JSONobject)
+</code></pre><ul>
+<li>JSON的写法 ---- 用来表示数组</li>
+</ul>
+<pre><code>        var JSONArr = &#39;[&quot;绿色的花菜&quot;,&quot;大蒜&quot;,&quot;大葱&quot;,&quot;番茄&quot;,&quot;圣女果&quot;]&#39;;
+</code></pre><ul>
+<li>转化为 对应的数组（对象）</li>
+</ul>
+<pre><code>        var arr = JSON.parse(JSONArr);
+</code></pre><ul>
+<li><p>demo1</p>
+<ul>
+<li><p>stars.json数据</p>
+<pre><code>  [{
+      &quot;name&quot;: &quot;吴京&quot;,
+      &quot;skill&quot;: &quot;徒手抓狼&quot;
+  },
+  {
+      &quot;name&quot;: &quot;吴彦祖&quot;,
+      &quot;skill&quot;: &quot;帅气&quot;
+  },
+  {
+      &quot;name&quot;: &quot;张国荣&quot;,
+      &quot;skill&quot;: &quot;霸王别姬&quot;
+  },
+  {
+      &quot;name&quot;: &quot;林俊杰&quot;,
+      &quot;skill&quot;: &quot;小酒窝--美美哒&quot;
+  }
+  ]
+</code></pre></li>
+<li><p>后端php</p>
+<pre><code>  &lt;?php
+  // JSON也要设置一段内容 (可选)
+  // 告诉浏览器 返回的是 JSON格式的数据 编码是 utf-8
+  header(&#39;content-type:application/json;charset=utf-8&#39;);
+
+  // 读取JSON文件
+  $jsonString = file_get_contents(&#39;data/stars.json&#39;);
+
+  // 返回读取的内容
+  echo $jsonString;
+  ?&gt;
+</code></pre></li>
+<li><p>前端</p>
+<pre><code>
+  xhr.onreadystatechange = function () {
+      //4.1判断状态&amp;请求是否成功并使用数据
+      if (xhr.readyState == 4 &amp;&amp; xhr.status == 200) {
+          // JSON的载体是字符串 用responseText 即可获取
+          console.log(xhr.responseText);
+          // 转化为 对应的 对象(数组)
+          var arr = JSON.parse(xhr.responseText);
+          console.log(arr);
+          // 遍历打印
+          for(var i =0;i&lt;arr.length;i++){
+              var currentObj = arr[i];
+              console.log(&#39;姓名:&#39;+currentObj.name+&#39;  技能:&#39;+currentObj.skill);
+          }
+      }
+      }
+</code></pre></li>
+</ul>
+</li>
+<li>demo2</li>
+</ul>
+<pre><code>    document.querySelector(&#39;input&#39;).onclick = function () {
+    //1.创建异步对象
+    var xhr = new XMLHttpRequest();
+    //2.设置请求行
+    xhr.open(&#39;get&#39;, &#39;backHero.php&#39;);
+    //3.设置请求头(get请求可以省略)
+
+    //4.注册状态改变事件
+    xhr.onreadystatechange = function () {
+      //4.1判断状态&amp;请求是否成功并使用数据
+      if(xhr.readyState==4&amp;&amp;xhr.status==200){
+        // console.log(xhr.responseText);
+        // 解析JSON数据
+        var heroArr = JSON.parse(xhr.responseText);
+        console.log(heroArr);
+
+        // 准备字符串
+        var html = &#39;&#39;;
+        // table - 开头
+        html=&#39;&lt;table&gt;&#39;;
+
+        // 生成tr
+        for(var i =0;i&lt;heroArr.length;i++){
+          // 当前循环的对象
+          var currentHero = heroArr[i];
+          // tr -开头
+          html+=&#39;&lt;tr&gt;&#39;;
+
+          // td
+          html+=&#39;&lt;td&gt;&#39;+currentHero.champion_name+&#39;&lt;/td&gt;&#39;;
+          html+=&#39;&lt;td&gt;&#39;+currentHero.champion_title+&#39;&lt;/td&gt;&#39;;
+          html+=&#39;&lt;td&gt;&lt;img src=&quot;&#39;+currentHero.champion_icon+&#39;&quot;&gt;&lt;/td&gt;&#39;;
+
+          // tr -结尾
+          html+=&#39;&lt;/tr&gt;&#39;;
+        }
+
+        // table - 结尾
+        html+=&#39;&lt;/table&gt;&#39;;
+
+        // 拼接好了 table
+        console.log(html);
+        // 设置到页面上
+        document.querySelector(&#39;.show-box&#39;).innerHTML = html;
+        // document.querySelector(&#39;.show-box&#39;).innerHTML(html);
+      }
+
+    }
+    //5.发送请求
+    xhr.send(null);
+  }
+</code></pre><h3 id="-js-ajax">原生js封装ajax</h3>
+<pre><code>    // 只传递一个参数
+    // 用户传入的是 对象
+    /*
+    键名
+        url
+        type
+        data
+        success
+    用户不需要记忆 参数的顺序 只需要记忆 参数的属性名即可
+    大部分的框架 都是这么做的
+    */
+    function ajax(option) {
+    var xhr = new XMLHttpRequest();
+    // 如果是get 并且有数据
+    if (option.type == &#39;get&#39; &amp;&amp; option.data) {
+        option.url += &#39;?&#39;;
+        option.url += option.data;
+        option.data = null; // 这样最后直接send data即可 
+    }
+    xhr.open(option.type, option.url);
+    // post请求 并且有数据
+    if (option.type == &#39;post&#39; &amp;&amp; option.data) {
+        xhr.setRequestHeader(&#39;Content-type&#39;, &#39;application/x-www-form-urlencoded&#39;);
+    }
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == 200) {
+        // option.success(xhr.responseText);
+        // console.log(xhr.getResponseHeader(&#39;Content-Type&#39;));
+        var type = xhr.getResponseHeader(&#39;Content-Type&#39;);
+        // 是否为json
+        if (type.indexOf(&#39;json&#39;) != -1) {
+            option.success(JSON.parse(xhr.responseText));
+        }
+        // 是否为xml
+        else if (type.indexOf(&#39;xml&#39;) != -1) {
+            option.success(xhr.responseXML);
+        }
+        // 普通字符串
+        else {
+            option.success(xhr.responseText);
+        }
+        }
+    }
+    xhr.send(option.data);
+    }
+</code></pre><h3 id="-">登录注册功能简单的实现</h3>
+<ul>
+<li><p>后端php</p>
+<ul>
+<li><p>check.php 检查用户名是否已被注册</p>
+<pre><code>  &lt;?php
+
+      // header(&#39;content-type:text/html;charset=utf-8&#39;);
+      // 为了能够自动转化 设置返回的内容为json
+      header(&#39;content-type:application/json;charset=utf-8&#39;);
+      // 接受发送的数据 $_GET
+      $name = $_GET[&#39;name&#39;];
+      // 读取json格式字符串 string
+      $jsonString = file_get_contents(&#39;./data/arr.json&#39;);
+      // php中 也有 转化JSON格式字符串的代码
+      // string-&gt;arr(obj)
+      // print_r(json_decode($jsonString));
+      $nameArr = json_decode($jsonString);
+      // 数组的操作
+      // 判断 某个值 是否在 数组中
+      $result = in_array($name,$nameArr);
+
+      // 准备一个 返回数据的 关系型数组
+      $backInfo = array();
+
+      // true false
+      if($result==true){
+          // 用户名存在 用不了
+          $backInfo[&#39;message&#39;] = &#39;真遗憾,已被注册&#39;;
+          $backInfo[&#39;status&#39;] = &#39;cannot&#39;;
+      }else{
+          // 如果为false 可以用
+          $backInfo[&#39;message&#39;] = &#39;恭喜你,可以使用&#39;;
+          $backInfo[&#39;status&#39;] = &#39;can&#39;;
+      }
+          // PHP中 关系型数组
+          // print_r($backInfo);
+          // 为了 让浏览器 解析方便 把数组 转化为 JSON格式的字符串
+          // arr -&gt;JSON string
+      echo json_encode($backInfo);
+
+      // 延迟一会
+      sleep(2);
+      ?&gt;
+</code></pre></li>
+<li><p>register.php 注册</p>
+<pre><code>
+  &lt;?php
+      // 接受提交的数据 $_POST
+      $name = $_POST[&#39;name&#39;];
+      // 读取出JSON // string
+      $jsonString = file_get_contents(&#39;./data/arr.json&#39;);
+      // 转化为 PHP对象 (数组)
+      // string-&gt;arr
+      $nameArr = json_decode($jsonString);
+      // 数组的末尾追加
+      // arr
+      $nameArr[count($nameArr)] = $name;
+      // 转化为JSON格式的字符串
+      $newJsonString = json_encode($nameArr);
+      // 写入 json文件中
+      // 参数1 写入的文件
+      // 参数2 写入的数据
+      file_put_contents(&#39;./data/arr.json&#39;,$newJsonString);
+      // 提示用户 注册成功了
+
+      echo &#39;注册成功&#39;;
+
+      sleep(2);
+
+      ?&gt;
+</code></pre></li>
+</ul>
+</li>
+<li><p>前端页面</p>
+</li>
+</ul>
+<pre><code>            &lt;!--  
+            需求们
+                需求1
+                    失去焦点
+                        开启遮罩层 -- cover
+                        --ajax验证用户名 
+                            文本框--inputName
+                            调用验证用户名接口
+                    请求回来之后
+                        关闭遮罩层
+                        修改文本框之后的提示 --tips
+                        延迟一会之后消失
+                需求2
+                    按钮根据是否可以注册 变绿
+                    可以-&gt;变绿
+                    不可以-&gt;不变
+                需求3
+                    点击注册按钮
+                        弹出遮罩层
+                        --注册--ajax--接口文档
+                    请求回来之后
+                        关闭遮罩层
+                        信息设置给 提示tips
+                需求4
+                    注册按钮 不能一直点 
+                    当注册按钮 有disable这个类 就不能点
+                        判断类名
+                        提示用户
+                        阻断后续代码执行
+                    反之可以点
+                需求5
+                    注册成功之后
+                        禁用按钮的点击
+                            添加类名
+        --&gt;
+        &lt;script&gt;
+            $(function () {
+                $(&#39;.inputName&#39;).blur(function () {
+                    // 遮罩层 开
+                    $(&#39;.cover&#39;).show();
+                    // ajax
+                    $.ajax({
+                        url: &#39;_api/01.check.php&#39;,
+                        type: &#39;get&#39;,
+                        data: &#39;name=&#39; + $(&#39;inputName&#39;).val(),
+                        success: function (data) {
+                            // 遮罩层-关
+                            $(&#39;.cover&#39;).hide();
+                            // 修改span的内容 淡入淡出
+                            $(&#39;.tips&#39;).html(data.message).fadeIn(1000).delay(1000).fadeOut(1000);
+                            // 判断内容 开启按钮的点击
+                            if (data.status == &#39;can&#39;) {
+                                $(&#39;.sub&#39;).removeClass(&#39;disabled&#39;);
+                            }
+                        }
+                    })
+                })
+
+                // 点击注册按钮
+                $(&#39;.sub&#39;).click(function () {
+                    // 有类名 禁止发送
+                    if ($(this).hasClass(&#39;disabled&#39;) == true) {
+                        alert(&#39;哥们,别点了&#39;);
+                        return;
+                    }
+                    // 遮罩层-开
+                    $(&#39;.cover&#39;).show();
+                    // ajax请求
+                    $.ajax({
+                        url: &#39;_api/register.php&#39;,
+                        type: &#39;post&#39;,
+                        data: &#39;name=&#39; + $(&#39;.inputName&#39;).val(),
+                        success: function (data) {
+                            $(&#39;.cover&#39;).hide();
+                            // 响应回来之后 关闭
+                            $(&#39;.tips&#39;).html(data).fadeIn(1000).delay(1000).fadeOut(1000);
+                            console.log(data);
+                            // 禁用按钮的点击 添加类名
+                            $(&#39;.sub&#39;).addClass(&#39;disabled&#39;);
+                        }
+                    })
+                })
+            })
+</code></pre><h3 id="jquery-ajax">jquery中的ajax</h3>
+<pre><code>    $.ajax({
+         url:&#39;../00.backData/backJSON.php&#39;,
+        success:function(data){
+          console.log(data);
+        },
+         error:function(XMLHttpRequest, textStatus, errorThrown){
+          console.log(&#39;失败了哦&#39;);
+          console.log(XMLHttpRequest);
+          console.log(textStatus);  //错误信息
+          console.log(errorThrown); 、、 错在哪里
+        },
+        complete:function(){
+          console.log(&#39;请求完成了&#39;);
+        }
+    })
+</code></pre><h3 id="-">模板引擎的使用</h3>
+<ul>
+<li>1.导入template-web.js</li>
+<li><p>2.定义模板</p>
+<ul>
+<li><p>type 不写 或者是 text/javascript 会被解析为 js,如果写成其他的内容 不会被当做js解析</p>
+<pre><code>
+      &lt;script type=&#39;text/html&#39; id=&#39;templatename&#39;&gt;
+      &lt;ul&gt;
+          &lt;li&gt;名字{{name}}&lt;/li&gt;
+          &lt;li&gt;技能{{skill}}&lt;/li&gt;
+          &lt;li&gt;爱好{{habbit}}&lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;/script&gt;
+</code></pre></li>
+</ul>
+</li>
+<li><p>3.填坑</p>
+</li>
+</ul>
+<pre><code>         &lt;script&gt;
+            var data = {
+                name:&#39;彭林&#39;,
+                skill:&#39;约跑&#39;,
+                habbit:&#39;跑的一手好步&#39;
+            };
+
+            // 填坑
+            // 参数1 模板的id
+            // 参数2 填充的数据
+            var result = template(&#39;templatename&#39;,data);
+            console.log(result);
+            document.body.innerHTML = result;
+            &lt;/script&gt;
+</code></pre><h3 id="exec-">exec() 方法用于检索字符串中的正则表达式的匹配</h3>
+<ul>
+<li>RegExpObject.exec(string)</li>
+<li>返回一个数组，其中存放匹配的结果。如果未找到，则返回值为null,此数组的第 0 个元素是与正则表达式相匹配的文本，第 1 个元素是与 RegExpObject 的第 1 个子表达式相匹配的文本（如果有的话），第 2 个元素是与 RegExpObject 的第 2 个子表达式相匹配的文本（如果有的话），以此类推。
+<img src="./exec.png" alt=""><h3 id="-">模板引擎原理</h3>
+</li>
+<li>通过id获取 模板中的内容==&gt;字符串</li>
+<li>调用时，<ul>
+<li>找到字符串中的特殊符号{{name}}===&gt;正则表达式</li>
+<li>使用对象对应的属性 进行替换 </li>
+<li>返回字符串</li>
+</ul>
+</li>
+</ul>
+<h3 id="-">自己封装一个简易的模板引擎</h3>
+<pre><code>    function my_template(id,data){
+    // 字符串
+    var str = document.querySelector(&#39;#&#39;+id).innerHTML;
+    // 定义正则
+    var reg = /{{(\w+)}}/; //{{开头  字母\w 最起码1个+  }}结尾
+    // 循环替换 直到 为null 结束
+    var result = reg.exec(str);
+    while(result){
+        str = str.replace(result[0],data[result[1]]);
+        result = reg.exec(str);
+    }
+    // 获取结果
+    return str;
+    }
+</code></pre><h3 id="-">模板引擎的使用</h3>
+<ul>
+<li><p>模板引擎语法：</p>
+<ul>
+<li><p>逻辑语句---条件语句</p>
+<pre><code>
+  &lt;script id=&#39;ifTemplate&#39; type=&quot;text/html&quot;&gt;
+      &lt;ul&gt;
+          {{if male==&#39;女&#39;}}
+          &lt;li&gt;欢迎您 {{name}} 女士
+          &lt;ol&gt;
+              &lt;li&gt;这是最新款的包包&lt;/li&gt;
+              &lt;li&gt;这是最新款的口红&lt;/li&gt;
+              &lt;li&gt;没想到,你竟然是{{skill}}&lt;/li&gt;
+          &lt;/ol&gt;
+          &lt;/li&gt;
+          {{else if male==&#39;男&#39;}}
+          &lt;li&gt;欢迎您 {{name}} 先生
+              &lt;ol&gt;
+              &lt;li&gt;这是最新款的拖拉机&lt;/li&gt;
+              &lt;li&gt;讨厌,才来找人家&lt;/li&gt;
+              &lt;li&gt;没想到,你竟然稍长{{skill}}&lt;/li&gt;
+              &lt;/ol&gt;
+          &lt;/li&gt;
+          {{/if}}
+      &lt;/ul&gt;
+  &lt;/script&gt;
+
+  &lt;script&gt;
+      var person1 = {
+          male: &#39;女&#39;,
+          name: &#39;郑爽&#39;,
+          skill: &#39;身材好&#39;
+      };
+      var person2 = {
+          male: &#39;男&#39;,
+          name: &#39;张翰&#39;,
+          skill: &#39;这篇鱼塘我承包了&#39;
+      };
+      console.log(template(&#39;ifTemplate&#39;, person1));
+      console.log(template(&#39;ifTemplate&#39;, person2));
+   &lt;/script&gt;
+</code></pre></li>
+<li><p>原文输出（解析标签语句）{{@...}}</p>
+<pre><code>
+      &lt;script id=&#39;norTemplate&#39; type=&quot;text/html&quot;&gt;
+      &lt;ul&gt;
+          &lt;li&gt;{{name}}&lt;/li&gt;
+          &lt;li&gt;{{skill}}&lt;/li&gt;
+          &lt;li&gt;{{@info}}&lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;/script&gt;
+      &lt;script&gt;
+      var person = {
+          name:&#39;犬夜叉&#39;,
+          skill:&#39;变犬&#39;,
+          info:&#39;&lt;a href=&quot;https://baike.baidu.com/item/%E7%8A%AC%E5%A4%9C%E5%8F%89/26878?fr=aladdin&quot;&gt;犬夜叉&lt;/a&gt;&#39;
+      }
+      document.body.innerHTML = template(&#39;norTemplate&#39;,person);
+
+      &lt;/script&gt;
+</code></pre></li>
+<li><p>循环语句</p>
+<pre><code>
+  &lt;script id=&#39;eachTemplate&#39; type=&quot;text/html&quot;&gt;
+  &lt;ul&gt;
+      &lt;li&gt;{{name}}&lt;/li&gt;
+      &lt;li&gt;兄弟们
+          {{each brother}}
+          &lt;li&gt;{{$value}}&lt;/li&gt;
+          {{/each}}
+      &lt;/li&gt;
+      &lt;li&gt;家人们
+      &lt;ol&gt;
+          {{each family}}
+          &lt;li&gt;{{$value.name}}---{{$value.skill}}&lt;/li&gt;
+          {{/each}}
+      &lt;/ol&gt;
+      &lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;/script&gt;
+
+  &lt;script&gt;
+  var person = {
+      name:&#39;大娃&#39;,
+      brother:[
+      &#39;二娃&#39;,
+      &#39;三娃&#39;,
+      &#39;水娃&#39;,
+      &#39;火娃&#39;,
+      &#39;千里眼娃&#39;,
+      &#39;瓜娃子&#39;
+      ],
+      family:[
+      {name:&#39;爷爷&#39;,skill:&#39;被抓&#39;},
+      {name:&#39;穿山甲&#39;,skill:&#39;到底说了什么&#39;},
+      {name:&#39;小蝴蝶&#39;,skill:&#39;撩--葫芦娃&#39;}
+      ]
+  }
+
+  console.log(template(&#39;eachTemplate&#39;,person));
+
+  &lt;/script&gt;
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h3 id="-">瀑布流插件的使用</h3>
+<ul>
+<li>1.导入jQuery</li>
+<li>2.导入瀑布流插件</li>
+<li>3.准备对应的html结构</li>
+</ul>
+<pre><code>            &lt;div class=&quot;grid&quot;&gt;
+            &lt;div class=&quot;grid-item-1 grid-item&quot;&gt;...&lt;/div&gt;
+            &lt;div class=&quot;grid-item-2 grid-item&quot;&gt;...&lt;/div&gt;
+            &lt;div class=&quot;grid-item-3 grid-item&quot;&gt;...&lt;/div&gt;
+            &lt;div class=&quot;grid-item-1 grid-item&quot;&gt;...&lt;/div&gt;
+            &lt;div class=&quot;grid-item-2 grid-item&quot;&gt;...&lt;/div&gt;
+            &lt;div class=&quot;grid-item-3 grid-item&quot;&gt;...&lt;/div&gt;
+            &lt;/div&gt;
+</code></pre><ul>
+<li>4.调用对应的方法</li>
+</ul>
+<pre><code>
+        &lt;script&gt;
+            // 调用瀑布流插件实现布局
+            $(&#39;.grid&#39;).masonry({
+                // itemSelector: &#39;.grid-item&#39;,
+                // 列宽
+                // columnWidth: 200
+            });
+        &lt;/script&gt;
+</code></pre><h3 id="-ajax-">瀑布流结合ajax的经典应用</h3>
+<ul>
+<li>后台php页面</li>
+</ul>
+<pre><code>        &lt;?php
+
+        // 设置返回的为 json
+        header(&#39;content-type:application/json;charset=utf-8&#39;);
+
+        if(array_key_exists(&#39;currentPage&#39;,$_POST)&amp;&amp;array_key_exists(&#39;pageSize&#39;,$_POST)){
+            // 获取 数据
+            // 页码
+            $currentPage = $_POST[&#39;currentPage&#39;];
+
+            // 页容量
+            $pageSize = $_POST[&#39;pageSize&#39;];
+
+            // 读取数据 string
+            $jsonString = file_get_contents(&#39;../info/data.json&#39;);
+
+            // 转化 string -&gt; obj
+            $totalArr = json_decode($jsonString);
+
+            // var_dump($totalArr);
+
+            // 获取 指定的数据
+            // 假设 第一页  页容量为5  (1-1) * 5 = 0;
+            // 假设 第二页  页容量为5  (2-1) * 5 = 5;
+            $pageData = array_slice($totalArr,($currentPage-1)*$pageSize,$pageSize);
+
+            // 返回给用户  当前页
+            $currentPage;
+            // 总页数 根据用户传递的参数 叶荣良计算出来的
+            $totalPage = ceil(count($totalArr)/$pageSize);
+
+            // 包装为 关系型数组
+            echo json_encode( array(
+                &#39;currentPage&#39;=&gt;$currentPage,
+                &#39;totalPage&#39;=&gt;$totalPage,
+                &#39;message&#39;=&gt;&#39;success&#39;,
+                &#39;pageSize&#39;=&gt;$pageSize,
+                &quot;items&quot;=&gt;$pageData
+            ));
+
+        }else{
+            echo json_encode(array(
+                &#39;message&#39;=&gt;&#39;pageSize and currentPage is necessary please check and retry&#39;
+            ));
+        }
+
+        sleep(2);
+        ?&gt;
+</code></pre><ul>
+<li>前端页面</li>
+</ul>
+<pre><code>    &lt;!DOCTYPE html&gt;
+        &lt;html&gt;
+
+        &lt;head&gt;
+            &lt;meta charset=&quot;UTF-8&quot;&gt;
+            &lt;title&gt;JQuery 实现瀑布流&lt;/title&gt;
+            &lt;style&gt;
+                body {
+                    text-align: center;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #F7F7F7;
+                    font-family: &#39;微软雅黑&#39;;
+                }
+
+                .wrapper {
+                    padding: 50px;
+                }
+
+                img {
+                    display: block;
+                    width: 100%;
+                    height: 300px;
+                }
+
+                .items {
+                    position: relative;
+                    /* display: flex; */
+                    /* 环函 */
+                    /* flex-wrap: wrap; */
+                }
+
+                .item {
+                    width: 228px;
+                    position: absolute;
+                }
+
+                .tips {
+                    width: 280px;
+                    height: 40px;
+                    margin: 30px auto 0;
+                    text-align: center;
+                    line-height: 40px;
+                    background-color: #CCC;
+                    border-radius: 6px;
+                    font-size: 24px;
+                    cursor: pointer;
+                }
+
+                .tips.loading {
+                    /* background-color: transparent; */
+                    background-color: hotpink;
+                }
+
+                .tips.disabled {
+                    background-color: gray;
+                    cursor: not-allowed;
+                }
+
+                * {
+                    transition: all 1s;
+                }
+            &lt;/style&gt;
+        &lt;/head&gt;
+
+        &lt;body&gt;
+            &lt;h1&gt;瀑布流 展示页面&lt;/h1&gt;
+            &lt;div class=&quot;wrapper&quot;&gt;
+                &lt;!-- items 作为 瀑布流的容器  瀑布流中的 元素的 宽度 是固定的 --&gt;
+                &lt;div class=&quot;items&quot;&gt;
+
+                &lt;/div&gt;
+                &lt;p class=&quot;tips loading&quot;&gt;正在加载...&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/body&gt;
+
+        &lt;/html&gt;
+        &lt;!-- jQ --&gt;
+        &lt;script src=&quot;./js/jquery-1.12.4.min.js&quot;&gt;&lt;/script&gt;
+        &lt;!-- 模板引擎使用步骤
+                1.引入模板引擎
+                2.根据数据定义模板
+                3.挖坑
+                4.填坑使用
+        --&gt;
+        &lt;script src=&quot;./js/template-web.js&quot;&gt;&lt;/script&gt;
+        &lt;script id=&#39;template&#39; type=&quot;text/html&quot;&gt;
+            {{each items}}
+            &lt;div class=&quot;item&quot;&gt;
+                &lt;img src=&quot;{{$value.path}}&quot; alt=&quot;&quot;&gt;
+                &lt;p&gt;{{$value.text}}&lt;/p&gt;
+            &lt;/div&gt;
+            {{/each}}
+        &lt;/script&gt;
+
+        &lt;!-- 引入瀑布流插件 --&gt;
+        &lt;script src=&quot;./js/masonry.pkgd.min.js&quot;&gt;&lt;/script&gt;
+
+        &lt;!-- 自己的js --&gt;
+        &lt;script&gt;
+            $(function () {
+                // 定义页码
+                var my_currentPage = 1;
+                // 点击变....
+                $(&#39;.tips&#39;).click(function () {
+                    // 添加判断类名的代码
+                    if($(this).hasClass(&#39;disabled&#39;)==true){
+                        alert(&#39;哥们,别点了,已经是最后一页了哦&#39;);
+                        return;
+                    }
+                    // .
+                    $(this).html(&#39;.&#39;);
+                    var $this = $(this);
+                    // 定时器
+                    var interId = setInterval(function () {
+                        var oldStr = $this.html();
+                        // 判断长度
+                        if (oldStr.length &gt; 16) {
+                            oldStr = &#39;&#39;;
+                        }
+                        // 累加 .
+                        oldStr += &#39;.&#39;;
+                        // 赋值给元素的内容
+                        $this.html(oldStr);
+                    }, 100)
+                    // ajax获取数据
+
+                    $.ajax({
+                        url: &#39;api/waterFall.php&#39;,
+                        type: &#39;post&#39;,
+                        data: {
+                            currentPage: my_currentPage,
+                            pageSize: 40
+                        },
+                        success: function (data) {
+                            console.log(data); //测试代码
+                            // 清除定时器
+                            clearInterval(interId);
+                            // 修改内容为 1/xx
+                            $(&#39;.tips&#39;).html(data.currentPage + &#39;/&#39; + data.totalPage);
+                            // 渲染页面 -- 模板引擎
+                            var result = template(&#39;template&#39;, data);
+                            // console.log(result); //测试代码
+                            var $dom = $(result);
+                            // $(&#39;.items&#39;).append(result);
+
+                            // 瀑布流
+                            /*
+                                通过例子查看 缺少的代码
+                                通过文档 查看 方法的说明
+                                复制过来测试
+                                不对 检查 是不是 参数不对
+                            */
+                            $(&#39;.items&#39;).masonry({
+                                transitionDuration: 0
+                            }).append($dom).masonry(&#39;appended&#39;, $dom).masonry();
+
+                            // 页码 累加
+                            my_currentPage++;
+
+                            // 判断是否是最后一页
+                            if(data.currentPage==data.totalPage){
+                                // 添加类名
+                                $(&#39;.tips&#39;).addClass(&#39;disabled&#39;);
+                            }
+                        }
+                    })
+                })
+            })
+        &lt;/script&gt;
+</code></pre><h3 id="-">同源的概念</h3>
+<ul>
+<li>协议 ，地址，端口号三个条件都一样，称之为 同源</li>
+<li>三个条件 有一个不一样，称之为不同源<h3 id="-">跨域的概念</h3>
+</li>
+<li>不同源的网站之间 互相发送请求 称之为跨域</li>
+<li><p>解决方法</p>
+<ul>
+<li>1.设置反向代理</li>
+<li>2.服务器端设置允许跨域  header(&#39;Access-Control-Allow-Origin: *&#39;);</li>
+<li><p>3.在ajax函数的参数对象中增加一个属性  dataType:&#39;jsonp&#39;</p>
+<ul>
+<li>jsonp就是利用了 src属性支持跨域获取资源</li>
+<li><p>jsonp的真实用法</p>
+<pre><code>
+  &lt;script&gt;
+      function doSomething(data){
+          console.log(data);
+      }
+  &lt;/script&gt;
+      &lt;script  src=&quot;http://www.127.com/2017-8-17/12.JSONP/backData.php?callback=doSomething&quot;&gt;
+   &lt;/script&gt;
+</code></pre></li>
+<li><p>后端服务器支持jsonp的原理</p>
+<pre><code>
+  &lt;?php 
+  // echo &#39;console.log(&quot;数据给你,拿去&quot;)&#39;;
+  // doSomething
+  $methodName = $_GET[&#39;callback&#39;];
+
+  // 把数据 拼接到 函数名的后面
+  echo $methodName.&#39;({&quot;name&quot;:&quot;jack&quot;,&quot;food&quot;:&quot;西兰花&quot;})&#39;;
+  ?&gt;
+</code></pre><h3 id="jquery-">jquery格式化表单数据</h3>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>        &lt;!DOCTYPE html&gt;
+        &lt;html lang=&quot;zh-CN&quot;&gt;
+        &lt;head&gt;
+            &lt;meta charset=&quot;UTF-8&quot;&gt;
+            &lt;title&gt;title&lt;/title&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+        &lt;h2&gt;jQuery格式化表单数据&lt;/h2&gt;
+        &lt;form action=&quot;&quot;&gt;
+            &lt;input name=&#39;name&#39; type=&quot;text&quot; placeholder=&quot;用户名&quot;&gt;
+            &lt;input name=&#39;tel&#39; type=&quot;text&quot; placeholder=&quot;电话&quot;&gt;
+            &lt;input name=&#39;email&#39; type=&quot;text&quot; placeholder=&quot;邮箱&quot;&gt;
+            &lt;input name=&#39;address&#39; type=&quot;text&quot; placeholder=&quot;地址&quot;&gt;
+        &lt;/form&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+        &lt;script  src=&quot;./jquery-1.12.4.js&quot;&gt;&lt;/script&gt;
+        &lt;script&gt;
+        $(function(){
+            $(&#39;h2&#39;).click(function(){
+            var data = $(&#39;form&#39;).serialize();
+            console.log(data);
+            })
+        })
+        &lt;/script&gt;
+
+        //输入后 点击 name=12&amp;tel=12&amp;email=12&amp;address=234
+</code></pre><h3 id="ajax-">ajax上传文件及进度条</h3>
+<ul>
+<li>前端</li>
+</ul>
+<pre><code>        &lt;h2&gt;XMR2.0&lt;/h2&gt;
+        &lt;!-- 技术是在不停的升级,XMLHttpRequest
+            1. 快速格式化表单数据
+            2. ajax上传文件
+            3. 上传进度监控
+        --&gt;
+        &lt;form action=&quot;&quot;&gt;
+            &lt;input type=&quot;text&quot; name=&quot;name&quot; placeholder=&quot;用户名&quot;&gt;
+            &lt;input type=&quot;text&quot; name=&quot;email&quot; placeholder=&quot;邮箱&quot;&gt;
+            &lt;input type=&quot;text&quot; name=&quot;address&quot; placeholder=&quot;地址&quot;&gt;
+            &lt;input type=&quot;file&quot; name=&quot;icon&quot;&gt;
+        &lt;/form&gt;
+        &lt;input type=&quot;button&quot; value=&#39;ajax发送数据&#39;&gt;
+        &lt;div class=&quot;progress&quot;&gt;
+            &lt;div class=&quot;step&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;/body&gt;
+
+        &lt;/html&gt;
+        &lt;script&gt;
+        // 点击事件
+        document.querySelector(&#39;input[type=button]&#39;).onclick = function () {
+            // ajax请求
+            var xhr = new XMLHttpRequest();
+            // 快速格式化表单数据 要使用 post
+            xhr.open(&#39;post&#39;, &#39;backData.php&#39;);
+            // 如果使用自动化表单 不需要设置请求头
+            // 回调函数
+            xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 &amp;&amp; xhr.status == 200) {
+                console.log(xhr.responseText);
+            }
+            }
+            // 格式化表单
+            // 兼容性问题 使用频率 不是很高了解的知识点
+            var sendData = new FormData(document.querySelector(&#39;form&#39;));
+
+            // 上传回调函数
+            xhr.upload.onprogress = function (event) {
+            // console.log(event);
+            var percent = event.loaded / event.total * 100 + &#39;%&#39;;
+            console.log(percent);
+            document.querySelector(&#39;.step&#39;).style.width = percent;
+            }
+
+            xhr.send(sendData);
+        }
+        &lt;/script&gt;
+</code></pre><ul>
+<li>后端</li>
+</ul>
+<pre><code>    &lt;?php 
+        print_r($_POST);
+
+        print_r($_FILES);
+        // 抢救出来
+        /*
+        Array
+        (
+            [icon] =&gt; Array
+                (
+                    [name] =&gt; 01.png
+                    [type] =&gt; image/png
+                    [tmp_name] =&gt; C:\Users\51772\AppData\Local\Temp\phpC23C.tmp
+                    [error] =&gt; 0
+                    [size] =&gt; 22756
+                )
+
+        )
+        */
+        move_uploaded_file($_FILES[&#39;icon&#39;][&#39;tmp_name&#39;],&#39;./files/&#39;.$_FILES[&#39;icon&#39;][&#39;name&#39;]);
+        ?&gt;
+</code></pre>
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+});
+//-->
+</SCRIPT>

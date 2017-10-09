@@ -1,0 +1,766 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>i5ting_ztree_toc:javascript进阶之路2</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<h1 id="javascript-">javascript进阶二</h1>
+<h3 id="-">获取父节点的子节点和父节点的子元素节点</h3>
+<ul>
+<li>1.childNodes获取元素的子节点，是一个伪数组</li>
+<li>2.childNodes在不同浏览器中，他获取到的值是不一样的，ie8及以前获取到的是子元素（元素，非空文本，注释），不包括空文本</li>
+<li>3.通过children拿到的是元素的子元素节点</li>
+<li>4.获取子元素节点的个数  dom.children.length</li>
+<li>5.获取元素的父节点 dom.parentNode</li>
+<li>6.获取下一个兄弟节点nextSibling  不过我们往往想要找的是下一个兄弟元素节点 nextElementSibling ie8以下不支持</li>
+<li>7.获取上一个元素节点 previousElementSibling<h3 id="-">拿到下一个元素的兼容处理</h3>
+<pre><code class="lang-javascript">    function getNextElement(ele){
+    //能力检测-去判断执行当前这个代码的浏览器是否支持这个东西
+    if(ele.nextElementSibling){
+      return ele.nextElementSibling;
+    }else{
+      //如果不支持nextElementSibling，那就是ie8及以前的浏览器。
+      var node = ele.nextSibling;
+      while(node.nodeType != 1){
+        node = node.nextSibling;
+      }
+      return node;
+    }
+  }
+</code></pre>
+<h3 id="-">拿到上一个元素的兼容处理</h3>
+<pre><code class="lang-javascript">  function getPreviousElement(ele){
+      //能力检测
+      if(ele.previousElementSibling){
+        return ele.previousElementSibling;
+      }else {
+        //ie8及以前不支持previousElementSibling。 支持previousSibling
+        var node = ele.previousSibling;
+        while(node.nodeType != 1){
+          node = node.previousSibling;
+        }
+        return node;
+      }
+    }
+</code></pre>
+</li>
+<li><p>获取第一个子节点 firstChild  获取第一个子元素节点 firstElementChild</p>
+<ul>
+<li>兼容处理</li>
+</ul>
+<pre><code class="lang-javascript">          function getFirstElementChild(ele){
+          //能力检测
+          if(ele.firstElementChild){
+            return ele.firstElementChild;
+          }else {
+            //到这里了就说明是ie8及以前的浏览器，不支持firstElementChild，但是支持firstChild。
+            var node = ele.firstChild;
+            while(node.nodeType != 1){  //如果不是标签节点..
+              node = node.nextSibling;
+            }
+            return node;
+          }
+        }
+</code></pre>
+</li>
+<li><p>获取最后一个子节点 lastChild  最后一个子元素节点 lastElementChild</p>
+<ul>
+<li><p>获取最后一个子元素节点 兼容处理</p>
+<pre><code class="lang-javascript">    function getLastElementChild(ele){
+    //能力检测
+    if(ele.lastElementChild){
+      return ele.lastElementChild;
+    }else {
+      //ie8及以前的浏览器不支持lastElementChild，但是他支持lastChild
+      var node = ele.lastChild;
+      while(node.nodeType != 1){
+        node = node.previousSibling;
+      }
+      return node;
+    }
+  }
+</code></pre>
+</li>
+</ul>
+</li>
+<li>复制元素 克隆 cloneNode  <pre><code class="lang-javascript">  var box = document.getElementById(&quot;box&quot;);
+  var boxNew =  box.cloneNode();
+</code></pre>
+</li>
+<li><p>克隆的节点没有写参数，默认是参数false</p>
+<ul>
+<li>cloneNode有参数 参数是一个布尔值</li>
+<li>如果带有的参数true，是一个深克隆，会把当前这个克隆的节点内容都克隆出来。如果带有参数false,是一个浅克隆，只会把当前这个节点给克隆出来。 </li>
+</ul>
+</li>
+<li><p>克隆出来的元素，只存在于内存中，并不会直接显示在页面结构中，需要手动追加 appendChild</p>
+<ul>
+<li>var pNew = document.getElementById(&quot;p1&quot;).cloneNode(true);</li>
+<li>为了克隆的元素和原来的原来区分开来，要修改克隆的元素id   pNew.id = &quot;p2&quot;;</li>
+<li>把克隆的p标签追到到div中。  box.appendChild(pNew);</li>
+</ul>
+</li>
+<li><p>innerHTML 往指定的元素中以内容的方式添加标签</p>
+<pre><code class="lang-javascript">  box.innerHTML = &quot;&lt;p&gt;我是第一个p&lt;/p&gt;&quot;;
+</code></pre>
+</li>
+<li><p>document.createElement()
+```javascript
+  var div1 = document.createElement(&quot;div&quot;);
+div1.setAttribute(&quot;id&quot;,&quot;div1&quot;);
+//setText 自己封装的兼容函数
+setText(div1,&quot;我是通过document.createElement()创建出来的新元素&quot;)
+console.log(div1);</p>
+<p>//只存在与内存中，不会主动的添加到页面上，而要手动的追加。
+document.body.appendChild(div1);</p>
+</li>
+</ul>
+<pre><code>+ 追加元素 
+  - 创建一个新的li标签追加到ul中，把新元素追加到最后一个元素那里。
+  - 把这个ul当中已有的li标签，追加到这个ul中，把已有的那个li标签剪切到当前这个ul中的最后一个节点位置
+  - 把其他ul中的已有的li标签，追加到当前这个ul中，把其他ul当中的已有的li标签剪切到当前这个ul中的最后一个位置上。
+  - select  的选项option选中后有一个selected属性
+  ```html
+      &lt;!DOCTYPE html&gt;
+    &lt;html&gt;
+    &lt;head lang=&quot;en&quot;&gt;
+        &lt;meta charset=&quot;UTF-8&quot;&gt;
+        &lt;title&gt;&lt;/title&gt;
+        &lt;style&gt;
+            select {
+                width: 100px;
+                height: 150px;
+            }
+        &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;select name=&quot;&quot; id=&quot;left&quot; multiple&gt;  &lt;!--multiple规定输入字段可选多个值 --&gt;
+        &lt;option value=&quot;&quot;&gt;林志玲&lt;/option&gt;
+        &lt;option value=&quot;&quot;&gt;范冰冰&lt;/option&gt;
+        &lt;option value=&quot;&quot;&gt;陈奕迅&lt;/option&gt;
+        &lt;option value=&quot;&quot;&gt;周杰伦&lt;/option&gt;
+        &lt;option value=&quot;&quot;&gt;胡歌&lt;/option&gt;
+        &lt;option value=&quot;&quot;&gt;爱谁谁&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;input type=&quot;button&quot; value=&quot;&gt;&gt;&quot; id=&quot;btn1&quot;/&gt;
+    &lt;input type=&quot;button&quot; value=&quot;&lt;&lt;&quot; id=&quot;btn2&quot;/&gt;
+    &lt;input type=&quot;button&quot; value=&quot;&gt;&quot; id=&quot;btn3&quot;/&gt;
+    &lt;input type=&quot;button&quot; value=&quot;&lt;&quot; id=&quot;btn4&quot;/&gt;
+    &lt;select name=&quot;&quot; id=&quot;right&quot; multiple&gt;
+    &lt;/select&gt;
+
+    &lt;script src=&quot;common.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        //1.获取元素
+        var selectLeft = id(&quot;left&quot;);
+        var selectRight = id(&quot;right&quot;);
+        var allToRight = id(&quot;btn1&quot;); //全部去右边的按钮
+        var allToLeft = id(&quot;btn2&quot;); //全部去左边的按钮
+        var selectToRight = id(&quot;btn3&quot;); //选中的去右边
+        var selectToLeft = id(&quot;btn4&quot;); //选中去左边
+
+        //2.分别给按钮注册单击事件
+
+        //2.1 全部去右边
+        allToRight.onclick = function () {
+            //把左边的select里面的所有的option项追加到右边的select里面去。
+            var opts = selectLeft.children;
+            //用for循环遍历出每一个option项目
+            for(var i = 0 ; i &lt; opts.length; i++){
+                selectRight.appendChild(opts[i]);
+                i--; //他的作用是始终保证i的值为0，也就是始终追加第0项。
+            }
+        }
+
+        //2.2 全部去左边
+        allToLeft.onclick = function () {
+            //把右边的select里面的所有的option项追加到左边的select里面去。
+            var opts = selectRight.children;
+            //用for循环遍历出每一个options项
+            for(var i = 0 ; i &lt; opts.length; i++){
+              selectLeft.appendChild(opts[i]);
+                i--;
+            }
+        }
+
+        //2.3 选中项移动到右边。
+        selectToRight.onclick = function () {
+            //先拿到左边select里面所有的option项
+            var opts = selectLeft.children;
+            for(var i = 0 ; i &lt; opts.length; i++){
+                //console.log(&quot;哈哈&quot;);
+              console.log(opts[i].selected);
+                //如果opts[i]的selected值为true，就要把当前这个opts[i],移动到右边去。
+                if(opts[i].selected){
+                    selectRight.appendChild(opts[i]);
+                    i--;
+                }
+
+            }
+        }
+
+        //2.4 选中项移动到左边。
+        selectToLeft.onclick = function () {
+            //先拿到右边select里面所有的option项
+            var opts = selectRight.children;
+            for(var i = 0 ; i &lt; opts.length; i++){
+                //console.log(&quot;哈哈&quot;);
+                //console.log(opts[i].selected);
+                //如果opts[i]的selected值为true，就要把当前这个opts[i],移动到左边去。
+                if(opts[i].selected){
+                    selectLeft.appendChild(opts[i]);
+                    i--;
+                }
+            }
+        }
+
+    &lt;/script&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+</code></pre><ul>
+<li>插入子元素</li>
+<li>新创建一个li标签，插入到ul中指定的位置上。</li>
+<li>父节点.insertBefore(新插入的元素，参照)<pre><code class="lang-javascript">    ul1.insertBefore(linew,li3);
+</code></pre>
+</li>
+<li>删除子元素<ul>
+<li>你要删除的那个子元素的父元素.removeChild(需要被删除的那个元素)<pre><code>      ul1.removeChild(li3);
+</code></pre></li>
+<li>如果删除一个不属于自己的子节点，会报错</li>
+<li>不能自己删掉自己，可以找到自己的父节点来删掉自己</li>
+</ul>
+</li>
+<li>替换子元素<ul>
+<li>新建一个li标签 替换ul1中id为li3这个标签<pre><code>  ul1.replaceChild(liNew,li3)
+</code></pre></li>
+<li>找到ul1中某一个标签，替换当前ul1中的li3这个标签<pre><code>  ul1.replaceChild(li5,li3);//把li5剪切过来覆盖li3.
+</code></pre><h3 id="-">计时器</h3>
+</li>
+</ul>
+</li>
+<li>设置计时器 setInterval(参数1，参数2);<ul>
+<li>参数1：计时器到了时间要执行的代码，可以是一个函数，也可以是一个调用执行函数的字符串</li>
+<li>参数2：计时器的间隔时间，毫秒为单位 1s=1000ms</li>
+</ul>
+</li>
+<li><p>清空计时器 clearInterval(参数);</p>
+<ul>
+<li>参数：就是需要被清空的那个计时器的id.</li>
+</ul>
+</li>
+<li><p>计时器 setTimeout(参数1，参数2)；</p>
+<ul>
+<li>参数1：就是计时器到了时间要做的事情</li>
+<li>参数2：就是时间</li>
+</ul>
+</li>
+<li>清空计时器：clearTimeout(参数);</li>
+</ul>
+<h3 id="window-">window对象</h3>
+<ul>
+<li><p>window对象 是顶级对象</p>
+<ul>
+<li>在js中的全局作用域中声明的变量（全局变量）或者函数（全局函数），都是window对象的属性或者方法</li>
+<li>window 对象里有一个name属性，他的值永远为string类型的</li>
+<li><p>window对象中的open和close方法</p>
+<ul>
+<li>open(url) 打开一个新窗口</li>
+<li><p>w.close();  要关闭哪个window</p>
+<pre><code class="lang-javascript"> var w = null;
+  //c.window对象中的open和close方法
+  document.getElementById(&quot;open1&quot;).onclick = function () {
+    w = window.open(&quot;https://www.baidu.com&quot;,&quot;_blank&quot;,&quot;width=200,height=200,left=100,top=100&quot;,true);
+  }
+
+  document.getElementById(&quot;close1&quot;).onclick = function () {
+    w.close(); //要关闭那个window窗口，就是那个window对象自己点close方法。
+  }
+
+  document.getElementById(&quot;killSelf&quot;).onclick = function (){
+    window.close();
+  }
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>window 对象事件<ul>
+<li>页面完全加载完毕后，才执行这个匿名函数里的代码<pre><code>    window.onload=function(){
+      var box=document.getElementById(&quot;one&quot;);
+      console.log(box);  
+    }
+      &lt;body&gt;
+        &lt;div id=&quot;one&quot;&gt;&lt;/div&gt;
+      &lt;/body&gt;
+</code></pre></li>
+<li>页面关闭之前，可以弹出提示框<pre><code class="lang-javascript">    window.onbeforeunload=function(){
+        return &quot; 你离开了页面，却把我留在了你的心里&quot;
+    }
+</code></pre>
+</li>
+<li>页面关闭事件-页面关闭之前要处理的事情 window.onunload</li>
+</ul>
+</li>
+<li>location 对象<ul>
+<li>location 的属性 <ul>
+<li>location.hash</li>
+<li>location.host</li>
+<li>location.hostname</li>
+<li>location.href</li>
+<li>location.pathname</li>
+<li>location.port</li>
+<li>location.portocol</li>
+<li>location.search</li>
+</ul>
+</li>
+<li>location 的方法<ul>
+<li>location.assign(&quot;<a href="https://www.baidu.com">https://www.baidu.com</a>&quot;); 跳转到指定页面</li>
+<li>location.reload(true); 刷新</li>
+<li>location.replace(&quot;<a href="https://www.baidu.com">https://www.baidu.com</a>&quot;); 替换当前网页</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>history 对象 当前页面的跳转记录<ul>
+<li>history.forward();</li>
+<li>history.back();<pre><code class="lang-javascript">        &lt;body&gt;
+        &lt;a href=&quot;09-history对象-测试页.html&quot;&gt;跳转&lt;/a&gt;
+        &lt;input type=&quot;button&quot; value=&quot;前进&quot; id=&quot;forward&quot;/&gt;
+        &lt;script&gt;
+        document.getElementById(&quot;forward&quot;).onclick = function () {
+          history.forward();
+        }
+        &lt;/script&gt;
+        &lt;/body&gt;
+</code></pre>
+</li>
+</ul>
+</li>
+<li>navigator 对象  可以获取浏览器的相关属性<ul>
+<li>navigator.appName</li>
+<li>navigator.appVersion</li>
+<li>navigator.platform</li>
+<li>navigator.userAgent<h3 id="-">字符串的常用方法</h3>
+</li>
+<li>1.字符串其实可以看成是数组<pre><code>var str = new String(&quot;abcdefg&quot;);
+</code></pre></li>
+<li>2.charAt() 返回指定下标的字符<pre><code>var str = &quot;abcdefg&quot;;
+console.log(str.charAt(3));
+</code></pre></li>
+<li>3.charCodeAt()  返回指定下标字符的ASCII码<pre><code>var str = &quot;abcdefg&quot;;
+console.log(str.charCodeAt(2));
+</code></pre></li>
+<li>4.concat() 连接字符串，不会影响原来的字符串<pre><code>var str1 = &quot;abcd&quot;;
+var str2 = &quot;efg&quot;;
+console.log(str1.concat(str2));
+console.log(str1);
+console.log(str2);
+</code></pre></li>
+<li>5.indexOf()  检测字符串指定字符的下标,如果不存在返回-1<pre><code>var str = &quot;a1cbacdefg&quot;;
+console.log(str.indexOf(&quot;ac&quot;));
+console.log(str.indexOf(&quot;v&quot;));
+</code></pre></li>
+<li>6.lastIndexOf() 最后一个指定字符的下标<pre><code>var str = &quot;acbacdefg&quot;;
+console.log(str.lastIndexOf(&quot;ac&quot;));
+</code></pre></li>
+<li>7.replace() 会得到一个新替换后的值，不会影响原来的字符串<pre><code class="lang-javascript">var str = &quot;abcdefdgd&quot;;
+var str2 = str.replace(/d/g,&quot;u&quot;);  //把d全部替换为u
+console.log(str2);
+console.log(str);
+</code></pre>
+</li>
+<li>8.slice(start,end); 得到一个新数组，从start下标开始剪切，到end 不包括end  ,如果只有一个参数，表示从start下标开始，截取所有的元素<pre><code>var str = &quot;abcdefg&quot;;
+console.log(str.slice(4,5));
+console.log(str);
+</code></pre></li>
+<li>9.split(tag); 将字符串以什么切割 成为一个数组<pre><code>var str = &quot;abc,edf,haha&quot;;
+var arr = str.split(&quot;a&quot;);
+console.log(arr);
+console.log(str);
+</code></pre></li>
+<li>10.toLocaleLowerCase() 将字符串转化为小写字母</li>
+</ul>
+</li>
+</ul>
+<pre><code>    var str = &quot;AbCDeFG&quot;;
+    console.log(str.toLocaleLowerCase());
+    console.log(str);
+</code></pre><h3 id="-">基本数据类型</h3>
+<ul>
+<li>基本数据类型（String,Number,Boolean,undefined,null）</li>
+<li>基本包装类型（String,Number,Boolean）</li>
+</ul>
+<h3 id="offset-">offset家族</h3>
+<ul>
+<li>offsetWidth offsetHeight offsetLeft offsetTop offsetParent<ul>
+<li>offsetWidth offsetHeight<ul>
+<li>计算盒子的大小：包含边框，包含内边距，包含内容</li>
+<li>能够获取到元素的宽和高（number类型的），只读的</li>
+<li>包含padding border </li>
+</ul>
+</li>
+<li>offsetParent 是定位父级<ul>
+<li>1.元素的offsetParent是离这个元素最近的定位父级元素</li>
+<li>2.如果他的父级元素都没有定位，那么他的offsetParent是body.</li>
+<li>3.如果他没有父级元素，那么他的offsetParent是body</li>
+<li>4.如果自己是固定定位，那么他的offsetParent是null. </li>
+</ul>
+</li>
+<li>offsetLeft和offsetTop<ul>
+<li>offsetLeft 当前这个元素的左外边框 距离他的offsetParent左内边框之间的距离。</li>
+<li>offsetTop 当前这个元素的上外边框 距离他的offsetParent上内边框之间的距离。<h3 id="-">数组的删除与添加</h3>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>删除最后一个元素<ul>
+<li>arr.pop();   返回值为删除的最后一个元素，arr最后一个元素被删除了</li>
+</ul>
+</li>
+<li>添加元素到第一个<ul>
+<li>arr.unshift(num); 返回值为添加以后数组的长度，arr第一个元素改变了</li>
+</ul>
+</li>
+<li>删掉第一个元素<ul>
+<li>arr.shift(); 返回值为删掉的第一个元素，</li>
+</ul>
+</li>
+<li>添加到最后一个元素<ul>
+<li>arr.push(num); 返回值为添加以后数组的长度<h3 id="-js-">原生js获取元素样式的值</h3>
+</li>
+</ul>
+</li>
+<li>dom.style.height  这种获取元素样式的方式，只能获取行内样式</li>
+<li>getComputedStyle 谷歌、火狐、ie9+支持的 ie8及以前不支持<ul>
+<li>console.log(window.getComputedStyle(one, null).width);</li>
+<li>console.log(window.getComputedStyle(one, null)[&quot;width&quot;]);</li>
+</ul>
+</li>
+<li>currentStyle 只有ie浏览器支持，谷歌，火狐不支持<ul>
+<li>one.currentStyle.width</li>
+<li>one.currentStyle[&#39;width&#39;]<h3 id="scroll-">scroll家族</h3>
+</li>
+</ul>
+</li>
+<li>scrollWith scrollHeight 是真实内容的宽高，不是dom元素的宽高</li>
+<li><p>scrollTop 垂直滚出去的内容的距离 scrollLeft 水平滚出去的内容的距离</p>
+</li>
+<li><p>onscroll 滚动事件</p>
+</li>
+<li><p>获取页面的scrollTop的方式以及兼容</p>
+<pre><code class="lang-javascript">      function getScroll(){
+      return {
+        scrollLeft : window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+        scrollTop : window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+      };
+    }
+</code></pre>
+<h3 id="client-">client家族</h3>
+</li>
+<li>clientWidth clientHeight 可视区域的宽高</li>
+<li>clientTop clientLeft 实际上是上边框，左边框的高度，一般不用</li>
+<li>获取页面的clientWidth和clientHeight以及封装<pre><code class="lang-javascript">  function getClient(){
+    return {
+      clientWidth : window.innerWidth|| document.documentElement.clientWidth|| document.body.clientWidth|| 0,
+      clientHeight : window.innerHeight|| document.documentElement.clientHeight|| document.body.clientHeight|| 0
+    }
+  }
+</code></pre>
+<h3 id="-">事件对象</h3>
+<pre><code class="lang-javascript">    one.onclick = function (e) {
+      //console.log(e); //谷歌、火狐、ie9+支持的 ，ie8及以前不支持
+      //console.log(window.event); //谷歌、ie8及以前支持的，  火狐不支持
+      //兼容写法
+      e = e || window.event;
+      console.log(e);
+    }
+</code></pre>
+</li>
+<li>事件对象的三个坐标<pre><code class="lang-javascript">    one.onclick = function (e) {
+      e = e || window.event;
+      console.log(&quot;e.screenX:&quot;+e.screenX +&quot;:&quot;+ e.screenY); //屏幕的左上角距离点击的那个位置
+      console.log(&quot;e.clientX:&quot;+ e.clientX +&quot;:&quot;+ e.clientY);//可视区的左上角
+      console.log(&quot;e.pageX:&quot;+ e.pageX+&quot;:&quot;+ e.pageY);//点击的那个盒子
+    }
+</code></pre>
+</li>
+<li>事件对象的page的兼容性以及封装<pre><code class="lang-javascript">  function getPage(e){
+    e = e || window.event;
+    return {
+      //如果你的浏览器支持e.pageX，直接获取就好了。
+      //如果你的浏览器不支持e.pageX，那就计算出这个值（当前可视区的距离加上滚出去的距离。）
+      pageX: e.pageX || e.clientX + document.documentElement.scrollLeft,
+      pageY: e.pageY || e.clientY + document.documentElement.scrollTop
+    };
+  }
+</code></pre>
+<h3 id="foreach-">forEach 用来遍历数组的</h3>
+<pre><code class="lang-javascript">  var arr = [10,20,30,40,50]; 
+  arr.forEach(function (value, index, arr1) {
+  console.log(value); //每一个元素的值
+  console.log(index);  //下标
+  console.log(&quot;arr[&quot;+index+&quot;] = &quot;+ value);
+  console.log(arr1);   //一个新的数组
+  });
+</code></pre>
+<h3 id="-">鼠标按下事件</h3>
+</li>
+<li>onmousedown<h3 id="-">鼠标移动事件</h3>
+</li>
+<li>onmousemove  多用于拖动事件<h3 id="-">鼠标松开事件</h3>
+</li>
+<li>onmouseup<h3 id="-">注册事件的另外一种方式</h3>
+</li>
+<li>on+事件名称的方式注册的事件，这种方式不能给同一个元素注册多个相同名称的事件</li>
+<li>addEventListener(事件名称，事件处理程序，boolean值)；<ul>
+<li>第一个参数是事件名称字符串：比如 click mouseover</li>
+<li>第二个参数是事件处理程序，可以给一个匿名函数，也可以给一个定义好的函数名</li>
+<li>第三个参数可以不给，不给就是默认的false,第三个参数false表示支持冒泡。</li>
+<li>ie8及以前 不支持此方法给元素添加事件  用attachEvent注册事件<ul>
+<li>语法  attachEvent(on+事件名称，事件处理程序)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>注册事件兼容处理<pre><code class="lang-javascript">  function addEventListener(obj,type,listener){
+    //能力检测
+    if(obj.addEventListener){
+      obj.addEventListener(type,listener,false);
+    }else if(obj.attachEvent){
+      obj.attachEvent(&quot;on&quot;+type,listener);
+    }else {
+      obj[&quot;on&quot; + type] = listener;
+    }
+  }
+</code></pre>
+<h3 id="-">移除事件的方式以及兼容处理</h3>
+</li>
+<li>on+事件名称的方式注册事件<ul>
+<li>把事件设置为null,就可以移除事件了。  <ul>
+<li>btn.onclick=null;</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>addEventListener方法注册事件<ul>
+<li>用removeEventListener <ul>
+<li>btn.removeEventListener(&quot;click&quot;,&quot;test1&quot;,&quot;false&quot;);</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ie8及以前 是使用attachEvent来注册的<ul>
+<li>用 detachEvent 来移除事件<ul>
+<li>btn.detachEvent(&quot;onclick&quot;,test2);</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>移除事件做兼容处理<pre><code class="lang-javascript">    function removeEventListener(obj,type,listener){
+      //能力检测
+      if(obj.removeEventListener){
+        obj.removeEventListener(type,listener);
+      }else if(obj.detachEvent){
+        obj.detachEvent(&quot;on&quot;+type,listener);
+      }else {
+        obj[&quot;on&quot;+type] = null;
+      }
+    }
+</code></pre>
+<h3 id="-">事件冒泡</h3>
+</li>
+<li>元素的事件被触发，那么这个元素的所有的父元素，他的同类事件都会被触发，事件冒泡一直都存在的，为什么以前没看到，因为以前没有给他的父元素设置同样的事件 处理程序。</li>
+<li>事件委托
+```javascript
+  ul1.onclick = function (e) {<pre><code>  e = e || window.event;
+  alert(e.target.innerHTML);  //e.target是事件触发的源头
+}
+</code></pre></li>
+</ul>
+<pre><code>+ 阻止事件冒泡
+  - e.stopPropagation();  //事件停止扩散，ie8及以前不支持
+  - e.cancelBubble=true;  //取消冒泡 ie8及以前支持
+  - 兼容处理
+  ```javascript
+          function stopPropagetion(e){
+            if(e &amp;&amp; e.stopPropagation){
+              e.stopPropagation();
+            }else{
+              e.cancelBubble = true;
+            }
+          }
+</code></pre><ul>
+<li>事件的三个阶段<ul>
+<li>事件对象e.eventPhase 来获取事件的阶段<ul>
+<li>值是1： 就是捕获阶段</li>
+<li>值是2： 就是目标阶段，当前触发事件的阶段</li>
+<li>值是3： 就是冒泡阶段</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>事件的类型<ul>
+<li>事件对象e.type 可以获取当前这个事件的类型。是单击事件，还是鼠标移入事件</li>
+</ul>
+</li>
+<li>阻止a标签跳转的方式<ul>
+<li>e.preventDefault(); ie8及以前不支持</li>
+<li>e.returnValue=false; ie8里面默认的阻止a标签跳转的方式</li>
+</ul>
+</li>
+<li><p>事件的几个属性</p>
+<pre><code>   this  正在执行这个事件处理程序的那个对象。
+        e.currentTarget  和this一样 ie8不支持
+
+        e.target 事件源头，这个事件从那儿来的
+        e.srcElement  和e.target是一样的，表示事件源头
+
+        e.which  触发的那个按钮  1鼠标左键   2中间滚轮  3鼠标右键
+</code></pre><h3 id="-">正则表达式</h3>
+<p>```</p>
+<pre><code>//1. 正则声明两种方式
+//var reg1 = new RegExp(/\d/);
+//var reg2 = /\d/;
+
+//2.预定义类
+// .  除了换行和回车之外的字符
+// \d 数字
+// \D 非数字
+// \s 不可见字符（换行、回车、制表符、空格...）
+// \S 可见字符
+// \w 单词字符（a-z A-Z 0-9 _）
+// \W 非单词字符
+
+//console.log(/\w/.test(&quot;1234&quot;));
+
+//3.自定义类  连续、完全匹配 一次或者一次以上
+//   /hei/.test(&quot;heiiiiiiii&quot;);
+
+//4.或|  优先级()
+//  /hei|ma/
+//  /he(i|m)a/      heia   hema
+
+//5.简单类[]
+//  /[abcde]/  中括号中的东西，任意的出现一个， 都是true。   &quot;a&quot;
+
+//6.负向类[^]
+//   /[^abcde]/   检测的字符串中出现了 abcde以外的任何一个字符，test检测都是true。  &quot;abcde8&quot;
+//console.log( /[^abcde]/.test(&quot;abcde8&quot;)); //ture
+//console.log( /[^abcde]/.test(&quot;abcdeabdeeeeed&quot;));//false
+
+//7.范围类[a-z]
+//  /[a-z]/      &quot;123454322h34345434&quot;
+//console.log( /[a-z]/.test(&quot;123454322h34345434&quot;));
+//console.log( /[a-zA-Z0-9_]/.test(&quot;!@#$%$%^^^%$#@@!&quot;));
+//console.log( /[a-zA-Z0-9_]/.test(&quot;!@#$%$%^h^^%$#@@!&quot;));
+//console.log( /[a-zA-Z0-9_]/.test(&quot;!@#$%$%^H^^%$#@@!&quot;));
+//console.log( /[a-zA-Z0-9_]/.test(&quot;!@#$%$%^7^^%$#@@!&quot;));
+//console.log( /[a-zA-Z0-9_]/.test(&quot;!@#$%$%^_^^%$#@@!&quot;));
+
+//8.组合类
+//console.log(/[a-m1-5]/.test(&quot;999999b&quot;))//true
+//console.log(/[a-m1-5\n]/.test(&quot;2&quot;))//true//
+</code></pre></li>
+</ul>
+<pre><code>  //console.log(/\d([ab]|[^0-9])/.test(&quot;8a&quot;)); //true
+  //console.log(/\d([ab]|[^0-9])/.test(&quot;8b&quot;)); //true
+  //console.log(/\d([ab]|[^0-9])/.test(&quot;8&quot;));  //false
+  //console.log(/\d([ab]|[^0-9])/.test(&quot;8aaaaaaaaaa&quot;));  //true
+  //console.log(/\d([ab]|[^0-9])/.test(&quot;8bbbbbbb&quot;));   //true
+  //console.log(/\d([ab]|[^0-9])/.test(&quot;8!#$#$#$&quot;));   //true
+  //console.log(/\d([ab]|[^0-9])/.test(&quot;aaabbb8!dddd&quot;)); //true
+
+  //console.log(/\d([ab]|[^0-9])/.test(&quot;b5877&quot;)); //false
+  //console.log(/\d([ab]|[^0-9])/.test(&quot;8!7&quot;)); //true
+  //console.log(/\d([ab]|[^A-Z])/.test(&quot;A&quot;)); //false
+
+
+  //9.边界
+  //   /^\d/  一定要是数字开头
+  //   /\w$/  一定要是单词字符结尾
+</code></pre><p>```</p>
+
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+});
+//-->
+</SCRIPT>

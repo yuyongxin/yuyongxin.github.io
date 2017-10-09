@@ -1,0 +1,236 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>i5ting_ztree_toc:php入门总结</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<h1 id="php">php</h1>
+<h3 id="-php-">设置PHP页面编码格式</h3>
+<pre><code class="lang-javascript">    header(&#39;content-type:text/html;charset=utf-8&#39;);
+</code></pre>
+<h3 id="-name-">定义变量：$name;</h3>
+<h3 id="php-">php中拼接字符串用 .</h3>
+<h3 id="-">定义数组：</h3>
+<ul>
+<li>索引数组$fooarr=arr(&#39;qq&#39;,&#39;ww&#39;);</li>
+<li>关系型数组：$person=array(&#39;name&#39;=&gt;&#39;吴京&#39;,&#39;film&#39;=&gt;&#39;战狼&#39;);</li>
+</ul>
+<h3 id="-echo-foodarr-">直接打印数组的所有内容echo $foodarr;</h3>
+<h3 id="-print_r-foodarr-">直接输出复杂数据类型  print_r($foodarr);</h3>
+<h3 id="-">获取数组的长度</h3>
+<ul>
+<li>count($foodarr);</li>
+</ul>
+<h3 id="foreach-">foreach循环方法</h3>
+<pre><code>                $key  循环的键
+                $vakue 循环的值
+                foreach($person as $key=&gt;$value){}
+</code></pre><h3 id="php-php-">php中引入其他的php页面</h3>
+<pre><code>            &lt;?php
+
+                include &#39;...php&#39;;
+                .....
+            ?&gt;
+</code></pre><h3 id="php-html-">php的生成html结构的拼接方法</h3>
+<ul>
+<li>1<pre><code>      echo &#39;&lt;ul&gt;&#39;;
+      for($i=0;$i&lt;count($arr);$i++){
+      .生成对应的html结构
+      echo &#39;&lt;li&gt;&#39;;
+      echo &#39;&lt;a href=&quot;&#39;.$arr[$i][&#39;href&#39;].&#39;&quot;&gt;点我看&#39;.$arr[$i][&#39;name&#39;].&#39;&lt;/a&gt;&#39;;
+      echo &#39;&lt;img src=&quot;&#39;.$arr[$i][&#39;path&#39;].&#39;&quot; alt=&quot;&quot;&gt;&#39;;
+      echo &#39;&lt;span&gt;&#39;.$arr[$i][&#39;name&#39;].&#39;&lt;/span&gt;&#39;;
+      echo &#39;&lt;/li&gt;&#39;;
+      }
+      echo &#39;&lt;/ul&gt;&#39;;
+</code></pre></li>
+<li>2<pre><code>  for ($i=0; $i &lt;count($heroArr) ; $i++) { 
+              echo &#39; &lt;div class=&quot;col-sm-6 col-md-4&quot;&gt;
+                      &lt;div class=&quot;thumbnail&quot;&gt;
+                        &lt;img src=&quot;&#39;.$heroArr[$i][&#39;champion_icon&#39;].&#39;&quot; alt=&quot;...&quot;&gt;
+                        &lt;div class=&quot;caption&quot;&gt;
+                          &lt;h3&gt;&#39;.$heroArr[$i][&#39;champion_name&#39;].&#39;&lt;/h3&gt;
+                          &lt;p&gt;&lt;a href=&quot;#&quot; class=&quot;btn btn-primary&quot; role=&quot;button&quot;&gt;购买&lt;/a&gt; &lt;a href=&quot;#&quot; class=&quot;btn btn-default&quot; role=&quot;button&quot;&gt;详情&lt;/a&gt;&lt;/p&gt;
+                        &lt;/div&gt;
+                      &lt;/div&gt;
+                    &lt;/div&gt;&#39;;
+            }
+</code></pre><h3 id="php-">php中的超全局变量</h3>
+</li>
+<li><p>$_GET; $_POST;</p>
+<h3 id="php-php-html-">php页面可以写多个要&lt;?php?&gt;标签，并且可以拼在html中。</h3>
+<h3 id="-">数据的交互</h3>
+<ul>
+<li>form表单发送数据</li>
+<li>action 指定提交的url</li>
+<li>method 提交的方式 默认为get</li>
+</ul>
+</li>
+<li><p>表单元素 需要提交的数据</p>
+<ul>
+<li>使用name属性进行标记</li>
+</ul>
+</li>
+<li><p>form表单中get方式提交数据总结：</p>
+<ul>
+<li><p>数据拼在URL中，安全性不好，多条数据URL数据太长，可能会有限制</p>
+<pre><code>
+&lt;form action=&quot;./getData.php&quot;&gt;
+ &lt;input name=&#39;food&#39; type=&quot;text&quot; placeholder=&quot;你喜欢吃的食物&quot;&gt;
+ &lt;br&gt;
+ &lt;input name=&#39;doType&#39; type=&quot;text&quot; placeholder=&quot;爱吃的做法&quot;&gt;
+ &lt;input type=&quot;submit&quot;&gt;
+&lt;/form&gt;
+</code></pre></li>
+</ul>
+</li>
+<li><p>post</p>
+<ul>
+<li>提交的数据不在URL中，安全性好，没有长度限制，服务器可以选择是否接受这么多数据，</li>
+<li><p>2.如果上传文件必须使用post </p>
+<pre><code>
+&lt;form action=&quot;./postData.php&quot; method=&quot;post&quot;&gt;
+ &lt;input name=&#39;food&#39; type=&quot;text&quot; placeholder=&quot;你喜欢吃的食物&quot;&gt;
+ &lt;br&gt;
+ &lt;input name=&#39;doType&#39; type=&quot;text&quot; placeholder=&quot;爱吃的做法&quot;&gt;
+ &lt;input type=&quot;submit&quot;&gt;
+&lt;/form&gt;
+</code></pre></li>
+</ul>
+</li>
+<li><p>form表单上传文件</p>
+<ul>
+<li>1.form表单属性需要设置 </li>
+<li>2.method=&#39;post&#39;</li>
+<li>3.enctype=&#39;multipart/form-data&#39; <ul>
+<li>3.enctype 默认值是 application/x-www-form-urlencoded<pre><code>&lt;form action=&quot;./postFIles.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+&lt;input type=&quot;file&quot; name=&#39;icon&#39;&gt;
+&lt;br&gt;
+&lt;input type=&quot;submit&quot;&gt;
+&lt;/form&gt;
+</code></pre></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>php中用$_FILES接收提交的文件（临时文件）</p>
+<ul>
+<li>print_r($_FILES);<ul>
+<li>这是 打印出来的 $_FILES的值<pre><code>            Array ( 
+              [icon] =&gt; Array ( 
+                  [name] =&gt; 1405937554667.png  上传的文件名
+                  [type] =&gt; image/png 类型
+                  [tmp_name] =&gt; C:\Users\51772\AppData\Local\Temp\php52F7.tmp 路径 临时
+                  [error] =&gt; 0 错误编码
+                  [size] =&gt; 13949  大小
+                  ) 
+                )
+</code></pre></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>移动上传的文件<ul>
+<li>move_uploaded_file(file,newloc);<ul>
+<li>参数1 移动的文件</li>
+<li>参数2 移动到哪里去<pre><code>       move_uploaded_file($_FILES[&#39;icon&#39;][&#39;tmp_name&#39;]&#39;./files/&#39;.$_FILES[&#39;icon&#39;][&#39;name&#39;]);
+</code></pre></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>php中延时sleep(秒)；</li>
+<li>产生随机值<pre><code>   $messageList=array(&#39;你好&#39;,&#39;淘汰&#39;,&#39;什么gui&#39;,&#39;什么&#39;);
+  $randomkey=array_rand($messageList,1);
+  echo $messageList[$randomkey];
+</code></pre></li>
+<li>判断数据是否在一个数组中存在<pre><code>   参数1 查询的内容
+   参数2 去哪个数组查询
+  $result = in_array($name,$nameArr);
+</code></pre></li>
+</ul>
+
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+});
+//-->
+</SCRIPT>

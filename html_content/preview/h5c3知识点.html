@@ -1,0 +1,1017 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>i5ting_ztree_toc:h5c3知识点</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<h1 id="h5c3-">h5c3新增特性</h1>
+<h3 id="html5-">html5的一些新规范特点</h3>
+<ul>
+<li>1.文档声明，变少了（&lt;!DOCTYPE html&gt;）</li>
+<li>2.style和script不用写type属性了,以前的h4我们不写type也没错，但是呢不符合规范，规范是要求要写的，不报错的原因只是因为：浏览器容错性强，自己帮我们解析了正确的type属性</li>
+<li>3.h5中不需要每个标签都闭合</li>
+<li>4.大小写不敏感，html5的标签中可以大写也可以小写。但是呢统一标签都用小写<h3 id="html-">html 新增的结构标签</h3>
+</li>
+<li>以前都是用div来做区域，并给它一个类名来标识是哪个区域，有以下缺点<ul>
+<li>1.div没有语义，不利于seo</li>
+<li>2.类名可以随便写，易造成污染</li>
+</ul>
+</li>
+<li>html5特意提供了一些新的用来做这些页面架构的区域标签，解决上述两个问题<ul>
+<li>1.更具备语义</li>
+<li>2.不能随便写了，因为它直接把标签作为了某些区域</li>
+</ul>
+</li>
+<li>header标签 ：头部区域<ul>
+<li>nav标签： 导航区域</li>
+</ul>
+</li>
+<li>main标签：主体区域<ul>
+<li>section标签  主题里的某一个分组<ul>
+<li>aside标签 分组里的侧边内容</li>
+<li>article标签 分组里的正文</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>footer标签：页尾区域<h3 id="h5-">h5中推荐的自定义属性写法以及获取的方法</h3>
+</li>
+<li>不是标签自带的属性，这些属性都叫自定义属性<ul>
+<li>h5中规范：自定义属性的写法为：data-xxx   xxx就是属性名</li>
+<li>h5提供的找自定义属性的方法：dataset可以获取这些所有的自定义属性，并且是对象类型</li>
+<li>取值：.dataset[&quot;age&quot;] 或 .dataset.age， 如果想用dataset来取自定义属性，那么必须要求这些自定义属性前面有data-</li>
+<li>所有用data-格式写的属性在dataset里取的时候，不需要加data-，因为它会自动把data-去掉,并且如果后面还有-，它会去掉-，并且把-后面的那个单词首字母大写<h3 id="h5-">h5新增标签的兼容</h3>
+</li>
+</ul>
+</li>
+<li>h5提供的新结构标签在IE8以前的版本都不兼容</li>
+<li>解决兼容的问题</li>
+<li>条件编译命令 只有满足条件才会执行注释里面代码<ul>
+<li>写法： cc:ie6 + tab键</li>
+<li>1.自己写js代码创建一个dom元素<ul>
+<li>1.使用document.createElement创建元素</li>
+<li>2.添加到body</li>
+<li>3.写样式：记得要转成块元素：display:block</li>
+</ul>
+</li>
+<li>2.用第三方框架解决兼容问题<pre><code>  &lt;!--[if lte IE 8]&gt;
+      &lt;script src=&quot;js/html5shiv.js&quot;&gt;&lt;/script&gt;
+  &lt;![endif]--&gt;
+</code></pre><h3 id="-">多媒体播放</h3>
+</li>
+</ul>
+</li>
+<li>audio标签：用来播放音频的</li>
+<li>video标签：用来播放视频</li>
+<li><p>属性：以下属性只要写上就有效果，不用赋值） a&amp;v都有这些属性</p>
+<ul>
+<li>controls：显示控制条</li>
+<li>autoplay：自动播放</li>
+<li>loop:循环播放，播放完了后自动从头开始再一次播放</li>
+</ul>
+</li>
+<li>特点: video和audio标签在移动端支持的非常好<pre><code> - 在IE8以前的老版本里是不支持的，用flash播放
+ -  有框架：video.js  它核心也是用flash来播放的
+ -  国内：pc端用的是flash，移动端用的是h5
+ -  h5标签缺点：
+   - 右键可以直接另存为
+   -  屏蔽广告技术上实现比较简单
+</code></pre></li>
+<li><p>多媒体中多格式播放</p>
+<ul>
+<li><p>如果video标签里面写source标签，代表它会从上往下来寻找播放，先找第一个source看能不能播放，能播放就播放它，不能播放就找下一个来试试能不能播放</p>
+<pre><code>
+          &lt;video controls autoplay&gt;
+          &lt;source src=&quot;video/rabbit.ogg&quot;&gt;&lt;/source&gt;
+          &lt;source src=&quot;video/movie01.mp4&quot;&gt;&lt;/source&gt;
+          小妹下海写代码很辛苦，麻烦下载最新浏览器，体验小妹给你带来的炫酷体验！
+          &lt;a href=&quot;#&quot;&gt;点我下载&lt;/a&gt;
+          &lt;/video&gt;
+</code></pre></li>
+</ul>
+</li>
+<li><p>input中新增的type取值</p>
+<pre><code>       &lt;input id=&#39;color&#39; type=&quot;color&quot;&gt;//可以弹出颜色盘
+
+       &lt;label for=&quot;&quot;&gt;请输入年龄&lt;/label&gt;
+       &lt;!--特点：限制只能输入数字，并且提供增加和减小两个小按钮  --&gt;
+       &lt;input type=&quot;number&quot;&gt;
+
+       &lt;label for=&quot;&quot;&gt;请输入电话&lt;/label&gt;
+       &lt;!--特点：移动端可以看出差别，就是弹出9宫格的数字  --&gt;
+       &lt;input type=&quot;tel&quot;&gt;
+
+      &lt;label for=&quot;&quot;&gt;请输入生日&lt;/label&gt;
+      &lt;!--特点：只能输入日期并且会弹出日期选择器给你选择日期  --&gt;
+      &lt;input type=&quot;date&quot;&gt;
+
+      &lt;label for=&quot;&quot;&gt;请输入邮箱&lt;/label&gt;
+      &lt;!--特点：它自带了邮箱格式是否正确的验证  --&gt;
+      &lt;input type=&quot;email&quot;&gt;
+
+      &lt;label for=&quot;&quot;&gt;请输入网址&lt;/label&gt;
+      &lt;!--特点：自带了网址格式是否正确的验证  --&gt;
+      &lt;input type=&quot;url&quot;&gt;
+
+      &lt;label for=&quot;&quot;&gt;请上传一个文件&lt;/label&gt;
+      &lt;!--特点：上传文件  --&gt;
+      &lt;input type=&quot;file&quot;&gt;
+</code></pre></li>
+<li><p>给date输入类型加默认时间</p>
+<pre><code>           // 得到日期输入框
+          var dateDom = document.getElementsByTagName(&#39;input&#39;)[0];
+
+          // 得到当前时间
+          var now = new Date();
+
+          // 直接把获得的日期对象赋值给它就可以了
+          dateDom.valueAsDate = now;
+</code></pre></li>
+<li><p>表单中新增的一些属性</p>
+<ul>
+<li>input中的新属性：<ul>
+<li>required: 代表它所在的input必须要有内容，否则提交时不成功</li>
+<li>autofocus: 代表它所在的input自动得到焦点</li>
+<li>multiple: 主要用在input type=file中，代表可以选择多个文件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>修改默认验证提示及h5提供的正则表达式</p>
+<ul>
+<li>pattern:属性，可以让这个input匹配一个正则表达式，并且匹配不成功，会自动帮你弹出提示框</li>
+<li>oninvalid:事件，当某个输入框内容验证失败（格式不匹配时会调用）</li>
+<li>setCustomValidity:一个js的方法，设置当它验证失败时默认弹出的文字内容
+```</li>
+</ul>
+</li>
+</ul>
+<pre><code>        &lt;form action=&quot;#&quot;&gt;
+            &lt;label for=&quot;&quot;&gt;电话：&lt;/label&gt;
+            &lt;input type=&quot;tel&quot; required pattern=&quot;\d{11}&quot;&gt;
+
+            &lt;label for=&quot;&quot;&gt;邮件：&lt;/label&gt;
+            &lt;!--自带了验证邮件格式是否正确  --&gt;
+            &lt;!-- &lt;input type=&quot;email&quot; required&gt; --&gt;
+
+            &lt;label for=&quot;&quot;&gt;网址：&lt;/label&gt;
+            &lt;!-- 自带了网址验证是否正确，http://xxxx.xxxx.xx  这个一般不用 --&gt;
+            &lt;!-- &lt;input type=&quot;url&quot; required&gt; --&gt;
+
+            &lt;input type=&quot;submit&quot;&gt;
+        &lt;/form&gt;
+</code></pre><pre><code>
+</code></pre><pre><code>    &lt;script&gt;
+        var telDom = document.getElementsByTagName(&#39;input&#39;)[0];
+
+
+        telDom.oninvalid = function () {
+
+            // console.log(&#39;验证失败会触发&#39;);  
+
+
+            telDom.setCustomValidity(&#39;请输入11位数字&#39;);
+        }
+
+    &lt;/script&gt;
+</code></pre><pre><code>+ input中新增的滑块
+    - 1.input type=range  可以得到滑块， max 设置最大值  min设置最小值
+    - 2.output 专门用来输出结果的，其实就是span，但是比span更有语义
+    - 3.oninput 当元素获得用户输入时就会触发（只要在输入，每输入一次触发）针对滑块而言，在滑动就会触发
+    - 4.onchange  当滑块停止滑动触发一次
+</code></pre><pre><code>     &lt;body&gt;
+        &lt;input type=&quot;range&quot; max=&quot;10&quot; min=&#39;2&#39; value=&quot;3&quot;&gt;
+        &lt;!--output其实跟span没什么区别，只是比span更具备语义  --&gt;
+        &lt;output id=&#39;out&#39;&gt;3&lt;/output&gt;
+    &lt;/body&gt;
+
+    &lt;script&gt;
+        // 找到滑块元素
+        var rangeDom = document.getElementsByTagName(&#39;input&#39;)[0];
+        // 找到output元素
+        var outDom = document.getElementById(&#39;out&#39;);
+
+        // 当值改变触发
+        // 对于滑块来说，它是松手以后才触发
+        rangeDom.onchange = function () {
+
+            console.log(&#39;我变了&#39;);
+        }
+
+        // 当获得用户输入时触发
+        // 对于滑块来说，它是在滑动时就触发
+        rangeDom.oninput = function () {
+
+            // console.log(&#39;我获得你输了的东西&#39;);
+
+            // 获取滑块正在滑动的值
+            var value = this.value;
+
+            // 把获取到的值赋值给output的内容
+            outDom.innerHTML = value;
+        }
+
+    &lt;/script&gt;
+```
+</code></pre><ul>
+<li><p>进度条</p>
+<pre><code>          &lt;!--这两个进度条，IE9以后才支持progress  --&gt;
+          &lt;!--默认最大值是1，最小值是0  --&gt;
+          &lt;progress value=&quot;50&quot; max=100 min=10&gt;&lt;/progress&gt;
+
+          &lt;!--默认最大值是1，最小值是0 ,ie完全不支持  --&gt;
+          &lt;meter value=&quot;.5&quot;&gt;&lt;/meter&gt;
+</code></pre><h3 id="h5-js-">h5中新增的js找到元素的方法</h3>
+</li>
+<li>querySelector: 找到的永远是第一个匹配的，而且只会返回一个元素</li>
+<li>querySelectorAll: 找到的是所有，哪怕只有一个也返回数组<h3 id="h5-class-">h5中新增的操作元素的class方法</h3>
+</li>
+<li>divDom.classList.add(&#39;color&#39;);</li>
+<li>divDom.classList.remove(&#39;color&#39;);</li>
+<li>divDom.classList.toggle(&#39;color&#39;);</li>
+</ul>
+<h3 id="-">关系选择器</h3>
+<pre><code>     .box+li{    
+                color red;
+            }
+            代表找到.two下一个兄弟li标签，只有下一个兄弟元素确实是li标签才命中
+</code></pre><pre><code>    .two~li{
+
+            }
+            找所有兄弟li标签，但是不包括自己和前面的兄弟
+</code></pre><h3 id="-">属性选择器</h3>
+<ul>
+<li>li[class]{} 找到所有含有类的li标签</li>
+<li>li[class=&quot;three&quot;]  属性等于某个值</li>
+<li>li[class^=&quot;t&quot;]    属性以什么开头</li>
+<li>li[class$=&quot;e&quot;]   属性以什么结尾</li>
+<li>li[class*=&quot;o&quot;]   属性包含什么</li>
+</ul>
+<h3 id="-">伪类选择器</h3>
+<ul>
+<li>选择器:first-child<ul>
+<li>代表找到第一个元素，并且要在父元素中是第一个元素</li>
+</ul>
+</li>
+<li>选择器:last-child<ul>
+<li>代表找到最后一个元素，并且要在父元素中是最后一个元素</li>
+</ul>
+</li>
+<li>选择器:nth-child(数字)<ul>
+<li>代表找到在父元素中的第几个子元素</li>
+</ul>
+</li>
+<li>选择器：nth-child(n)<ul>
+<li>代表找到所有，因为n从0开始一直到最大那个</li>
+</ul>
+</li>
+</ul>
+<h3 id="box-sizing-border-box-">box-sizing:border-box;  代表让边框加载盒子内</h3>
+<h3 id="xxx-of-type">xxx-of-type</h3>
+<ul>
+<li>first-of-type  last-of-type  nth-of-type 区别于nth-child ,只要满足是同类型的第几个就可以， 不需要保证在父元素中是第几个</li>
+</ul>
+<h3 id="-">伪元素选择器之第一个字符，第一行，选中行</h3>
+<ul>
+<li><p>所有的伪元素选择器，在C3标准的规范写法是写两个::，因为它要用来区分伪类选择，但是呢，伪元素选择器只写一个:一个也可以</p>
+<ul>
+<li><p>命中第一个字符  有些国家从右往左阅读的，那么第一个字符在右边</p>
+<pre><code>   p::first-letter {
+
+      color: blue;
+      font-size: 40px;
+  }
+</code></pre></li>
+<li><p>命中第一行，不管屏幕多宽都是第一行</p>
+<pre><code>   p::first-line {
+
+      background-color: red;
+  }
+</code></pre></li>
+<li><p>命中选中的哪行</p>
+<pre><code>  p::selection {
+
+      background-color: orange;
+  }
+</code></pre></li>
+</ul>
+</li>
+<li><p>伪元素之占位符</p>
+<ul>
+<li><p>实验室中的属性，试验中属性，测试中的属性， 已经有这个东西了，但是还没正式成为标准，遇到这种属性，浏览器支持，但是需要写浏览器标识才行，也就是说以后遇到试验中的属性，必须加浏览器前缀标识</p>
+<pre><code>      ::-webkit-input-placeholder {
+
+          color: red;
+      }
+
+      ::-moz-placeholder {
+
+          color: blue;
+      }
+
+      :-ms-input-placeholder {
+
+          color: hotpink;
+      }
+</code></pre></li>
+</ul>
+</li>
+<li>before&amp;after伪元素选择器<ul>
+<li>作用：可以在不写html标签的情况下，给某个dom元素再添加两个子元素</li>
+<li>before默认在内容的前面。after默认在内容的后面</li>
+<li>使用before和after必须要写content属性， 哪怕它不需要文字，也需要写一个content:&#39;&#39;;before和after默认是行内元素<h3 id="transition-">transition的作用</h3>
+</li>
+</ul>
+</li>
+<li>就是可以让一个元素从一个css属性值，到另外一个属性值的变化时会有个过渡效果（动画效果）</li>
+<li>谁需要，就加在谁身上，加在父元素身上没用 ，不能继承</li>
+<li>transition: all 5s steps(5) 1s;<ul>
+<li>参数1：参与过渡的属性，all,代表所有属性都参与，也可以传具体的指定的属性</li>
+<li>参数2：过渡的动画时间</li>
+<li>参数3：动画效果，其他的一般不用，steps(n) 分成n步来完成</li>
+<li>参数4：过度要延迟几秒执行</li>
+</ul>
+</li>
+<li>transition拆分成其他几个属性来用<pre><code>          /*参与过渡的属性  */
+          transition-property: all;
+          /*过渡时间  */
+          transition-duration: 1s;
+          /*动画效果  */
+          transition-timing-function: ease-in;
+          /*延迟多久开始过渡  */
+          transition-delay: 1s;
+</code></pre><h3 id="-">文字阴影</h3>
+</li>
+<li>text- shadow: 10px 10px 20px green<ul>
+<li>参数1：x轴方向阴影位置  为正代表往右边偏移，为负代表往左边偏移</li>
+<li>参数2：y轴方向的阴影位置 为正代表往下边偏移，为负代表往上边偏移</li>
+<li>参数3：阴影模糊度</li>
+<li>参数4：阴影颜色</li>
+<li>如果需要多个阴影，那么就在后面写，连上</li>
+</ul>
+</li>
+<li>浮雕文字效果<ul>
+<li>text-shadow: -3px -3px white, 3px 3px black;<h3 id="-">盒子阴影</h3>
+</li>
+</ul>
+</li>
+<li>box-shadow:10px 20px 20px 10px white;<ul>
+<li>参数1：x轴上的阴影偏移</li>
+<li>参数2：y轴上的阴影偏移</li>
+<li>参数3：模糊值</li>
+<li>参数4：阴影的宽度</li>
+<li>参数5：阴影颜色<h3 id="transform">transform</h3>
+</li>
+</ul>
+</li>
+<li>transform属性可以完成变换：旋转，缩放，平移，扭曲<ul>
+<li>旋转：rotate(角度)；正顺时针，负逆时针</li>
+<li>缩放：scale();可以传2个参数（参数1宽，参数2是高），如果1个参数代表宽高都缩放,  缩放的倍数，大于1则放大，小于1则缩小</li>
+<li>平移：translate() 传1个参数水平平移，传2个分别是水平和垂直</li>
+<li>扭曲：skew();传角度，变成平行四边形</li>
+</ul>
+</li>
+<li>旋转锚点<ul>
+<li>rotate旋转默认是以中心点保持不变来旋转的</li>
+<li>transform-origin:top right;  设置旋转固定点（以哪个点旋转）<h3 id="background-">background新增加的属性</h3>
+</li>
+</ul>
+</li>
+<li>background: url(&#39;img/lzl.jpg&#39;) no-repeat center/contain;<ul>
+<li>参数1：选择图片的的路径</li>
+<li>参数2：是否平铺,新增了round，把图片缩放到盒子大小，如果盒子本身比图片大，那么就默认平铺了</li>
+<li>参数3：选择图片的定位<ul>
+<li>left：图片左边对齐盒子的左边</li>
+<li>right:图片右边对齐盒子的右边</li>
+<li>top:图片上边对齐盒子的上边</li>
+<li>bottom:图片下边对齐盒子的下边</li>
+<li>center: 中心点对齐</li>
+</ul>
+</li>
+<li>参数3定位后面可以加一个/后面再加指定这个图片的大小<ul>
+<li>cover和contain，都会进行按比例缩放，图片不变形</li>
+<li>cover：只要有一边缩放到盒子里面了，就会停止缩放</li>
+<li>contain：必须保证两边都缩放到盒子里了，然后才会停止缩放</li>
+</ul>
+</li>
+<li>background还可以传颜色，代表设置的就是这个盒子的背景颜色， background可以放多张图片，图片之间以,隔开。如果还需要加背景颜色，背景颜色一定只能接在最后一张图片的后面，否则任何效果都没有<ul>
+<li>background: url(&#39;img/pyy.jpg&#39;) no-repeat top left/200px 100px, url(&#39;img/wyz.jpg&#39;) no-repeat bottom left/200px 100px red;<h3 id="-">图片边框</h3>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>border-image:设置图片边框 它是一个复合属性，后面还可以写对这张图片的切割线<pre><code>              顺序分别是上，右，下，左，如果四个值都一样，就只写一个就行了
+</code></pre><ul>
+<li>但是如果用它一定要记得，加border,此时border大小就是图片边框的大小<pre><code>   /* border-image: url(&#39;img/border-oil.jpg&#39;) 75; */
+      border-image-source: url(&#39;img/border-oil.jpg&#39;);
+      border-image-slice: 25;
+</code></pre><h3 id="-">线性渐变</h3>
+</li>
+</ul>
+</li>
+<li>如果要有线性渐变的效果，其实就相当于给一个盒子的背景加背景图片</li>
+<li>background: linear-gradient(0deg, orange, red, blue, green, yellow) no-repeat;</li>
+<li>参数1：颜色过渡的方向<ul>
+<li>to left   从右到左</li>
+<li>to right  从左到右</li>
+<li>to top    从下到上</li>
+<li>to bottom 从上到下</li>
+<li>还可以传入角度，0度是下面，如果传0度，就是从下到上,顺时针旋转</li>
+</ul>
+</li>
+<li>参数2：颜色列表，至少需要2个颜色,第一个颜色是开始的颜色，具体颜色摆在哪个位置，就看你的一个参数传入的方向，后面可以接N多个颜色<ul>
+<li>所有颜色默认都是从开始的地方开始，第一个颜色如果给一个百分比，代表在什么位置结束，后面每个颜色如果给一个百分比，代表在什么位置开始</li>
+<li>如果希望后面的颜色给一个结束，那么就必须再写一个同样的颜色，然后写一个百分比代表这个颜色什么时候结束<h3 id="-">径向渐变</h3>
+</li>
+</ul>
+</li>
+<li>background: radial-gradient(235px 150px at center, red, orange);<ul>
+<li>参数1：圆心的位置以及圆的大小 x轴的半径 y轴的半径</li>
+<li>参数2：颜色列表，至少需要2个颜色</li>
+</ul>
+</li>
+<li>background: radial-gradient(150px at center, black 35% , white 35% );与径向渐变同理<h3 id="-">移动背景图片</h3>
+<pre><code>  /* background-position-x: -80px;
+     background-position-y: -140px; */
+</code></pre><h3 id="animation-">animation 动画的基本使用</h3>
+</li>
+<li>animation: autoSwmiming 1s steps(7) infinite;</li>
+</ul>
+<pre><code>
+              参数1传：动画名字
+              参数2：动画时长
+              参数3：动画效果，linear,或者steps，分步骤
+              参数4：动画的播放次数，传infinite无限播放（循环，播放一次继续播放）
+
+        @keyframes autoSwmiming {
+
+            from { 从什么状态开始动画，如果不写就是以元素默认的形态开始}
+
+            /*这里写你要做的动画的代码 动画要变成什么样子  */
+            to {
+
+                background-position-y: -882px;
+            }
+        }
+</code></pre><ul>
+<li>拆分</li>
+</ul>
+<pre><code>
+
+    用animation就没必要写transition了，因为它自带了动画效果
+
+        animation-name:动画的名字
+
+        animation-duration:动画的持续时间
+
+        animation-delay：动画的延迟时间
+
+        animation-timing-function：动画效果
+
+        animation-iteration-count:动画的次数可以传infinite，代表无限
+
+        下两个不常用
+
+            反转效果，先瞬间变成动画结束的样子，再以动画慢慢复原
+        animation-direction: reverse; 
+            动画完成后要不要以动画的结束样子显示（不恢复原样）
+        animation-fill-mode: forwards;
+</code></pre><ul>
+<li>animation 的复合写法<ul>
+<li>建议先写名字，在写时长，延迟时间，动画效果，动画次数</li>
+<li>animation:scaleBox 1s 1s linear 2</li>
+</ul>
+</li>
+<li>动画库的使用<ul>
+<li>1.引用css文件</li>
+<li>2.给你要动画效果的元素加一个类叫animated</li>
+<li>3.需要什么动画，就找到这个动画的名字，把这个名字作为它的另一个类<h3 id="-">阶段动画</h3>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>
+     @keyframes driver {
+
+            /*动画总时长的30%，做它里面的事  */
+            30% {
+                transform: translate(1000px);
+            }
+
+            /*然后总体动画时长是40%的时候，做它里面这些事  */
+            40% {
+                /*先在原来已经到的位置再旋转180度（调转车头）  */
+                transform: translate(1000px) rotateY(180deg);
+            }
+
+            80% {
+
+                transform: translate(1000px) rotateY(180deg) translateX(1000px);
+            }
+
+            /*最后100%让你不动了  */
+            100% {
+                transform: translate(0px);
+            }
+        }
+</code></pre><h3 id="3d-">3D旋转</h3>
+<ul>
+<li>z轴可以理解为屏幕前后<ul>
+<li>transform: rotateX(45deg);</li>
+<li>transform: rotateY(45deg);</li>
+<li>transform: rotateZ(45deg);<h3 id="-">视点的概念以及使用</h3>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>
+        生活中视觉效果：
+            近大远小
+
+        为什么我们默认看起来效果不明显
+
+        因为没有给它一个视觉的距离，这个视觉的距离就叫视点（镜头位置）
+
+        perspective(300px)
+</code></pre><ul>
+<li>如果要有3D透视效果，就需要给transform加perspective(距离，单位是px),值越大效果越不明显，值越小效果越明显</li>
+</ul>
+<h3 id="-">视点加在自身和加在父元素的不同之处</h3>
+<pre><code>
+     如果给每个元素加视点，相当于每个元素都有个镜头拍摄它的形态
+    而如果给父元素加视点，那么就只是一个镜头来拍元素的形态，那样的话，两边的元素虽然也是旋转90度，但对于这个镜头来说，看起来就像斜着的
+
+    如果视点加在父元素上，不要用transform:perspective
+
+    而应该用：perspective:距离
+</code></pre><h3 id="transform-style-preserve-3d-3d-">transform-style:preserve-3d; 开启3D显示  景深（有远有近）</h3>
+<ul>
+<li>*开发中如果发现3D效果不是你想要的，那么解决办法：就是把视点加到父元素，如果还不行再往上加，还不行<h3 id="animation-play-state-running-paused-">animation-play-state: running继续（默认）  paused 暂停</h3>
+</li>
+</ul>
+<h3 id="-">伸缩布局的基本使用</h3>
+<ul>
+<li>display:flex; 加在父元素身上，作用在子元素上</li>
+<li>设置在主轴上的排列方式 justify-content：<ul>
+<li>flex-start; 默认是 从左边开始（起点）</li>
+<li>flex-end 从右边开始排列（右对齐）</li>
+<li>space-around：元素和元素之间有间距，并且间距相等，开头和结束也有间距，两边的间距是元素之间间距的一半</li>
+<li>space-between: 元素和元素之间有间距，并且间距相等，但是开头和结束没有间距</li>
+<li>center:在主轴中间排列</li>
+</ul>
+</li>
+<li>设置元素在副轴上的排列方式   align-items：<ul>
+<li>同上</li>
+</ul>
+</li>
+<li>flex-direction: row 或column  设置那个是主轴</li>
+<li>伸缩布局都是按照从主轴开始到结束方向来排列的</li>
+<li>align-self: 单独设置某个元素在副轴上的位置<ul>
+<li>添加在子元素身上</li>
+</ul>
+</li>
+<li>flex: 设置的是主轴方向上的占比   she在子元素身上<ul>
+<li>主轴如果是水平方向，设置的是宽度</li>
+<li>主轴如果是垂直方向，设置的是高度</li>
+<li>如果水平方向设置了flex ,那么宽度就无效了，同理：垂直方向为主轴，那么高度就无效了</li>
+</ul>
+</li>
+<li>flex-wrap: wrap; 开启允许换行 设置在父元素身上的<ul>
+<li>默认情况下，在主轴上排列是不换行的，如果不够放则会缩小主轴上的大小（宽度或者高度），如果开启换行就它一个值：wrap， 那么就会按你设置的宽高来显示，但是不够放就换行</li>
+<li>如果用的flex设置的宽度或者高度，那么永远不会有换行。因为flex会根据剩下的宽度或者高度自动计算出你应该多少宽度和高度</li>
+</ul>
+</li>
+<li>如果给了flex做布局，那么只需要设置主轴上的大小，副轴上的大小会自动以父容器的大小作为元素的大小<ul>
+<li>比如说水平方向为主轴，那么只要给宽度，高度的话就会等于父容器高度，比如说垂直方向为主轴，那么就只要给高度，那么宽度就是父容器宽度<h3 id="-">定位的使用</h3>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>
+     document.querySelector(&#39;input&#39;).onclick = function () {
+
+        通过此方法可以去服务器请求自己的位置
+         定位有两个条件：1.要么有GPS模块，连接上卫星定位（最精确）
+         2.联网，通过你的网络ip去查询服务器上的地址（不太精确）
+         当获取到位置成功后就会调用的函数，这个函数你要参数传进去
+         获取到的位置信息会当作参数传给这个回调函数
+        window.navigator.geolocation.getCurrentPosition(function (loc) {
+
+            console.log(&#39;您所在的位置纬度是：&#39; + loc.coords.latitude + &#39;经度是：&#39;, +loc.coords.longitude);
+        })
+     }
+</code></pre><h3 id="-">定位搭配百度地图</h3>
+<pre><code>
+     &lt;!--导入百度地图的api  --&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;http://api.map.baidu.com/api?v=2.0&amp;ak=K8PVIR30Y44WuuAV1kwCxKr4pNmQSG9T&quot;&gt;&lt;/script&gt;
+
+    &lt;body&gt;
+    &lt;!--就是用来装地图的容器  --&gt;
+    &lt;div id=&quot;allmap&quot;&gt;&lt;/div&gt;
+    &lt;/body&gt;
+
+    &lt;/html&gt;
+
+    &lt;script type=&quot;text/javascript&quot;&gt;
+        navigator.geolocation.getCurrentPosition(function (loc) {
+
+        // 百度地图API功能（初始化地图对象）
+        var map = new BMap.Map(&quot;allmap&quot;);
+        // 设置一个坐标点，第一个参数是经度，第二个参数是纬度
+        var point = new BMap.Point(loc.coords.longitude, loc.coords.latitude);
+        // 把你刚刚写的坐标设置为地图的中心点，并且设置显示精度，最大精度是19
+        map.centerAndZoom(point, 12);
+
+        var marker = new BMap.Marker(point);  // 创建标注
+        map.addOverlay(marker);               // 将标注添加到地图中
+        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+
+
+
+        // 创建地址解析器实例
+        var myGeo = new BMap.Geocoder();
+        // 将地址解析结果显示在地图上,并调整地图视野
+        // 通过getPoint的方法是可以让你传入一个地址，得到一个的坐标，它会把坐标当作参数传递给这个方法的回调函数，不管成功与否都会调用，不成功的话，返回的参数point为空
+        // 参数3设置默认城市，那样的话，前面的参数1可以省略市
+        myGeo.getPoint(&quot;中粮商务公园&quot;, function (point) {
+
+            if (point) {
+
+                map.centerAndZoom(point, 19);
+                map.addOverlay(new BMap.Marker(point));
+            } else {
+                alert(&quot;您选择地址没有解析到结果!&quot;);
+            }
+        }, &quot;深圳市&quot;);
+        })
+</code></pre><h3 id="-">上下线事件</h3>
+<pre><code>
+      // 当检测到上线以后触发
+    window.ononline = function () {
+
+        console.log(&#39;上线了&#39;);
+    }
+
+    // 当检测到下线以后触发
+    window.onoffline = function () {
+
+        // console.log(&#39;下线了&#39;);
+        console.log(&#39;网络不通请检查您的网络&#39;);
+    }
+</code></pre><h3 id="-">本地存储</h3>
+<pre><code>        localStorage 用来存储数据，特点：只要自己不删永远都在
+                setItem(&#39;key&#39;,值);  这是存储
+                getItem(&#39;key&#39;); 这是取值
+                removeItem(&#39;key&#39;);这是删除某个值
+            sessionStorage 也是存储数据，但是会自动删除，用法跟上面的完全一样
+
+            localStorage 只要自己不删，它一直都在
+        //    sessionStorage 是一次性的，会自动删除，一次会话结束后就删了：关掉浏览器就没了
+</code></pre><h3 id="-">元素的拖拽</h3>
+<ul>
+<li>有些元素默认不能拖动，如果希望他有拖动效果，就给他个属性 draggable=&quot;true&quot; </li>
+</ul>
+<pre><code>
+     &lt;div class=&quot;box&quot; draggable=&quot;true&quot;&gt;&lt;/div&gt;
+</code></pre><ul>
+<li><p>拖动事件</p>
+<ul>
+<li>ondragstart 当元素开始拖拽触发</li>
+<li>ondrag 当元素正在拖拽触发</li>
+<li>ondragend 当元素停止拖拽触发</li>
+<li>ondragenter 检测容器有没有元素进来</li>
+<li>ondragleave 检测容器有没有元素出去</li>
+<li><p>ondrop 当某个容器检测到有元素移入，并且松手后触发</p>
+<ul>
+<li><p>但要让这个事件触发，必须先实现这个容器的ondragover事件，并且这个事件需要一个event参数，再调用event.preventDefault()方法</p>
+<pre><code>
+       containerDom.ondrop = function () {
+
+          // console.log(&#39;..................&#39;);
+
+          // 写死了，永远加的都是红色的盒子
+          this.appendChild(boxDom);
+      }
+
+      // 这个方法仅仅只是为了让ondrop事件能触发
+      containerDom.ondragover = function (event) {
+
+          event.preventDefault();
+      }
+</code></pre></li>
+</ul>
+</li>
+<li><p>图片拖拽到另外个容器例子</p>
+<pre><code>
+      &lt;body&gt;
+          &lt;div class=&quot;box&quot;&gt;
+              &lt;img src=&quot;img/lofter_1_noval_icon_ (1).jpg&quot; alt=&quot;&quot;&gt;
+              &lt;img src=&quot;img/lofter_1_noval_icon_ (2).jpg&quot; alt=&quot;&quot;&gt;
+              &lt;img src=&quot;img/lofter_1_noval_icon_ (3).jpg&quot; alt=&quot;&quot;&gt;
+              &lt;img src=&quot;img/lofter_1_noval_icon_ (4).jpg&quot; alt=&quot;&quot;&gt;
+              &lt;img src=&quot;img/lofter_1_noval_icon_ (5).jpg&quot; alt=&quot;&quot;&gt;
+              &lt;img src=&quot;img/lofter_1_noval_icon_ (6).jpg&quot; alt=&quot;&quot;&gt;
+              &lt;img src=&quot;img/lofter_1_noval_icon_ (7).jpg&quot; alt=&quot;&quot;&gt;
+              &lt;img src=&quot;img/lofter_1_noval_icon_ (8).jpg&quot; alt=&quot;&quot;&gt;
+              &lt;img src=&quot;img/lofter_1_noval_icon_ (9).jpg&quot; alt=&quot;&quot;&gt;
+              &lt;img src=&quot;img/lofter_1_noval_icon_ (10).jpg&quot; alt=&quot;&quot;&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;container&quot;&gt;&lt;/div&gt;
+      &lt;/body&gt;
+
+      &lt;script&gt;
+          var currentDom;
+
+          // 得到所有img元素
+          var imgList = document.querySelectorAll(&#39;img&#39;);
+
+          for (var i = 0; i &lt; imgList.length; i++) {
+
+              imgList[i].ondragstart = function () {
+
+                  // console.log(this);
+                  currentDom = this;
+              }
+          }
+
+          document.querySelector(&#39;.container&#39;).ondrop = function () {
+
+              this.appendChild(currentDom);
+          };
+
+          document.querySelector(&#39;.container&#39;).ondragover = function (event) {
+
+              event.preventDefault();
+          }
+          // 给box也来一个拖动
+          document.querySelector(&#39;.box&#39;).ondrop=function(){
+              this.appendChild(currentDom);
+          }
+          document.querySelector(&#39;.box&#39;).ondragover = function (event) {
+
+              event.preventDefault();
+          }
+      &lt;/script&gt;
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h3 id="-">上传图片并点击按钮预览</h3>
+<ul>
+<li>1.拿到file元素的上传文件  file元素.files 就能拿到所有上传的，如果是单选，直接file元素.files[0]</li>
+<li>2.此时拿到的文件还只是文件的信息，需把它读取出来， 就需要文件读取对象
+new FileReader();</li>
+<li>3.如何读取： 文件读取对象.readAsDataURL(文件信息)</li>
+<li>4.调用readAsDataURL方法后不一定立即读完，调用文件读取对象的onload事件</li>
+</ul>
+<pre><code>
+     document.querySelector(&#39;button&#39;).onclick = function () {
+
+        //拿到上传的元素
+        var fileDom = document.querySelector(&#39;input&#39;);
+
+        // 因为现在默认文件上传是只能上传一个
+        // 它会把所有上传的文件都存在file元素的files数组里
+        // 因为只允许上传一个，所以这个数组只有一个元素，那么你取只要通过第0个下标就能取
+        // console.log(fileDom.files[0]);
+
+        // 文件读取器
+        var reader = new FileReader();
+
+        // 读取方法
+        // 文件可能很大，读取文件也是一种耗时操作
+        reader.readAsDataURL(fileDom.files[0]);
+
+        reader.result
+        // 当文件读取完毕才会调用这个回调函数
+        reader.onload = function () {
+
+            // 结果你看不懂，但是浏览器看得懂，既然浏览器看得懂，我直接丢给浏览器解析就行了
+            console.log(reader.result);
+
+            document.body.style.background = &#39;url(&#39; + reader.result + &#39;)&#39;;
+        }
+
+    }
+</code></pre><h3 id="-">上传图片立即预览</h3>
+<ul>
+<li>file元素的onchange事件，当选中的文件发生改变会来触发</li>
+</ul>
+<pre><code>
+    document.querySelector(&quot;input&quot;).onchange=function(){
+        var reader=new FileReader();
+        reader.readerAsDataURL(this.files[0]);
+        reader.onload=function(){
+             document.querySelector(&#39;div&#39;).style.background = &#39;url(&#39; + reader.result + &#39;)&#39;
+        }
+    }
+</code></pre><h3 id="-">直接拖图片到浏览器</h3>
+<ul>
+<li>浏览器默认是可以让图片直接拖进来的
+ 但是他这种效果是让浏览器直接打开这张图片，那么这样的行为就跟你自己写的网站没关系了</li>
+<li>此时，因为你拖一个图片到浏览器内，然后再松手，是符合ondrop事件
+  // 但问题是，浏览器默认对这个事件的处理是用浏览器打开这个图片，所以我们要阻止这种行为</li>
+<li>如果直接从浏览器外拖入文件到浏览器，那么这个文件会在事件参数的dataTransfer的files属性里</li>
+</ul>
+<pre><code>
+      document.querySelector(&#39;.box&#39;).ondrop = function (event) {
+           var reader = new FileReader();
+            reader.readAsDataURL(event.dataTransfer.files[0]);
+             reader.onload = function () {
+                document.querySelector(&#39;.box&#39;).style.background = &#39;url(&#39; + reader.result + &#39;)&#39;;
+               }
+                // 此时也要在drop方法里阻止浏览器默认的实现了
+                event.preventDefault();
+         };
+         document.querySelector(&#39;.box&#39;).ondragover = function (event) {
+
+        event.preventDefault();
+    }
+</code></pre><h3 id="-">全屏效果</h3>
+<ul>
+<li>boxDom.requestFullscreen(); 实验室中的方法，所以必须加浏览器的前缀标识</li>
+</ul>
+<pre><code>
+     document.querySelector(&#39;button&#39;).onclick = function () {
+
+        var boxDom = document.querySelector(&#39;.box&#39;);
+
+        // 这个方法还是一个实验室中的方法，所以必须加浏览器的前缀标识
+        // boxDom.requestFullscreen();
+
+        if (boxDom.webkitRequestFullscreen) {
+
+            // boxDom.webkitRequestFullscreen();
+            boxDom.webkitRequestFullScreen();
+        }
+        else if (boxDom.mozRequestFullScreen) {
+
+            boxDom.mozRequestFullScreen();
+
+        } else if (boxDom.msRequestFullscreen) {
+
+            boxDom.msRequestFullscreen();
+        }
+    };
+</code></pre><h3 id="-">自定义播放器</h3>
+<pre><code>
+            &lt;body&gt;
+
+            &lt;div class=&quot;player&quot;&gt;
+                &lt;video src=&quot;movie/bglb.mp4&quot;&gt;&lt;/video&gt;
+
+                &lt;div class=&quot;control&quot;&gt;
+                    &lt;a id=&#39;play&#39; class=&#39;icon-play-circle&#39; href=&quot;javascript:void(0)&quot;&gt;&lt;/a&gt;
+                    &lt;a id=&#39;pause&#39; class=&#39;icon-pause&#39; href=&quot;javascript:void(0)&quot;&gt;&lt;/a&gt;
+
+                    &lt;div class=&quot;progressBar&quot;&gt;
+                        &lt;div class=&quot;progress&quot;&gt;&lt;/div&gt;
+                    &lt;/div&gt;
+
+                    &lt;a id=&#39;full&#39; class=&quot;icon-fullscreen&quot; href=&quot;javascript:void(0)&quot;&gt;&lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+        &lt;/body&gt;
+
+        &lt;script&gt;
+            // 获取video元素
+            var videoDom = document.querySelector(&#39;video&#39;);
+
+            // 点击了播放
+            document.querySelector(&#39;#play&#39;).onclick = function () {
+
+                // console.log(&#39;...&#39;);
+                videoDom.play();
+            };
+
+            // 点击了暂停
+            document.querySelector(&#39;#pause&#39;).onclick = function () {
+
+                videoDom.pause();
+            }
+
+            // 点击了全屏
+            document.querySelector(&#39;#full&#39;).onclick = function () {
+
+                videoDom.webkitRequestFullScreen();
+            }
+
+            // 点击了进度条
+            document.querySelector(&#39;.progressBar&#39;).onclick = function (event) {
+                // console.log(&#39;...&#39;);
+                // 要得到你点击的位置，然后用位置除以进度条总宽度得到百分比
+                // event里有一个属性叫offsetX，这个可以获得你点击位置的水平值
+                // 我们用offsetX  / 当前元素的offsetWidth（总宽度）就能得到比例
+                // console.log(event);
+
+                var percent = event.offsetX / this.offsetWidth;
+                // console.log(percent);
+
+                // 找到里面的进度值
+                document.querySelector(&#39;.progress&#39;).style.width = percent * 100 + &#39;%&#39;;
+
+                // 视频元素的duration能获得视频的总时长
+                // 视频元素的currentTime能获取或者设置当前播放的时间
+
+                videoDom.currentTime = videoDom.duration * percent;
+            };
+
+
+            // 监听video的播放位置已更改事件（每播放一秒都会触发）
+            videoDom.ontimeupdate = function () {
+
+                // console.log(&#39;正在播放&#39;);
+                // 用当前的播放的时间除以总时长，就得到视频播放的百分比进度
+                var percent = videoDom.currentTime / videoDom.duration;
+
+                // 再把这个进度赋值给里面的进度条
+                document.querySelector(&#39;.progress&#39;).style.width = percent * 100 + &#39;%&#39;;
+            }
+
+        &lt;/script&gt;
+</code></pre>
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+});
+//-->
+</SCRIPT>
