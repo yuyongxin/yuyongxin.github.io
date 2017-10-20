@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .clearfix::before,
+        .clearfix::after {
+            content: '';
+            display: block;
+        }
+
+        .clearfix::after {
+            clear: both;
+        }
+
+        .clearfix {
+            *zoom: 1;
+        }
+
+        .view {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            margin: 60px auto;
+            border: 1px solid red;
+            cursor: pointer;
+
+        }
+
+        li {
+            float: left;
+            width: 120px;
+            height: 400px;
+            position: relative;
+            transform-style: preserve-3d;
+            /* transition: all 1s; */
+        }
+
+        li span {
+            position: absolute;
+            width: 120px;
+            height: 400px;
+            background-size:600px 400px;
+        }
+
+        li span:nth-child(1) {
+            background-image: url('images/01.jpg') ;
+            transform: translateZ(200px);
+        }
+
+        li span:nth-child(2) {
+            background-image: url('images/02.jpg') ;
+            transform: translateY(-200px) rotateX(90deg);
+        }
+
+        li span:nth-child(3) {
+            background-image: url('images/03.jpg') ;
+            transform: translateZ(-200px) rotateX(180deg);
+        }
+
+        li span:nth-child(4) {
+            background-image: url('images/04.jpg') ;
+            transform: translateY(200px) rotateX(270deg);
+        }
+
+        li:nth-of-type(1) span {
+            background-position: 0 0;
+        }
+
+        li:nth-of-type(2) span {
+            background-position: -120px 0;
+        }
+
+        li:nth-of-type(3) span {
+            background-position: -240px 0;
+        }
+
+        li:nth-of-type(4) span {
+            background-position: -360px 0;
+        }
+
+        li:nth-of-type(5) span {
+            background-position: -480px 0;
+        }
+       
+        .prev,
+        .next {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, .5);
+            position: absolute;
+            top: 50%;
+            margin-top: -25px;
+            font-size: 25px consolas;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            /*left:0px;*/
+            cursor: pointer;
+
+        }
+
+        .prev {
+            left: 0px;
+
+        }
+
+        .next {
+            right: 0px;
+        }
+    </style>
+    <script src="./jquery-1.12.4.min.js"></script>
+</head>
+
+<body>
+    <div class="view">
+        <ul class="clearfix">
+            <li>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </li>
+            <li>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </li>
+            <li>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </li>
+            <li>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </li>
+            <li>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </li>
+        </ul>
+        <span class="prev">&lt;</span>
+        <span class="next">&gt;</span>
+    </div>
+</body>
+<script>
+    $(function () {
+        var count = 0;
+        var flag = true;
+        var timeId = setInterval(function () {
+            next();
+        }, 2000)
+        //右箭头点击
+        $('.next').click(function () {
+            next();
+        })
+        //左箭头点击
+        $('.prev').click(function () {
+            if (flag) {
+                flag = false;
+                count--;
+                if (count <= -1) {
+                    count = 4;
+                    $('li').each(function (index) {
+                        $(this).css({
+                            'transform': 'rotateX(' + -90 * count + 'deg)',
+                            'transition': 'none',
+                        })
+                    });
+                } else {
+                    $('li').each(function (index) {
+                        $(this).css({
+                            'transform': 'rotateX(' + -90 * count + 'deg)',
+                            'transition': 'all 1s',
+                            'transition-delay': index * 0.2 + 's',
+
+                        })
+                    });
+                }
+                setTimeout(function () {
+                    flag = true;
+                }, 500);
+
+            }
+
+        })
+        //hover
+        $('.view').mouseover(function () {
+            clearInterval(timeId);
+        })
+        $('.view').mouseout(function () {
+            timeId=setInterval(function(){
+                next();
+            },2000)
+        })
+        var next = function () {
+            if (flag) {
+                flag = false;
+                count++;
+                if (count >= 5) {
+                    count = 0;
+                    $('li').each(function (index) {
+                        $(this).css({
+                            'transform': 'rotateX(' + -90 * count + 'deg)',
+                            'transition': 'none',
+                        })
+                    });
+                } else {
+                    $('li').each(function (index) {
+                        $(this).css({
+                            'transform': 'rotateX(' + -90 * count + 'deg)',
+                            'transition': 'all 1s',
+                            'transition-delay': index * 0.2 + 's',
+
+                        })
+                    });
+                }
+                setTimeout(function () {
+                    flag = true;
+                }, 500);
+            }
+        }
+    })
+
+</script>
+
+</html>

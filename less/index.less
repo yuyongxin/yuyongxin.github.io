@@ -1,7 +1,12 @@
 #nav{
     width: 100%;
     height: 80px;
-    background-color:#99f;
+    background-color:rgb(213, 74, 235);
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    box-shadow: 10px 0 10px; 
+    
     >div{
         float: left;
        
@@ -51,6 +56,7 @@
     }
 }
 #contents{
+    margin-top:90px;
      >h3{
             padding-left: 40px;
             margin: 20px 0;
@@ -59,7 +65,7 @@
         float: left;
         // margin-top: 40px;
         width: 22%;
-        background-color: #bbe;
+        background-color: rgb(240, 229, 72);
        
         >ul{
             width:100%;
@@ -100,16 +106,17 @@
                         >li{
                             width: 100%;
                             height: 50px;
-                             background-color: #dde;
+                             background-color: rgb(248, 47, 33);
                             // width: 200%;
                             border-bottom: 1px solid #ccc;
                             >a{
                                 display: block;
                                 width: 100%;
                                 height: 100%;
+                                color: rgb(245, 247, 242);
                                 text-align: center;
                                 &:hover{
-                                    background-color: #dd3;
+                                    background-color: rgb(27, 24, 211);
                                 }
                             }
                         }
@@ -136,14 +143,14 @@
             width: 30%;
             float: right;
             // border: 1px solid #333;
-            height: 2000px;
+            // height: 2000px;
             >a{
                 margin-bottom: 10px;
                 display: block;
                 padding: 15px;
                 height: 200px;
                 overflow: hidden;
-                background-color: #dda;
+                background-color: rgb(228, 192, 165);
                 &:hover{
                     transform:scale(1.05);
                     box-shadow: -5px 5px 5px #999;
@@ -155,6 +162,50 @@
                 p{
 
                 }
+            }
+        }
+    }
+}
+#comments{
+    float: left;
+    
+    margin-top: 20px;
+    width: 100%;
+    .submitcomment{
+        width: 100%;
+        height: 100px;
+        textarea{
+            display: block;
+            margin: 0 auto;
+            width: 90%;
+            height: 100px;
+        }
+        button{
+           display: block;
+            margin: 0 auto;
+           
+           
+        }
+    }
+    .commentlist{
+        float: left;
+        width: 100%;
+        padding: 20px;
+        margin-top: 30px;
+        .commentstyle{
+            height: 100px;
+            overflow-y: auto;
+            border-bottom: 1px solid rgba(92,92,92,0.3);
+            .comment_content{
+                margin-top: 10px;
+                color: black;
+                font-size: 14px;
+            }
+            .userandTme{
+                margin-top: 30px;
+                color: #0094ff;
+                display: flex;
+                justify-content: space-between;
             }
         }
     }

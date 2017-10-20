@@ -4,8 +4,10 @@
     box-sizing: border-box;
 }
 body{
+    background-color: #e2d0d9;
     font-family: "microsoft YaHei";
     vertical-align: middle;
+    height: 2000px;
 }
 li{
     list-style: none;
