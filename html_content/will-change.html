@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    body{
+            width: 60%;
+            margin-left: 200px;
+            /* background-color: #eee; */
+            color: 333;
+        }
+        h1{
+            text-align: center;
+        }
+        figure{
+            font-size: 20px;
+            background-color: #f5f2f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>CSS性能优化新属性：will-change</h1>
+    <p>will-change属性通过告诉浏览器什么属性、什么元素将会发生变化，可以对这些操作进行可能性的优化，由此提高CSS动画的执行效率。</p>
+    <p>
+            这个属性可以有4个值：
+        <ul>
+            <li>auto: 实行标准浏览器优化。</li>
+            <li>scroll-position: 指明元素的滚动位置将会出现动画变化，浏览器应该为滚动视窗内容的不可见部分事先做好准备。</li>
+            <li>contents: 指明元素的内容将会发生变化，浏览器不要缓存它们的内容。</li>
+            <li><custom-ident>: 指明will-change实施的目标属性，比如transform 或 opacity。</li>
+        </ul>
+    </p>
+    <figure>
+        <pre>
+                .element {
+                    will-change: transform, opacity;
+                }
+        </pre>
+    </figure>
+    <p>
+            然而，千万不要过度使用will-change属性，否则，事与愿违，页面的执行效率会降低，推荐的做法是当一个元素或属性发生变化时打开will-change，变化完成之后关闭它
+    </p>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>程序员必须知道的五个数组方法</title>
+    <style>
+        body{
+            width: 60%;
+            margin-left: 200px;
+            /* background-color: #eee; */
+            color: 333;
+        }
+        h1{
+            text-align: center;
+        }
+        figure{
+            font-size: 20px;
+            background-color: #f5f2f0;
+        }
+            
+        
+    </style>
+</head>
+<body>
+    <h1>程序员必须知道的五个数组方法</h1>
+    <h2>Array.forEach()</h2>
+    <p>.forEach() 方法能够方便的让你 遍历数组里的每个元素，你可以在回调函数里对每个元素进行操作。.forEach()方法没有返回值，你不需要在回调函数里写return，这是无意义的。</p>
+    <figure>
+       <pre>
+                ar animals = ['dog', 'cat', 'mouse'];
+                
+                animals.forEach(function(item){
+                    console.log(item);
+                });
+            </pre>
+    </figure>
+    <h2>Array.map()</h2>
+    <p>.map() 方法能够遍历整个数组，然后 返回一个新数组，这个新数组里的元素是经过了指定的回调函数处理过的。</p>
+    <figure>
+       <pre>
+            var numbers = [2, 4, 6, 8];
+            
+            var doubleNums = numbers.map(function(element) {
+                return element * 2;
+            });
+            
+            console.log('doubleNums: ', doubleNums)
+            </pre>
+    </figure>
+    <h2>Array.filter()</h2>
+    <p>.filter() 方法能够 过滤掉数组中的某些元素，你可以在回调函数里设定条件，不符合条件的元素都会排除在外。</p>
+    <figure>
+       <pre>
+            var scores = [3, 12, 5, 23, 19, 7];
+            
+            var topScores = scores.filter(function(item){
+                if (item > 10){
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            
+            console.log('topScores: ', topScores);
+            </pre>
+    </figure>
+    <h2>Array.indexOf()</h2>
+    <p>indexOf() 能够告诉你 某个元素在数组中的位置，它返回的是索引值，如果数组里有重复的元素，它会返回第一个元素的位置。</p>
+    <figure>
+       <pre>
+            var a = [2, 9, 9, 18];
+            
+            var i = a.indexOf(9);
+            
+            console.log('i: ', i);
+            
+            
+            /*
+            if (a.indexOf(7) === -1) {
+              // 数组中没有这个元素
+            }*/
+            </pre>
+    </figure>
+    <h2>Array.every()</h2>
+    <p>.every() 方法的作用是用指定的回调函数去检查数组中的每个元素，如果对于每个元素，这个回调函数都返回true，则.every()返回true。否则，.every() 返回false。如果你想知道数组中的所有元素都是否符合某种条件，使用 .every() 最方便</p>
+    <figure>
+       <pre>
+            var ages = [23, 19, 32, 44];
+            
+            var olderThan18 = ages.every(function(element) {
+                return element > 18;
+            });
+            
+            console.log('olderThan18: ', olderThan18);
+            </pre>
+    </figure>
+</body>
+</html>
