@@ -1,0 +1,833 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>i5ting_ztree_toc:移动web开发</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<h1 id="-web-">移动web开发</h1>
+<ul>
+<li>响应式开发：一套代码运行多个终端 优点:开发快 维护快 适配好  缺点加载速度慢</li>
+<li>纯原生移动web开发 一套代码运行一个端 优点: 加载速度快 缺点开发慢  维护慢 适配差<h2 id="-">库和框架的区别</h2>
+</li>
+<li>库  便捷的DOM (你想实现什么功能就调用什么方法)(主导者是你 你调用库)</li>
+<li>框架：框架 界面工具集 框架是他来控制你 (框架制定好了一系列规则 你按照规则填坑)<h2 id="-">响应式开发原理媒体查询</h2>
+<h3 id="-">手机屏幕的分类</h3>
+</li>
+<li>超小屏幕（移动设备）：768px以下</li>
+<li>小屏幕设备： 768px-992px</li>
+<li>中等屏幕 ： 992px-1200px;</li>
+<li>宽屏设备： 1200px以上</li>
+</ul>
+<h3 id="-">媒体查询的写法</h3>
+<pre><code>    @media(条件){
+        //条件成立执行的代码
+        {
+
+        }
+
+    }
+    screen and 可以省略 如果不省略 and的前后必须有空格 @media (min-width:768px) and (max-width: 992px)
+    条件：min-width:768px; 屏幕最小宽度大于等于768px的时候条件成立
+    max-width:768px; 屏幕的最大宽度小于等于768px的时候条件成立
+</code></pre><ul>
+<li>媒体查询的写法顺序<ul>
+<li>1.min-width:作为条件判断的时候，条件要从小到大</li>
+<li>2.max-width:作为条件判断的时候要从大到小写</li>
+</ul>
+</li>
+<li><p>媒体查询的特性</p>
+<ul>
+<li><p>向下覆盖，向上兼容，大屏幕满足大的条件 同时肯定也满足小屏幕判断的条件 但是大屏幕判断条件写在后面 会把小屏幕满足的样式覆盖 称之为 向下覆盖;</p>
+<h3 id="box-sizing-border-box-">box-sizing:border-box 将边框包含到盒子模型中</h3>
+<h3 id="-">使用媒体查询实现网页布局</h3>
+<pre><code>  .box div {
+  width: 100%;
+  height: 100px;
+  border: 1px solid red;
+  /*设置盒子模型的计算方式 包含boorder+padding+content: 如果固定了宽度要加边框要设置盒模型是border-box*/
+  box-sizing: border-box;
+  float: left;
+}
+@media (min-width: 768px){
+  .box div{
+      width: 50%;  1行两个
+  }
+}
+@media (min-width: 992px){
+  .box div{
+      width: 33.33%;  1行3个
+  }
+}
+@media (min-width: 1200px){
+  .box div{
+      width: 25%;   //四个div 各占25% 1行
+  }
+}
+</code></pre><h2 id="-html-shiv-respond-js-ie8-html5-css3-">引入 html shiv和respond.js ,让IE8支持html5新标签和css3媒体查询</h2>
+<pre><code>cc:ie6 +tab
+//条件注释：条件满足IE9以下条件成立 下面的代码就会执行
+如果条件不成立就是当成注释 不执行
+
+&lt;!--[if lt IE 9]&gt;
+&lt;script src=&quot;https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js&quot;&gt;&lt;/script&gt;
+&lt;![endif]--&gt;
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h2 id="bootstrap-">bootstrap 的基本模板</h2>
+<h3 id="-jquery-bootstrap-jquery-">先引入jquery(因为Bootstrap依赖jquery)</h3>
+<pre><code>    &lt;html lang=&quot;zh-CN&quot;&gt; 表示页面的文字语言是中文
+
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+        设置ie浏览器的兼容模式，让IE浏览器使用最新渲染引擎渲染页面
+     &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+        设置视口
+        width=device-width 表示设置移动端视口的宽度等于设备的宽度
+        initial-scale=1 设置初始化缩放等于1 效果等同于设置宽度
+        user-scalable=no 设置用户不允许手动拖放
+        minimum-scale=1.0 设置最小缩放等于1
+        maximum-scale=1.0 设置最大缩放等于1
+    快捷键：meta:vp  + tab
+
+    设置视口的原因：
+    1.在PC端的视口：浏览器的可视窗口html的宽度 在PC端是随着浏览器窗口而变化
+    2.在移动端的视口 浏览器的html的宽度 固定通常默认是980 但是移动端的设备的宽度只要300-400，980宽度的网页在手机上显示就会出现缩放或者出横向滚动条 会造成网页无法正常显示 需要手指拖放查看
+    3.因此，设置移动端的默认视口的宽度html的宽度等于设备的宽度
+</code></pre><h2 id="bootstrap-">bootstrap栅格系统</h2>
+<pre><code>    默认的栅格最小宽度大约有32px
+</code></pre><ul>
+<li>栅格系统默认有4个屏幕档次<ul>
+<li>.col-xs 超小屏幕 手机（&lt;768px）</li>
+<li>.col-sm  768px-992px 小屏幕  平板</li>
+<li>.col-md  &gt;992px  中等屏幕 桌面显示器</li>
+<li>.col-lg  &gt;=1200px 大屏幕 大桌面显示器</li>
+</ul>
+</li>
+<li>栅格系统的列偏移<ul>
+<li>col-档次-offset-份数  栅格系统的列偏移 ，相当于margin left 份数</li>
+<li><div class="col-xs-1 col-xs-offset-1">1</div></li>
+<li>xs档次如果没有写别的档次的栅格样式 这时候xs在任意屏幕都会生效</li>
+</ul>
+</li>
+<li>栅格系统的列排序<ul>
+<li>.col-xs-push-1 列排序 push 是往右定位多少个栅格 可能会和别的栅格黏在一起</li>
+<li>.col-xs-pull-1 是往左拉多少个栅格 可能会和别的栅格黏在一起<h2 id="bootstrap-">bootstrap 文档</h2>
+</li>
+</ul>
+</li>
+<li><a href="http://v3.bootcss.com/css/#overview">概要</a> (常用)<ul>
+<li>布局容器</li>
+</ul>
+</li>
+<li><a href="http://v3.bootcss.com/css/#grid">栅格系统</a> (常用)<ul>
+<li><strong>xs</strong> : 超小屏幕 手机 (&lt;768px)</li>
+<li><strong>sm</strong> : 小屏幕 平板 (≥768px)</li>
+<li><strong>md</strong> : 中等屏幕 桌面显示器 (≥992px)</li>
+<li><strong>lg</strong> : 大屏幕 大桌面显示器 (≥1200px)</li>
+</ul>
+</li>
+<li><a href="http://v3.bootcss.com/css/#type">预置排版样式</a><ul>
+<li>统一预制标签样式</li>
+<li>文本对齐 (常用)</li>
+<li>改变大小写 </li>
+</ul>
+</li>
+<li><a href="http://v3.bootcss.com/css/#code">代码样式</a><ul>
+<li>页面输出代码</li>
+</ul>
+</li>
+<li><a href="http://v3.bootcss.com/css/#tables">表格样式</a><ul>
+<li>各种表格样式</li>
+</ul>
+</li>
+<li><a href="http://v3.bootcss.com/css/#forms">表单样式</a><ul>
+<li>各种表单组合的样式</li>
+</ul>
+</li>
+<li><a href="http://v3.bootcss.com/css/#buttons">按钮样式</a><ul>
+<li>各种按钮颜色 和 按钮大小等样式 (常用)</li>
+</ul>
+</li>
+<li><a href="http://v3.bootcss.com/css/#images">图片样式</a><ul>
+<li>图片圆角的样式</li>
+</ul>
+</li>
+<li><a href="http://v3.bootcss.com/css/#helper-classes">辅助工具类</a><ul>
+<li>内容块居中 (常用)</li>
+<li>快速浮动 和 清除浮动 (常用)</li>
+<li>显示隐藏 (常用)</li>
+</ul>
+</li>
+<li><a href="http://v3.bootcss.com/css/#responsive-utilities">响应式工具类</a> (常用)<ul>
+<li><strong>hidden-xx</strong> : 在某种屏幕下隐藏</li>
+<li><strong>visible-xx</strong> : 在某种屏幕尺寸下显示</li>
+</ul>
+</li>
+<li>基础CSS这块只是将我们常用想一些元素的样式做了美化,如果需要使用直接拿过来用就行了<h3 id="calc-">calc函数的使用</h3>
+</li>
+<li>width:calc(100%/9);<ul>
+<li>可以通过calc函数动态设置css百分比的宽度</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-2-">6.2 预制界面组件</h3>
+<ul>
+<li><a href="http://v3.bootcss.com/components/#nav">导航</a> (常用)</li>
+<li><a href="http://v3.bootcss.com/components/#navbar">导航条</a> (常用)</li>
+<li><a href="http://v3.bootcss.com/components/#breadcrumbs">面包屑导航</a></li>
+<li><a href="http://v3.bootcss.com/components/#dropdowns">下拉菜单</a> (常用)</li>
+<li><a href="http://v3.bootcss.com/components/#btn-dropdowns">按钮式下拉菜单</a></li>
+<li><a href="http://v3.bootcss.com/components/#btn-groups">按钮组</a></li>
+<li><a href="http://v3.bootcss.com/components/#input-groups">输入框组</a></li>
+<li><a href="http://v3.bootcss.com/components/#alerts">警告框</a></li>
+<li><a href="http://v3.bootcss.com/components/#page-header">页头</a></li>
+<li><a href="http://v3.bootcss.com/components/#pagination">分页</a></li>
+<li><a href="http://v3.bootcss.com/components/#list-group">列表组</a> (常用)</li>
+<li><a href="http://v3.bootcss.com/components/#panels">面板</a> (常用)</li>
+<li><a href="http://v3.bootcss.com/components/#media">媒体对象</a> (常用)</li>
+<li><a href="http://v3.bootcss.com/components/#progress">进度条</a></li>
+<li><a href="http://v3.bootcss.com/components/#glyphicons">Glyphicons字体图标</a> (常用)</li>
+<li><a href="http://v3.bootcss.com/components/#labels">标签</a></li>
+<li><a href="http://v3.bootcss.com/components/#badges">徽章</a></li>
+<li><a href="http://v3.bootcss.com/components/#thumbnails">缩略图</a></li>
+<li><a href="http://v3.bootcss.com/components/#jumbotron">大屏幕</a></li>
+<li><a href="http://v3.bootcss.com/components/#responsive-embed">嵌入内容</a></li>
+<li><a href="http://v3.bootcss.com/components/#wells">内嵌</a></li>
+<li>将我们日常使用的一些功能块例如下拉菜单,提前写好,我们使用时直接找到对应的demo然后拿回来做相应调整就行了</li>
+</ul>
+<h3 id="6-3-javascript-">6.3 Javascript 插件</h3>
+<ul>
+<li><a href="http://v3.bootcss.com/javascript/#modals">模态对话框</a> (常用)</li>
+<li><a href="http://v3.bootcss.com/javascript/#dropdowns">下拉菜单</a> (常用)</li>
+<li><a href="http://v3.bootcss.com/javascript/#scrollspy">滚动监听</a> (常用)</li>
+<li><a href="http://v3.bootcss.com/javascript/#tabs">标签页</a> (常用)</li>
+<li><a href="http://v3.bootcss.com/javascript/#tooltips">工具提示</a></li>
+<li><a href="http://v3.bootcss.com/javascript/#popovers">弹出框</a></li>
+<li><a href="http://v3.bootcss.com/javascript/#alerts">警告框</a></li>
+<li><a href="http://v3.bootcss.com/javascript/#buttons">按钮</a></li>
+<li><a href="http://v3.bootcss.com/javascript/#collapse">折叠面板</a> (常用)</li>
+<li><a href="http://v3.bootcss.com/javascript/#carousel">轮播图</a> (常用)</li>
+<li><a href="http://v3.bootcss.com/javascript/#affix">吸顶效果</a> (常用)</li>
+</ul>
+<h3 id="bootstrap-">bootstrap 常用类</h3>
+<ul>
+<li>class=&quot;hidden-xs&quot; xs时隐藏</li>
+<li>pull-left 左浮动</li>
+<li>pull-right 右浮动</li>
+<li>class=&quot;text-danger&quot; 红色字体</li>
+<li>tab 栏切换</li>
+<li>折叠导航条</li>
+<li>淡入淡出效果<ul>
+<li>在active的元素上添加 fade in 非active的元素加上fade</li>
+</ul>
+</li>
+<li><p>吸顶效果</p>
+<pre><code>  &lt;nav class=&quot;navbar navbar-default&quot; data-spy=&quot;affix&quot;   data-offset-top=&quot;60&quot; data-offset-bottom=&quot;200&quot;&gt;
+   &lt;!-- data-spy=&quot;affix&quot;  是否开启吸顶功能 --&gt;
+  &lt;!-- data-offset-top 滚动条滚动到60px的位置就开始吸顶
+  data-offset-bottom 当前吸顶的导航条距离底部的距离多少时候关闭吸顶 --&gt;
+</code></pre><h3 id="-">添加横向滚动条</h3>
+<pre><code>  overflow-x: scroll;
+</code></pre><h3 id="-">响应式轮播图</h3>
+</li>
+<li><p>bootstap版
+```</p>
+<pre><code>      &lt;!DOCTYPE html&gt;
+      &lt;html lang=&quot;en&quot;&gt;
+
+      &lt;head&gt;
+              &lt;meta charset=&quot;UTF-8&quot;&gt;
+              &lt;title&gt;Document&lt;/title&gt;
+              &lt;link rel=&quot;stylesheet&quot; href=&quot;lib/bootstrap/css/bootstrap.css&quot;&gt;
+              &lt;style&gt;
+              .pcImg {
+                  height: 410px;
+                  display: block;
+                  background-position: center center;
+              }
+              /* 让移动端图片 只有640 撑大到768px */
+              .mobileImg img{
+                  width: 100%;
+              }
+              &lt;/style&gt;
+          &lt;/head&gt;
+
+          &lt;body&gt;
+              &lt;!--     轮播图有两种显示方式
+          PC端的轮播图 大屏幕和中等屏幕显示
+          移动端的轮播图 小屏幕和超小屏幕显示 --&gt;
+          &lt;!-- 但是移动端会加载PC端的图片
+          PC端也会加载移动端的图片 造成资源浪费 --&gt;
+              &lt;div id=&quot;carousel-example-generic&quot; class=&quot;carousel slide&quot; data-ride=&quot;carousel&quot;&gt;
+                  &lt;ol class=&quot;carousel-indicators&quot;&gt;
+                      &lt;li data-target=&quot;#carousel-example-generic&quot; data-slide-to=&quot;0&quot; class=&quot;active&quot;&gt;&lt;/li&gt;
+                      &lt;li data-target=&quot;#carousel-example-generic&quot; data-slide-to=&quot;1&quot;&gt;&lt;/li&gt;
+                      &lt;li data-target=&quot;#carousel-example-generic&quot; data-slide-to=&quot;2&quot;&gt;&lt;/li&gt;
+                  &lt;/ol&gt;
+                  &lt;!-- 轮播图的所有轮播项--&gt;
+                  &lt;div class=&quot;carousel-inner&quot; role=&quot;listbox&quot;&gt;
+                      &lt;div class=&quot;item active&quot;&gt;
+                          &lt;a href=&quot;#&quot; class=&quot;pcImg hidden-xs hidden-sm&quot; style=&quot;background-image:url(img/slide_01_2000x410.jpg)&quot;&gt;&lt;/a&gt;
+                          &lt;a href=&quot;#&quot; class=&quot;mobileImg hidden-md hidden-lg&quot;&gt;
+                              &lt;img src=&quot;img/slide_01_640x340.jpg&quot; alt=&quot;&quot;&gt;
+                          &lt;/a&gt;
+                      &lt;/div&gt;
+                      &lt;div class=&quot;item &quot;&gt;
+                          &lt;a href=&quot;#&quot; class=&quot;pcImg hidden-xs hidden-sm&quot; style=&quot;background-image:url(img/slide_02_2000x410.jpg)&quot;&gt;&lt;/a&gt;
+                          &lt;a href=&quot;#&quot; class=&quot;mobileImg hidden-md hidden-lg&quot;&gt;
+                              &lt;img src=&quot;img/slide_02_640x340.jpg&quot; alt=&quot;&quot;&gt;
+                          &lt;/a&gt;
+                      &lt;/div&gt;
+                      &lt;div class=&quot;item&quot;&gt;
+                          &lt;a href=&quot;#&quot; class=&quot;pcImg hidden-xs hidden-sm&quot; style=&quot;background-image:url(img/slide_03_2000x410.jpg)&quot;&gt;&lt;/a&gt;
+                          &lt;a href=&quot;#&quot; class=&quot;mobileImg hidden-md hidden-lg&quot;&gt;
+                              &lt;img src=&quot;img/slide_03_640x340.jpg&quot; alt=&quot;&quot;&gt;
+                          &lt;/a&gt;
+                      &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;!-- 控制器 左右控制按钮  通过href属性指定要控制的轮播图选择器 data-slide控制切换的方向  --&gt;
+                  &lt;a class=&quot;left carousel-control&quot; href=&quot;#carousel-example-generic&quot; role=&quot;button&quot; data-slide=&quot;prev&quot;&gt;
+                      &lt;!-- 左右箭头的图标 --&gt;
+                      &lt;span class=&quot;glyphicon glyphicon-chevron-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+                      &lt;span class=&quot;sr-only&quot;&gt;Previous&lt;/span&gt;
+                  &lt;/a&gt;
+                  &lt;a class=&quot;right carousel-control&quot; href=&quot;#carousel-example-generic&quot; role=&quot;button&quot; data-slide=&quot;next&quot;&gt;
+                      &lt;span class=&quot;glyphicon glyphicon-chevron-right&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+                      &lt;span class=&quot;sr-only&quot;&gt;Next&lt;/span&gt;
+                  &lt;/a&gt;
+              &lt;/div&gt;
+              &lt;script src=&quot;lib/jquery/jquery.js&quot;&gt;&lt;/script&gt;
+              &lt;script src=&quot;lib/bootstrap/js/bootstrap.js&quot;&gt;&lt;/script&gt;
+          &lt;/body&gt;
+
+          &lt;/html&gt;
+</code></pre></li>
+</ul>
+<pre><code>+ 使用js 来实现响应式轮播图
+    1. 添加屏幕变化事件 获取屏幕宽度进行判断 大屏幕插入大图 小屏幕插入小图
+    2. 分别遍历item插入对应的图片 路径存储到item身上data-large-image data-small-image
+    3. 获取自身的图片路径插入到item里面
+</code></pre><pre><code>    &lt;!DOCTYPE html&gt;
+    &lt;html lang=&quot;en&quot;&gt;
+
+    &lt;head&gt;
+        &lt;meta charset=&quot;UTF-8&quot;&gt;
+        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0&quot;&gt;
+        &lt;title&gt;Document&lt;/title&gt;
+        &lt;link rel=&quot;stylesheet&quot; href=&quot;lib/bootstrap/css/bootstrap.css&quot;&gt;
+        &lt;style&gt;
+        .pcImg {
+            height: 410px;
+            display: block;
+            background-position: center center;
+        }
+        /* 让移动端图片 只有640 撑大到768px */
+
+        .mobileImg img {
+            width: 100%;
+        }
+        &lt;/style&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;div id=&quot;carousel-example-generic&quot; class=&quot;carousel slide&quot; data-ride=&quot;carousel&quot;&gt;
+            &lt;ol class=&quot;carousel-indicators&quot;&gt;
+                &lt;li data-target=&quot;#carousel-example-generic&quot; data-slide-to=&quot;0&quot; class=&quot;active&quot;&gt;&lt;/li&gt;
+                &lt;li data-target=&quot;#carousel-example-generic&quot; data-slide-to=&quot;1&quot;&gt;&lt;/li&gt;
+                &lt;li data-target=&quot;#carousel-example-generic&quot; data-slide-to=&quot;2&quot;&gt;&lt;/li&gt;
+            &lt;/ol&gt;
+            &lt;!-- 轮播图的所有轮播项--&gt;
+            &lt;div class=&quot;carousel-inner&quot; role=&quot;listbox&quot;&gt;
+                &lt;!-- data-属性都是自定义属性用来存储一些数据 --&gt;
+                &lt;!-- data-large-image 存储当前item对应的大图路径
+                data-small-image 存储当前item对应的小图路径 --&gt;
+                &lt;div class=&quot;item active&quot; data-large-image=&quot;img/slide_01_2000x410.jpg&quot; data-small-image=&quot;img/slide_01_640x340.jpg&quot;&gt;
+                    &lt;!--   &lt;a href=&quot;#&quot; class=&quot;pcImg hidden-xs hidden-sm&quot; style=&quot;background-image:url(img/slide_01_2000x410.jpg)&quot;&gt;&lt;/a&gt;
+                &lt;a href=&quot;#&quot; class=&quot;mobileImg hidden-md hidden-lg&quot;&gt;
+                    &lt;img src=&quot;img/slide_01_640x340.jpg&quot; alt=&quot;&quot;&gt;
+                &lt;/a&gt; --&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;item &quot; data-large-image=&quot;img/slide_02_2000x410.jpg&quot; data-small-image=&quot;img/slide_02_640x340.jpg&quot;&gt;
+                    &lt;!--  &lt;a href=&quot;#&quot; class=&quot;pcImg hidden-xs hidden-sm&quot; style=&quot;background-image:url(img/slide_02_2000x410.jpg)&quot;&gt;&lt;/a&gt;
+                &lt;a href=&quot;#&quot; class=&quot;mobileImg hidden-md hidden-lg&quot;&gt;
+                    &lt;img src=&quot;img/slide_02_640x340.jpg&quot; alt=&quot;&quot;&gt;
+                &lt;/a&gt; --&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;item&quot; data-large-image=&quot;img/slide_03_2000x410.jpg&quot; data-small-image=&quot;img/slide_03_640x340.jpg&quot;&gt;
+                    &lt;!-- &lt;a href=&quot;#&quot; class=&quot;pcImg hidden-xs hidden-sm&quot; style=&quot;background-image:url(img/slide_03_2000x410.jpg)&quot;&gt;&lt;/a&gt;
+                    &lt;a href=&quot;#&quot; class=&quot;mobileImg hidden-md hidden-lg&quot;&gt;
+                        &lt;img src=&quot;img/slide_03_640x340.jpg&quot; alt=&quot;&quot;&gt;
+                    &lt;/a&gt; --&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;!-- 控制器 左右控制按钮  通过href属性指定要控制的轮播图选择器 data-slide控制切换的方向  --&gt;
+            &lt;a class=&quot;left carousel-control&quot; href=&quot;#carousel-example-generic&quot; role=&quot;button&quot; data-slide=&quot;prev&quot;&gt;
+                &lt;!-- 左右箭头的图标 --&gt;
+                &lt;span class=&quot;glyphicon glyphicon-chevron-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+                &lt;span class=&quot;sr-only&quot;&gt;Previous&lt;/span&gt;
+            &lt;/a&gt;
+            &lt;a class=&quot;right carousel-control&quot; href=&quot;#carousel-example-generic&quot; role=&quot;button&quot; data-slide=&quot;next&quot;&gt;
+                &lt;span class=&quot;glyphicon glyphicon-chevron-right&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+                &lt;span class=&quot;sr-only&quot;&gt;Next&lt;/span&gt;
+            &lt;/a&gt;
+        &lt;/div&gt;
+        &lt;script src=&quot;lib/jquery/jquery.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;lib/bootstrap/js/bootstrap.js&quot;&gt;&lt;/script&gt;
+        &lt;script&gt;
+        $(function() {
+            /**
+            *  1. 需求： 当屏幕宽度变化的时候 获取屏幕宽度进行判断 如果是大屏幕加载pcImg整个标签 如果是小屏就加载mobileImg
+            *  2. 实现思路
+            *         1. 监听屏幕变化事件onresize
+            *         2. 在屏幕变化事件里面获取当前屏幕的宽度
+            *         3. 判断屏幕的宽度是否大于640 认为是大屏幕 小于640就是小屏幕
+            *         4. 大图获取所有轮播图的item项 分别插入对应的pcImg
+            *         5. 小图获取所有轮播图的item项 分别插入对应的mobileImg
+            *         6. 在插入pcImg的时候 路径提前存储到item身上
+            *         7. 循环遍历所有item项 获取当前item项存储的大图路径 拼接到大图a标签的背景图里面
+            *         8. 循环遍历所有item项 获取当前item项存储的小图路径 拼接到小图a标签里面的img的src里面
+            *         9. onresie事件默认不会触发需要改变屏幕宽度 jquery手动触发事件 trigger(&#39;事件名&#39;)
+            */
+            /*1. 监听屏幕变化事件onresize*/
+            $(window).on(&#39;resize&#39;, function() {
+                /*2. 在屏幕变化事件里面获取当前屏幕的宽度*/
+                var windowWidth = $(window).width();
+                /*3. 判断屏幕的宽度是否大于640 */
+                if (windowWidth &gt; 640) {
+                    /*认为是大屏幕*/
+                    //获取所有item项 是一个数组
+                    var items = $(&#39;.carousel-inner .item&#39;);
+                    items.each(function(index, value) { //index循环索引==i  value循环的值items[i]
+                        var item = $(value); //value this 都是dom 转换成jquery对象
+                        /*获取自定义属性的值
+                            1. 原生JS value.dataset[&#39;largeImage&#39;];//要驼峰命名
+                            2. jquery item.data(&#39;large-image&#39;);//可驼峰也可不驼峰
+                        */
+                        var pcImgSrc = item.data(&#39;large-image&#39;);
+                        item.html(&#39;&lt;a href=&quot;#&quot; class=&quot;pcImg&quot; style=&quot;background-image:url(&#39; + pcImgSrc + &#39;)&quot;&gt;&lt;/a&gt;&#39;);
+                    });
+                } else {
+                    /*小于640就是小屏幕*/
+                    var items = $(&#39;.carousel-inner .item&#39;);
+                    items.each(function(index, value) { //index循环索引==i  value循环的值items[i]
+                        var item = $(value); //value this 都是dom 转换成jquery对象
+                        /*获取自定义属性的值
+                            1. 原生JS value.dataset[&#39;largeImage&#39;];//要驼峰命名
+                            2. jquery item.data(&#39;large-image&#39;);//可驼峰也可不驼峰
+                        */
+                        var mobileImgSrc = item.data(&#39;small-image&#39;);
+                        item.html(&#39;&lt;a href=&quot;#&quot; class=&quot;mobileImg&quot;&gt;&lt;img src=&quot;&#39; + mobileImgSrc + &#39;&quot; alt=&quot;&quot;&gt;&lt;/a&gt;&#39;);
+                    });
+                }
+            }).trigger(&#39;resize&#39;);
+        })
+        &lt;/script&gt;
+    &lt;/body&gt;
+
+    &lt;/html&gt;
+</code></pre><pre><code>### 左边自适应右边固定的布局
++把右边的元素定位到右边，左边加margin-right
+### 6.4 Javascript插件依赖情况
+  - [jQuery](https://github.com/jquery/jquery)
+  &gt; Bootstrap 框架中的所有JS组件都依赖jquery实现
+## less的使用
+    1. 引入less文件 &lt;link rel=&quot;stylesheet/less&quot; href=&quot;index.less&quot;&gt;(注意rel=&quot;stylesheet/less&quot;)
+    2. 引入less编译器文件 &lt;script src=&quot;lib/less/less.js&quot;&gt;&lt;/script&gt; 用来动态加载less文件并创建style标签把CSS放到style标签里面
+    3. 注意使用服务器访问页面  localhost形式 不能用file
++ less的基本语法
+    1.定义变量名 @变量名：变量值  多用于设置主图颜色
+    2.使用变量  属性：变量名
+    3.嵌套的使用
+</code></pre><pre><code>    .container{  //less写法
+      .row{
+        div{
+
+        }
+      }
+    }
+</code></pre><pre><code>+ less 语法&amp;的意思
+</code></pre><pre><code>li.active{//css语法
+color:#666;
+}
+li{//less语法
+&amp;.active{
+  color:#666;
+}
+}
+</code></pre><pre><code>
+</code></pre><pre><code>  a:hover{//css语法
+
+}
+a{//less语法
+    &amp;:hover{
+     color:#ccc;
+    }
+ }
+</code></pre><pre><code>
+</code></pre><pre><code>  div::before{//css语法
+    content:&quot;&quot;;
+}
+div{//less语法
+    &amp;::before{
+     content:&quot;&quot;;
+ }
+ }
+</code></pre><pre><code>+ &amp;的应用场景
+    1. 伪类的时候会用到
+    2. 伪元素的时候
+    3. 交集选择器或者兄弟选择器
+
+## 原生移动web开发方式
+- 样式和JS都是原生写的 ，使用流式布局
+    - 屏幕尺寸 指的是屏幕对角线的长度
+    - 常见的单位： 相对单位：px em pt 绝对单位 in cm
+###  网页布局几乎是使用百分比布局(流式布局)
+### 像素密度
++ 像素密度是指1英寸里面的像素的数量，通常超过320的像素密度就是高清屏
++ 计算方式：屏幕的分辨率高的平方+屏幕分辨率的宽的平方开根号 除以英寸
+### 设备独立像素
++ 表示真实像素和分辨率像素的一个比例  比如3gs手机 高度480px 宽度320px 分辨率  真实设备 高度480px 宽度320px 即分辨率和真实像素一样的时候 1pt=1px
++  但是有一些设备 高度960px 宽度640px 分辨率  真实设备 高度480px 宽度320px 即分辨率和真实像素一样的时候 1pt=2px
+### 物理像素和css像素
+   - 1. 物理像素(分辨率的像素) 960*640
+   - 2.  CSS像素(真实像素)  模拟器里面看见的320*568
+
+### 移动端新增的两个样式初始化
++ 盒模型都设置成border-box ：  box-sizing: border-box;
++ 清除移动端点击高亮的背景色： -webkit-tap-highlight-color:transparent;
+### 流式布局设置主体布局容器layout
+
+```css
+    #layout {
+            min-width: 320px;
+            max-width: 640px;
+            margin: 0px auto;
+            background-color: #f0f0f0;
+        }
+</code></pre><h3 id="-2-">移动端2倍图的精灵图使用和原理</h3>
+<ul>
+<li>移动端为了兼容不同分辨率的屏幕会把图片设计得比较大而让在小分辨率下的手机进行缩放显示</li>
+<li>但是页面上显示的区域的宽高只有图片宽高的一半 所以在我们页面使用的时候要把图片压缩一倍放到页面上显示</li>
+<li>做法如果是背景图就使用背景大小background-size来设置 如果是图片标签就直接设置img的宽高来设置</li>
+</ul>
+<pre><code>     background-size: 200px 200px;
+     background-position: 0 -109px;
+</code></pre><h3 id="-">左右两边固定宽度 中间自适应的布局 的 实现方式</h3>
+<ul>
+<li>把左右两边的元素通过定位分别定位在左边和右边</li>
+<li>设置表单的宽度100% 同时设置表单距离左边和右边的padding让输入框到中间去而不盖住左右两边的内容</li>
+</ul>
+<h3 id="-">清除浮动</h3>
+<pre><code>```css
+     .clearfix:after{
+         content:&quot;&quot;;
+         display:table;
+         clear:both;
+         height:0;
+         line-height:0;
+         visibility:hidden;
+     }
+```
+</code></pre><h3 id="-">移动端滑动事件</h3>
+<pre><code class="lang-js">    // 滑动开始事件 touchstart,当手指在当前元素上触摸的时候就会触发 滑动过程只会触发一次
+    box.addEventListener(&#39;touchstart&#39;,function(e){
+
+    })
+    /*当手指在元素上不断的滑动的时候会触发的事件  会持续触发*/
+    box.addEventListener(&#39;touchmove&#39;,function(e){
+
+    })
+    /*当手指在当前元素上触摸的结束时候就会触发 整个滑动过程只会触发一次*/
+    box.addEventListener(&#39;touchend&#39;,function(e){
+
+    })
+</code></pre>
+<h3 id="-">滑动事件的事件源参数</h3>
+<pre><code class="lang-js">     var box = document.querySelector(&#39;.box&#39;);
+    /*事件源参数 event 就是事件回调函数里面e*/
+    box.addEventListener(&#39;touchstart&#39;, function(e) {
+        /*e 是touchevent 触摸事件对象*/
+        /*e.touches 和  e.targetTouches 和 e.changedTouches 都是touchList对象 手指对象的集合 可能有多个手指对象 但是通常只考虑第一个对象*/
+        /*表示获取屏幕上的手指对象*/
+        console.log(e.touches);
+        /*获取当前元素上的手指对象*/
+        console.log(e.targetTouches);
+        /*获取手指改变后的手指对象 当手指从无到右 或者 从右到无的时候会出现*/
+        console.log(e.changedTouches);
+
+        /*e.touches  和 e.targetTouches 用任意一个都可以 这两个属性 通常在touchstart和touchmove里面 用来获取滑动的手指*/
+    });
+    box.addEventListener(&#39;touchmove&#39;, function(e) {
+        console.log(e.touches);
+        /*获取当前元素上的手指对象*/
+        console.log(e.targetTouches);
+        /*获取手指改变后的手指对象 当手指从无到右 或者 从右到无的时候会出现*/
+        console.log(e.changedTouches);
+    });
+    box.addEventListener(&#39;touchend&#39;, function(e) {
+        /*当滑动结束的时候屏幕和元素上已经没手指  e.touches 和 e.targetTouches 无法使用*/
+        /*在滑动结束事件里面使用e.changedTouches*/
+        console.log(e.touches);
+        /*获取当前元素上的手指对象*/
+        console.log(e.targetTouches);
+        /*获取手指改变后的手指对象 当手指从无到右 或者 从右到无的时候会出现*/
+        console.log(e.changedTouches);
+    });
+
+    //总结    获取到的都是TouchList对象 第0项是touch对象 里面有 clientX,clientY,pageX,pageY,screenX,screenY,
+</code></pre>
+<h2 id="-">移动端横向滚动效果的实现</h2>
+<ul>
+<li>方法1</li>
+</ul>
+<pre><code class="lang-css">    ul{
+         width: 100%;
+        height: 30px;
+        overflow-x: scroll;
+        white-space: nowrap;
+        background-color: #f40;
+    }
+    ul li{
+        height: 20px;
+        width: 50px;
+        display: inline-block;
+    }
+</code></pre>
+<ul>
+<li>方法2</li>
+</ul>
+<pre><code class="lang-css">    ul{
+         width: 100%;
+        height: 30px;
+         background-color: #f40;
+        overflow-x: scroll;
+        display: -webkit-box; 
+        -webkit-overflow-scrolling:touch;
+    }
+    ul li{
+        height: 20px;
+        width: 50px;
+    }
+</code></pre>
+<h2 id="-">使用滑动事件拖拽元素</h2>
+<pre><code class="lang-js">    var box = document.querySelector(&#39;.box&#39;);
+    /**
+     *     1. 添加滑动开始和滑动中事件
+     *     2. 在滑动开始的时候获取滑动开始的X轴坐标和Y轴坐标
+     *     3. 在滑动中的时候获取滑动中的X轴的坐标和Y轴的坐标
+     *     4. 计算滑动距离 水平 滑动中的X坐标-滑动开始的X轴坐标 垂直 滑动中Y轴坐标-滑动开始的Y轴坐标
+     *     5. 把滑动的距离设置到box的位移
+     */
+    var startX = 0,
+        startY = 0,
+        moveX = 0,
+        moveY = 0,
+        distanceX = 0,
+        distanceY = 0;
+    box.addEventListener(&#39;touchstart&#39;, function(e) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        console.log(startX + &#39;---&#39; + startY);
+    });
+    box.addEventListener(&#39;touchmove&#39;, function(e) {
+        moveX = e.touches[0].clientX;
+        moveY = e.touches[0].clientY;
+        distanceX = moveX - startX;
+        distanceY = moveY - startY;
+        /*console.log(distanceX+&#39;---&#39;+distanceY);*/
+        /*设置位移为滑动的距离*/
+        box.style.transform = &#39;translate(&#39; + (currentX + distanceX) + &#39;px,&#39; + (currentY + distanceY) + &#39;px)&#39;;
+        /*    往右和往下滑动的时候 distanceX 和 distanceY 就是正值
+                    往左和往上滑动的时候 distanceX 和 distanceY 就是负值*/
+    });
+    /*在滑动结束的时候记录滑动的最终距离*/
+    /*currentX当前div所在的X的位置
+    currentY当前div所在Y轴的位置*/
+    var currentX = 0,
+        currentY = 0;
+    box.addEventListener(&#39;touchend&#39;, function() {
+        currentX += distanceX;
+        currentY += distanceY;
+    });
+</code></pre>
+<h2 id="scrolltop-ie-">scrollTop在谷歌 ，火狐IE的获取</h2>
+<pre><code class="lang-js">    window.addEventListener(&quot;scroll&quot;,function(){
+        /*IE 获取火狐使用*/
+        console.log(document.documentElement.scrollTop);
+        /*老版本谷歌用的*/
+        console.log(document.body.scrollTop);
+    });
+</code></pre>
+<h3 id="-scrolltop-">利用scrollTop滚动到一定距离的出现搜索框或隐藏搜索框</h3>
+<h2 id="-">倒计时</h2>
+<pre><code>            &lt;style&gt;
+                div{
+                    border: 2px solid red;
+                    width: 377px;
+                    /* height: 50px; */
+                    padding: 10px 0;
+                }
+            div span{
+                display: inline-block;
+                width: 25px;
+                height: 30px;
+                background-color: #F50C33;
+                margin-left: 5px;
+                text-align: center;
+                color: #2B2929;
+                line-height: 30px;
+                border-radius: 10px;
+            }
+            &lt;/style&gt;
+
+        &lt;body&gt;
+            &lt;div&gt;
+
+                &lt;span&gt;&lt;/span&gt;
+                &lt;span&gt;&lt;/span&gt;
+                &lt;span&gt;&lt;/span&gt;天
+                &lt;span&gt;&lt;/span&gt;
+                &lt;span&gt;&lt;/span&gt;时
+                &lt;span&gt;&lt;/span&gt;
+                &lt;span&gt;&lt;/span&gt;分
+                &lt;span&gt;&lt;/span&gt;
+                &lt;span&gt;&lt;/span&gt;秒
+            &lt;/div&gt;
+
+            &lt;script&gt;
+            var spans=document.querySelectorAll(&#39;span&#39;);
+            // console.log(spans);
+                // 获取未来某一天的时间
+                var futuretime=new Date(&#39;February 15,2018 23:59:59&#39;).getTime();
+                // console.log(futuretime)
+                var nowtime=new Date().getTime();
+                var times=(futuretime-nowtime)/1000;  //秒
+                // console.log(times)
+                setInterval(function(){
+                    times--;
+                    var day=Math.floor(times/24/3600);
+                    var shi = Math.floor(times %(3600*24)/3600);
+                    var fen = Math.floor(times % 3600 / 60);
+                    // var fen=Math.floor(((times%(3600*24))%3600)/60);
+                    var miao = Math.floor(times % 60);
+                    // console.log(miao)
+
+                        spans[0].innerHTML=Math.floor(day/100);
+                        spans[1].innerHTML=Math.floor((day%100)/10);
+                        spans[2].innerHTML=Math.floor(day%10);
+                        spans[3].innerHTML=Math.floor(shi/10);
+                        spans[4].innerHTML=Math.floor(shi%10);
+                        spans[5].innerHTML=Math.floor(fen/10);
+                        spans[6].innerHTML=Math.floor(fen%10);
+                        spans[7].innerHTML=Math.floor(miao/10);
+                        spans[8].innerHTML=Math.floor(miao%10);
+
+
+
+
+                },1000)
+            &lt;/script&gt;
+        &lt;/body&gt;
+</code></pre><h2 id="zepto-">zepto的基本使用</h2>
+<h3 id="-js-jquery-">移动端的JS框架 类似于jquery,特点轻量级，分模块</h3>
+<pre><code>1.引包
+    1.zepto是分模块的 主模块里面只包含了5个基本的包
+    2.高级的jquery选择器 selector.js
+    3.动画 fx.js
+    4.touch相关事件 touch.js
+    5.执行轮播操作：animate函数
+    6.实现轮播图的滑动：zepto自带了滑动事件swipeleft(从右往左滑) swipeRight(从左往右滑)
+2.zepto的定制
+    1. 可以把一些依赖的包放到一个文件里面
+    2. 安装nodejs
+    3. 安装依赖包 npm install
+    4. 编辑make文件 的41 行 modules = (env[&#39;MODULES&#39;] || &#39;zepto event ajax form ie fx selector touch&#39;).split(&#39; &#39;)
+    5. 运行编译的命令 npm run-script dist
+</code></pre><h2 id="-rem-">移动端rem布局</h2>
+<pre><code>rem:root element 根元素 1rem=1根元素字体的大小，css3新增的东西 可以设置html{font-size:30px;} html就是根元素
+em : element 元素 1em=当前元素字体的大小，
+</code></pre>
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+});
+//-->
+</SCRIPT>

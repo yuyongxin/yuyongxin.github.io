@@ -1,0 +1,311 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>i5ting_ztree_toc:jquery总结</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<h1 id="jquery-">jquery 日常使用总结</h1>
+<h2 id="-">使用步骤</h2>
+<pre><code>1.先引入jquery的文件
+2.入口函数，js中是onload,jQuery中是ready
+3.调用jQuery提供的方法
+</code></pre><h3 id="onload-ready-">onload与ready的对比</h3>
+<pre><code>1.如果window.onload用了多个，那么后面的会覆盖前面的，onload是页面加载完毕，包括dom元素还有外部文件
+2.ready方法，如果有多个，不会覆盖，而是会整合到一起，比onload方法执行的时间要早，ready触发的时间：是所有dom元素都创建完毕就触发
+     $(window).ready(function () {})
+     简写$(function(){})
+</code></pre><h3 id="-">$说明</h3>
+<pre><code>1.$其实就是jQuery里面定义的函数，把dom元素变成能力更强大的jQuery对象，如果要调用jQuery给我们提供的更好的方法，就需要用$()给某个dom元素进行包装
+2.基本完整写法：前面加window，window.$
+</code></pre><h3 id="-">版本说明</h3>
+<pre><code>1.x版本：兼容老版本浏览器，例如IE6，7，8.现在jQuery作者已经不更新1.x的功能了，但是呢会优化和解决部分bug
+2.x版本：抛弃了老版本浏览器，只兼容新式浏览器。新增了部分新的方法。停止更新了
+3.x版本：抛弃了老版本浏览器，只兼容新式浏览器。新增部分新的方法，目前会更新
+</code></pre><h3 id="-">函数修改样式</h3>
+<pre><code>设置元素的css样式 $(&#39;dom&#39;).css(&#39;&#39;,&#39;&#39;),里面也可以是一个对象，可以写多个属性
+1.只给一个属性赋值，就用逗号个开，左边写属性名，右边写值
+2.如果需要同时写多个属性赋值，那么css里要传入一个对象，对象里左边写key，右边写value，每个属性之间用,隔开
+3.css函数除了能赋值以外也可以取值，取值括号里只要写一个参数，写属性名就行了
+</code></pre><h3 id="jquery-">jquery基本选择器</h3>
+<pre><code>标签选择，id选择器，类名选择器
+</code></pre><h3 id="-">伪类选择器</h3>
+<pre><code>$(&#39;li:first&#39;),
+ $(&#39;li:last&#39;),
+$(&#39;li:eq(1)&#39;)代表找到下标为1的li标签
+</code></pre><h3 id="this">this</h3>
+<pre><code>如果是jQuery绑定的方法，里面的this还是dom对象,因此如果要使用jQuery的方法，还得把this包装起来$(this)
+</code></pre><h3 id="-">显示 隐藏</h3>
+<pre><code>如果不传入参数，默认是没有动画效果的
+show(毫秒) ，
+hide(毫秒)
+</code></pre><h3 id="-">滑入 滑出</h3>
+<pre><code>slideDown是往下展开不用传参数，默认就有效果，有默认的动画时间,如果想改动画时长就传参数，参数还是毫秒
+1.slideDown()
+2.slideUp()
+3.slideToggle() 切换下滑效果
+</code></pre><h3 id="-show-hide-slidedown-slideup-">效果方法show() hide() slideDown slideUp 的几个参数</h3>
+<pre><code>1.参数1：动画持续时间
+2.参数2：动画的效果　有swing（加速） linear(匀速)
+3.参数３：动画完成时调用的回调函数
+</code></pre><h3 id="-">兄弟选择器</h3>
+<pre><code>1.siblings方法可以获取它所有的兄弟元素
+2.siblings方法也可以传入选择器，代表只找符合某种选择器
+</code></pre><h3 id="-">父元素选择器</h3>
+<pre><code>.parent()
+</code></pre><h3 id="-">子元素选择器</h3>
+<pre><code>children（）获取的是所有子元素，可以传一个参数比如标签
+</code></pre><h3 id="-">偶数和奇数选择器</h3>
+<pre><code> $(&#39;li:even&#39;) 索引为偶数的li标签
+ $(&#39;li:odd&#39;) 索引为奇数的li标签
+</code></pre><h3 id="mouseout-">mouseout的事件冒泡</h3>
+<pre><code>1.mouseout带事件冒泡，换句话说，如果给父元素设置了mouseout，那么当它的子元素移出时也会触发这个父元素的mouseout，即使并没有移出父元素
+2.mouseleave只会鼠标离开当前元素触发，而mouseout哪怕是离开子元素也会触发
+3.mouseout一般跟mouseover搭配使用，mouseleave一般跟mouseenter搭配使用
+</code></pre><h3 id="-">操作元素的类名</h3>
+<pre><code>1.addClass(&#39;类名&#39;)
+2.removeClass(&#39;类名&#39;)
+3.haslass(&#39;类名&#39;) 判断是否有某个类
+</code></pre><h3 id="index-">index()</h3>
+<pre><code>1.搜索匹配的元素，并返回相应元素的索引值，从0开始计数。
+2.如果不给 .index() 方法传递参数，那么返回值就是这个jQuery对象集合中第一个元素相对于其同辈元素的位置。
+3.用法： $(&#39;#center&#39;).children().eq($(this).index()).show();
+</code></pre><h3 id="-">链式编程的原理</h3>
+<pre><code>1.每个方法返回值都是它调用的对象，jQuery中几乎所有的方法都可以链式编程
+2.所以获取到属性的方法，都不能链式编程
+</code></pre><h3 id="jquery-dom-">jQuery对象和dom对象的互相转换</h3>
+<pre><code>1.dom转jQuery $()， 一般代码规范里，如果变量保存的是jQuery对象，那么这个变量名前面加$，这样可以提高代码阅读可读性，让人一看就知道这是一个jQuery对象，应该用jQuery的方法，
+2. dom转为jquery包装对象就可以调用jquery的方法
+3.jQuery包装对象特点：哪怕只有一个元素，也是当数组来保存，
+4. Query转成dom
+    1.直接通过下标就可以转$jqDiv[0]
+    2.通过get方法转，$jqDiv.get(0)
+</code></pre><h3 id="-">属性选择器</h3>
+<pre><code>1.判断是否有某个属性
+    1.选择器[属性名]：代表找到某个元素再过滤这个属性的所有元素
+        1.li[class] 找到li标签并且还要拥有class属性
+    2.选择器[属性=值] 
+    3.选择器[属性^=值] 找到属性以什么开头的
+    4.选择器[属性*=值]  找到属性要包含某个值
+    5.选择器[属性$=值] 找到属性以什么结尾的
+    6. 如果属性值里有小数，要给值加引号
+</code></pre><h3 id="-">淡入 淡出 淡到 ，淡出入</h3>
+<pre><code>1.fadeIn
+2.fadeout
+3.fadeTo 用动画效果设置一个元素到某个透明度
+    fadeTo(500,0.5,function(){})
+4.fadeToggle() 切换效果
+</code></pre><h3 id="animate-">animate 动画</h3>
+<pre><code>1.让我们改某些属性能带动画效果
+2. 只对数值属性有用
+2.5.单位可以不写
+3.参数
+    1.参数1：传入一个对象｛｝大括号里面每个key对用的value就是一个属性和它对应的值、
+    2.参数2：动画持续时间
+    3.参数3：动画效果、
+    4.参数4：回调函数、
+</code></pre><h3 id="-">停止动画、</h3>
+<pre><code>1.想要让一个动画持续下去，可以定义一个函数，函数调用动画函数，动画函数再调用这个函数即可、
+2.stop() 默认只会停掉队列里当前正在进行的一个动画，
+3.stop(true) 就代表无论有多少个动画正在进行，全部停止
+</code></pre><h3 id="clone-">clone() 克隆一个元素</h3>
+<pre><code>1.var $ball = $(&#39;img:first&#39;).clone();
+</code></pre><h3 id="append-">append() 追加一个元素</h3>
+<pre><code>1.$(&#39;body&#39;).append($ball);
+</code></pre><h3 id="appendto-">appendTo()</h3>
+<pre><code>1.让某个元素添加到那个父元素去，括号里传的是父元素、
+</code></pre><h3 id="remove-">remove()</h3>
+<pre><code>1.谁调用谁删掉、
+</code></pre><h3 id="-">深克隆</h3>
+<pre><code>1.clone这个方法，默认只会克隆属性，但不包括事件
+2.如果需要事件也克隆，那么传个参数true 
+    1. var $li=$(&#39;li:firest&#39;).clone(true);
+</code></pre><h3 id="-checkbox-">:checkbox 可以找到所有的复选框</h3>
+<pre><code>1.console.log(&#39;所有复选框个数&#39; + $(&#39;:checkbox&#39;).length);
+</code></pre><h3 id="-checked-">:checked 可以找到所有被选中的复选框和单选框、</h3>
+<pre><code>1.console.log(&#39;被选中的复选框和单选框个数：&#39;, +$(&#39;:checked&#39;).length);
+</code></pre><h3 id="-checkbox-checked-">:checkbox:checked 可以会找到所有被选中的复选框，不包括单选框</h3>
+<h3 id="on-">on方法绑定事件</h3>
+<pre><code>用法1：
+    jquery对象.on(事件字符串,function);
+用法2：
+    jquery对象.on(&quot;事件1 事件2 事件3...,function(){}&quot;)
+    代表所有事件都调用同一个function
+用法3：
+    jquery对象.on({
+        &#39;事件1&#39; ：方法1，
+        &#39;事件2&#39; ：方法2，
+        ‘事件3’ ：方法3
+    })
+    给一个对象绑定多个事件，并且每个事件有不同的相应方法、
+用法4：
+    jquery对象.on(事件字符串,选择器,function);
+        首先要在jquery对象范围内触发事件，并且还要满足选择器才能触发、
+        事件字符串 里可以写多个事件，代表多个事件也绑定同一个方法
+用法5：
+    jquery对象.on({
+        &#39;事件1&#39;:方法1,
+         &#39;事件2&#39;:方法2,
+    },选择器)
+
+用法6：
+     也可以在第二个参数传入一些对象数据 ， 那么当调用方法时，会在方法的event参数里拿到 ，event.data
+</code></pre><h3 id="-">删除绑定的事件、</h3>
+<pre><code>1.删除所有事件
+    1. $(&#39;input&#39;).off()
+    2.删除指定的事件，可以用空格隔开来删除多个事件
+        1. $(&#39;input&#39;).off(&#39;mouseover mouseout&#39;)       
+</code></pre><h3 id="-">前后兄弟元素</h3>
+<pre><code>prev() :找到上一个兄弟元素
+next() : 找到下一个兄弟元素
+</code></pre><h3 id="-">前后所有兄弟元素</h3>
+<pre><code>prevAll() 找到前面所有的兄弟元素
+nextAll() 找到后面的所有的兄弟元素
+end() 在链式编程中用，代表回到第一个jquery对象
+    1.```
+        $(this).prevAll().css(&#39;color&#39;, &#39;orange&#39;).html(&#39;★&#39;).end().css(&#39;color&#39;, &#39;orange&#39;).html(&#39;★&#39;).nextAll().css(&#39;color&#39;, &#39;black&#39;).html(&#39;☆&#39;);;
+    ```
+</code></pre><h3 id="offset-">offset 获取匹配元素在当前视口的相对偏移。</h3>
+<pre><code>    $(function () {
+            $(&#39;body&#39;).mousemove(function (event) {
+
+                //console.log(event);
+                // 这样做必须先给img加postion
+                // $(&#39;img&#39;).attr(&#39;top&#39;, &#39;50px&#39;;)
+
+                // 不需要提前加定位，它会自己帮你加一个相对定位
+                // 不要加单位，可以加引号，也可以不加
+                // event.pageX 可以得到你在当前body点击的x值坐标
+                // event.pageY 可以得到你在当前boyd点击的y值坐标
+
+                // 此项目为什么减去图片宽度一半和高度一半是为了鼠标在图片中间
+                $(&#39;img&#39;).offset({
+
+                    top: event.pageY - $(&#39;img&#39;).height() * 0.5,
+                    &#39;left&#39;: event.pageX - $(&#39;img&#39;).width() * 0.5
+                });
+            })
+        })
+</code></pre><h3 id="prop-attr-">prop 和attr的区别</h3>
+<pre><code>1.prop 一般用来获取或者设置 checked disabled selected 属性
+2. attr取checked时，很可能取到undefine
+3.当checkbox在标签内写一个checked属性时，但是此时，用attr取，无论如何取到的结果都是checked，prop取到的是true
+4. 如果要取checked状态最正确的值，那么通过attr是拿不到的，用prop才拿得到
+</code></pre><h3 id="-">反选</h3>
+<pre><code>1.第一种方法、
+```
+    var $ckList = $(&#39;:checkbox&#39;);
+     for (var i = 0; i &lt; $ckList.length; i++) {
+
+                    // 取到它原来的选中状态值
+                    var result = $($ckList[i]).prop(&#39;checked&#39;);
+
+                    $($ckList[i]).prop(&#39;checked&#39;, !result);
+                }
+```
+2. 第二种方法、
+```
+    $(&#39;:checkbox&#39;).each(function(){
+        $(this).prop(&#39;checked&#39;,!$(this).prop(&#39;checked&#39;))
+    })
+```
+</code></pre><h3 id="-">多库共存解决$冲突</h3>
+<pre><code>```
+    window.onload=function(){
+        var r=$.noConflict();
+        这句以后，$符号在jQuery中就没有用了,
+        这个方法也会有一个返回值，你用什么变量接收，那么这个变量名就相当于原来的$
+    }
+```
+</code></pre><h3 id="-">动画队列</h3>
+<pre><code>写动画效果，其实就是把这些效果加在动画队列里面，一个一个按顺序的执行。队列：先进先出。
+1.如果你通过queue方法加入了一个任务到队列，那么原来队列后面的内容默认不会执行，如果要执行必须再调用dequeue的方法
+```
+     $(&#39;.box&#39;).queue(function () {
+
+                console.log(&#39;我加入到队列里了&#39;);
+                $(&#39;.box&#39;).dequeue();
+            })
+```
+</code></pre>
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+});
+//-->
+</SCRIPT>
